@@ -25,7 +25,7 @@
         android:layout_below="@+id/ewbLogo"
         android:layout_centerHorizontal="true"
         android:textSize="20sp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         />
 
     <Button
@@ -103,6 +103,27 @@
         android:clickable="true"
         android:onClick="webClick"
         />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:id="@+id/inputEmail"
+        android:layout_below="@+id/ewbLogo"
+        android:layout_centerHorizontal="true"
+        android:hint="Email"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/inputPassword"
+        android:layout_below="@+id/inputEmail"
+        android:layout_centerHorizontal="true"
+        android:hint="Password"
+        android:layout_marginTop="10dp"/>
 
 
 </RelativeLayout>
