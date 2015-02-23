@@ -12,5 +12,16 @@
         <item>Announcement 4</item>
         <item>Announcement 5</item>
     </string-array>
+    <string name="title_activity_signUp">SignUpActivity</string>
+    <string name="signup_title">Sign Up</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="password_again">Enter Password Again</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="submit">Submit</string>
+    <string name="parse_app_id">swbDtaPTGNfZ533isw8IFLwNwufY78HjeXFQRN0i</string>
+    <string name="parse_client_id">Jx9sBzGV9XAFkAyv6kSXYtztHCOcuuCAt0hVKdQd</string>
 
 </resources>

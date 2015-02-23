@@ -57,7 +57,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Don't have an account? Register here."
+        android:text="Don't have an account? Sign Up"
         android:id="@+id/registerLabel"
         android:layout_below="@+id/guestButton"
         android:layout_centerHorizontal="true"
@@ -112,7 +112,7 @@
         android:id="@+id/inputEmail"
         android:layout_below="@+id/ewbLogo"
         android:layout_centerHorizontal="true"
-        android:hint="Email"/>
+        android:hint="@string/email"/>
 
     <EditText
         android:layout_width="match_parent"
@@ -122,8 +122,34 @@
         android:id="@+id/inputPassword"
         android:layout_below="@+id/inputEmail"
         android:layout_centerHorizontal="true"
-        android:hint="Password"
+        android:hint="@string/password"
         android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/forgot_password"
+        android:id="@+id/forgotPassword"
+        android:layout_below="@+id/inputPassword"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/submit"
+        android:id="@+id/submitLogin"
+        android:layout_below="@+id/memberButton"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp"
+        android:background="#006DAD"
+        android:textColor="@android:color/white"
+        />
 
 
 </RelativeLayout>
