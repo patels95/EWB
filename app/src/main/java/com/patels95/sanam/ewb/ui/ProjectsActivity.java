@@ -4,36 +4,22 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.patels95.sanam.ewb.R;
 
-
-public class HomeActivity extends ActionBarActivity {
-
-    private ListView mAnnouncementList;
+public class ProjectsActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-
-        mAnnouncementList = (ListView) findViewById(R.id.announcementList);
-
-//        String[] listValues = new String[] {
-//                "Announcement 1",
-//                "Announcement 2",
-//                "Announcement 3",
-//                "Announcement 4"
-//        };
-
+        setContentView(R.layout.activity_projects);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_home, menu);
+        getMenuInflater().inflate(R.menu.menu_projects, menu);
         return true;
     }
 
@@ -51,5 +37,4 @@ public class HomeActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
 }

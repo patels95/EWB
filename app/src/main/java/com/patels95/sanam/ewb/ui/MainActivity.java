@@ -1,10 +1,15 @@
 package com.patels95.sanam.ewb.ui;
 
+import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +21,7 @@ import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
+import com.parse.RequestPasswordResetCallback;
 import com.patels95.sanam.ewb.R;
 
 import butterknife.ButterKnife;
@@ -30,7 +36,6 @@ public class MainActivity extends ActionBarActivity {
     @InjectView(R.id.facebookIcon) ImageView mFacebook;
     @InjectView(R.id.twitterIcon) ImageView mTwitter;
     @InjectView(R.id.ewbWebsite) TextView mWebsite;
-    @InjectView(R.id.userLabel) TextView mUserLabel;
     @InjectView(R.id.inputEmail) EditText mEmail;
     @InjectView(R.id.inputPassword) EditText mPassword;
     @InjectView(R.id.forgotPassword) TextView mForgotPassword;
@@ -96,6 +101,22 @@ public class MainActivity extends ActionBarActivity {
                     Toast toast = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG);
                     toast.show();
                 }
+                else{
+                    ParseUser.requestPasswordResetInBackground(mEmail.getText().toString(), new RequestPasswordResetCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if(e != null){
+                                //display error message
+                                Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                            else{
+                                //display "reset password" email sent confirmation
+                                String resetConfirmation = "A reset password link has been send to your email";
+                                Toast.makeText(MainActivity.this, resetConfirmation, Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                }
             }
         });
 
@@ -120,6 +141,7 @@ public class MainActivity extends ActionBarActivity {
                                 //display error message
                                 Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                             }
+
                             else{
                                 //start the home activity as an ewb member
                                 memberStartHome();
@@ -133,6 +155,29 @@ public class MainActivity extends ActionBarActivity {
         });
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
     private void memberStartHome() {
         Intent intent = new Intent(this, HomeActivity.class);
@@ -172,7 +217,6 @@ public class MainActivity extends ActionBarActivity {
             mPassword.setVisibility(View.INVISIBLE);
             mForgotPassword.setVisibility(View.INVISIBLE);
             mSubmitLogin.setVisibility(View.INVISIBLE);
-            mUserLabel.setVisibility(View.VISIBLE);
             mMember.setVisibility(View.VISIBLE);
             mGuest.setVisibility(View.VISIBLE);
         }
@@ -181,7 +225,6 @@ public class MainActivity extends ActionBarActivity {
             mPassword.setVisibility(View.VISIBLE);
             mForgotPassword.setVisibility(View.VISIBLE);
             mSubmitLogin.setVisibility(View.VISIBLE);
-            mUserLabel.setVisibility(View.INVISIBLE);
             mMember.setVisibility(View.INVISIBLE);
             mGuest.setVisibility(View.INVISIBLE);
         }

@@ -1,8 +1,63 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
+    <style name="Theme.Ewb" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="actionBarItemBackground">@drawable/selectable_background_ewb</item>
+        <item name="popupMenuStyle">@style/PopupMenu.Ewb</item>
+        <item name="dropDownListViewStyle">@style/DropDownListView.Ewb</item>
+        <item name="actionBarTabStyle">@style/ActionBarTabStyle.Ewb</item>
+        <item name="actionDropDownStyle">@style/DropDownNav.Ewb</item>
+        <item name="actionBarStyle">@style/ActionBar.Solid.Ewb</item>
+        <item name="actionModeBackground">@drawable/cab_background_top_ewb</item>
+        <item name="actionModeSplitBackground">@drawable/cab_background_bottom_ewb</item>
+        <item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Ewb</item>
+
+        <!-- Light.DarkActionBar specific -->
+        <item name="actionBarWidgetTheme">@style/Theme.Ewb.Widget</item>
+
+    </style>
+
+    <style name="ActionBar.Solid.Ewb" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="background">@drawable/ab_solid_ewb</item>
+        <item name="backgroundStacked">@drawable/ab_stacked_solid_ewb</item>
+        <item name="backgroundSplit">@drawable/ab_bottom_solid_ewb</item>
+        <item name="progressBarStyle">@style/ProgressBar.Ewb</item>
+    </style>
+
+    <style name="ActionBar.Transparent.Ewb" parent="@style/Widget.AppCompat.ActionBar">
+        <item name="background">@drawable/ab_transparent_ewb</item>
+        <item name="progressBarStyle">@style/ProgressBar.Ewb</item>
+    </style>
+
+    <style name="PopupMenu.Ewb" parent="@style/Widget.AppCompat.PopupMenu">
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_ewb</item>
+    </style>
+
+    <style name="DropDownListView.Ewb" parent="@style/Widget.AppCompat.ListView.DropDown">
+        <item name="android:listSelector">@drawable/selectable_background_ewb</item>
+    </style>
+
+    <style name="ActionBarTabStyle.Ewb" parent="@style/Widget.AppCompat.ActionBar.TabView">
+        <item name="android:background">@drawable/tab_indicator_ab_ewb</item>
+    </style>
+
+    <style name="DropDownNav.Ewb" parent="@style/Widget.AppCompat.Spinner.DropDown.ActionBar">
+        <item name="android:background">@drawable/spinner_background_ab_ewb</item>
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_ewb</item>
+        <item name="android:dropDownSelector">@drawable/selectable_background_ewb</item>
+    </style>
+
+    <style name="ProgressBar.Ewb" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/progress_horizontal_ewb</item>
+    </style>
+
+    <style name="ActionButton.CloseMode.Ewb" parent="@style/Widget.AppCompat.ActionButton.CloseMode">
+        <item name="android:background">@drawable/btn_cab_done_ewb</item>
+    </style>
+
+    <!-- this style is only referenced in a Light.DarkActionBar based theme -->
+    <style name="Theme.Ewb.Widget" parent="@style/Theme.AppCompat">
+        <item name="popupMenuStyle">@style/PopupMenu.Ewb</item>
+        <item name="dropDownListViewStyle">@style/DropDownListView.Ewb</item>
     </style>
 
 </resources>

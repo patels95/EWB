@@ -5,7 +5,6 @@
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
-                android:paddingBottom="@dimen/activity_vertical_margin"
                 tools:context=".MainActivity"
                 android:background="#FFFFFF">
 
@@ -17,47 +16,36 @@
         android:layout_centerHorizontal="true"
         android:src="@drawable/ewb_logo"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="I am a:"
-        android:id="@+id/userLabel"
-        android:layout_below="@+id/ewbLogo"
-        android:layout_centerHorizontal="true"
-        android:textSize="20sp"
-        android:layout_marginTop="5dp"
-        />
-
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="EWB Member"
+        android:text="@string/ewb_member"
         android:id="@+id/memberButton"
-        android:layout_below="@+id/userLabel"
+        android:layout_below="@+id/ewbLogo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:textSize="17sp"
-        android:background="#5999C7"
+        android:background="#B8121C"
         android:textColor="#FEFEFE"
         />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Guest"
+        android:text="@string/guest"
         android:id="@+id/guestButton"
         android:layout_below="@+id/memberButton"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:textSize="17sp"
-        android:background="#5999C7"
+        android:background="#B8121C"
         android:textColor="#FEFEFE"
         />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Don't have an account? Sign Up"
+        android:text="@string/main_sign_up"
         android:id="@+id/registerLabel"
         android:layout_below="@+id/guestButton"
         android:layout_centerHorizontal="true"
@@ -95,7 +83,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="http://www.ewbbu.com/"
+        android:text="@string/ewb_url"
         android:id="@+id/ewbWebsite"
         android:layout_below="@+id/iconLinearLayout"
         android:layout_centerHorizontal="true"
@@ -147,7 +135,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginEnd="5dp"
-        android:background="#006DAD"
+        android:background="#09405E"
         android:textColor="@android:color/white"
         />
 
