@@ -25,6 +25,20 @@
         android:scrollbars="vertical"
         />
 
+    <!--<Button-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/projectsButton"-->
+        <!--android:text="@string/projects"-->
+        <!--android:layout_below="@id/announcementList"-->
+        <!--/>-->
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        />
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -55,5 +69,13 @@
             android:textColor="#FEFEFE"
             />
     </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Projects"
+        android:id="@+id/projectsButton"
+        android:layout_below="@+id/announcementList"
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

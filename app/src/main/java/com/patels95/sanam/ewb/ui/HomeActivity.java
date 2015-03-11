@@ -1,23 +1,31 @@
 package com.patels95.sanam.ewb.ui;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.patels95.sanam.ewb.R;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 
 public class HomeActivity extends ActionBarActivity {
 
     private ListView mAnnouncementList;
+    @InjectView(R.id.projectsButton) Button mProject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        ButterKnife.inject(this);
 
         mAnnouncementList = (ListView) findViewById(R.id.announcementList);
 
@@ -28,6 +36,18 @@ public class HomeActivity extends ActionBarActivity {
 //                "Announcement 4"
 //        };
 
+        mProject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startProjects();
+            }
+        });
+
+    }
+
+    private void startProjects() {
+        Intent intent = new Intent(this, ProjectsActivity.class);
+        startActivity(intent);
     }
 
     @Override
