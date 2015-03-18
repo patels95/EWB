@@ -25,14 +25,6 @@
         android:scrollbars="vertical"
         />
 
-    <!--<Button-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/projectsButton"-->
-        <!--android:text="@string/projects"-->
-        <!--android:layout_below="@id/announcementList"-->
-        <!--/>-->
-
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,15 +34,17 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:weightSum="100">
+        android:weightSum="100"
+        android:id="@+id/homeButtons">
 
         <Button
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="@string/forum"
+            android:textSize="16sp"
             android:id="@+id/button"
             android:layout_gravity="bottom"
             android:layout_weight="50"
@@ -60,8 +54,9 @@
 
         <Button
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="@string/calendar"
+            android:textSize="16sp"
             android:id="@+id/button2"
             android:layout_gravity="bottom"
             android:layout_weight="50"
@@ -70,12 +65,33 @@
             />
     </LinearLayout>
 
-    <Button
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/projectsImageView"
+        android:layout_below="@+id/announcementList"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/zambia_water"
+        android:scaleType="fitXY"
+        android:layout_above="@+id/homeButtons"
+        android:clickable="true"
+        />
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Projects"
-        android:id="@+id/projectsButton"
-        android:layout_below="@+id/announcementList"
-        android:layout_centerHorizontal="true"/>
+        android:text="@string/projects"
+        android:id="@+id/projectsTextView"
+        android:layout_alignLeft="@+id/projectsImageView"
+        android:layout_alignRight="@+id/projectsImageView"
+        android:layout_alignStart="@+id/projectsImageView"
+        android:layout_alignEnd="@+id/projectsImageView"
+        android:layout_alignTop="@+id/projectsImageView"
+        android:layout_alignBottom="@+id/projectsImageView"
+        android:gravity="center"
+        android:textSize="48sp"
+        android:textColor="#FFFFFF"
+        />
 
 </RelativeLayout>

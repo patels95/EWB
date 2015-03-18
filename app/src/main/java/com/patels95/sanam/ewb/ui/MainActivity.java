@@ -30,6 +30,9 @@ import butterknife.InjectView;
 
 public class MainActivity extends ActionBarActivity {
 
+    public static final String IS_MEMBER = "IS_MEMBER";
+    private boolean mIsMember = false;
+
     @InjectView(R.id.memberButton) Button mMember;
     @InjectView(R.id.guestButton) Button mGuest;
     @InjectView(R.id.registerLabel) TextView mRegister;
@@ -181,6 +184,8 @@ public class MainActivity extends ActionBarActivity {
 
     private void memberStartHome() {
         Intent intent = new Intent(this, HomeActivity.class);
+        mIsMember = true;
+        intent.putExtra(IS_MEMBER, mIsMember);
         startActivity(intent);
     }
 
@@ -232,6 +237,8 @@ public class MainActivity extends ActionBarActivity {
 
     private void guestStartHome() {
         Intent intent = new Intent(this, HomeActivity.class);
+        mIsMember = false;
+        intent.putExtra(IS_MEMBER, mIsMember);
         startActivity(intent);
     }
 

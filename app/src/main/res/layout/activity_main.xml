@@ -129,7 +129,7 @@
         android:layout_height="wrap_content"
         android:text="@string/submit"
         android:id="@+id/submitLogin"
-        android:layout_below="@+id/memberButton"
+        android:layout_below="@+id/inputPassword"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="5dp"

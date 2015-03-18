@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.patels95.sanam.ewb.R;
@@ -19,13 +20,17 @@ import butterknife.InjectView;
 public class HomeActivity extends ActionBarActivity {
 
     private ListView mAnnouncementList;
-    @InjectView(R.id.projectsButton) Button mProject;
+    private boolean mIsMember;
+
+    @InjectView(R.id.projectsImageView) ImageView mProjectsImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.inject(this);
+        setUserType();
+        //setUserActions();
 
         mAnnouncementList = (ListView) findViewById(R.id.announcementList);
 
@@ -36,7 +41,7 @@ public class HomeActivity extends ActionBarActivity {
 //                "Announcement 4"
 //        };
 
-        mProject.setOnClickListener(new View.OnClickListener() {
+        mProjectsImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startProjects();
@@ -44,6 +49,15 @@ public class HomeActivity extends ActionBarActivity {
         });
 
     }
+
+    // set the mIsMember variable for member or guest
+    private void setUserType() {
+        Intent intent = getIntent();
+        mIsMember = intent.getBooleanExtra(MainActivity.IS_MEMBER, false);
+    }
+
+    // set the available actions in the action bar based on the type of user
+
 
     private void startProjects() {
         Intent intent = new Intent(this, ProjectsActivity.class);
@@ -54,6 +68,13 @@ public class HomeActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_home, menu);
+
+        MenuItem item = menu.findItem(R.id.action_edit);
+        if(!mIsMember){
+            item.setVisible(false);
+        }
+        this.invalidateOptionsMenu();
+
         return true;
     }
 
