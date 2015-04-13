@@ -99,7 +99,7 @@ public class SignUpActivity extends ActionBarActivity {
     }
 
     private void startHome() {
-        Intent intent = new Intent(this, HomeActivity.class);
+        Intent intent = new Intent(this, HomeOldActivity.class);
         startActivity(intent);
     }
 

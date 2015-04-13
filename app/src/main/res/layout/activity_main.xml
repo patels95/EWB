@@ -14,7 +14,8 @@
         android:id="@+id/ewbLogo"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/ewb_logo"/>
+        android:src="@drawable/ewb_logo"
+        android:layout_marginTop="50dp"/>
 
     <Button
         android:layout_width="match_parent"
@@ -23,9 +24,9 @@
         android:id="@+id/memberButton"
         android:layout_below="@+id/ewbLogo"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:textSize="17sp"
-        android:background="#B8121C"
+        android:background="#27588F"
         android:textColor="#FEFEFE"
         />
 
@@ -38,7 +39,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:textSize="17sp"
-        android:background="#B8121C"
+        android:background="#27588F"
         android:textColor="#FEFEFE"
         />
 
@@ -47,9 +48,9 @@
         android:layout_height="wrap_content"
         android:text="@string/main_sign_up"
         android:id="@+id/registerLabel"
-        android:layout_below="@+id/guestButton"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="10dp"
         />
 
     <LinearLayout
@@ -63,34 +64,7 @@
         android:id="@+id/iconLinearLayout">
 
 
-        <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:id="@+id/facebookIcon"
-            android:src="@drawable/facebook"
-            android:layout_weight="1"
-            />
-
-        <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:id="@+id/twitterIcon"
-            android:src="@drawable/twitter"
-            android:layout_weight="1"
-            />
     </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/ewb_url"
-        android:id="@+id/ewbWebsite"
-        android:layout_below="@+id/iconLinearLayout"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
-        android:clickable="true"
-        android:onClick="webClick"
-        />
 
     <EditText
         android:layout_width="match_parent"
@@ -100,7 +74,8 @@
         android:id="@+id/inputEmail"
         android:layout_below="@+id/ewbLogo"
         android:layout_centerHorizontal="true"
-        android:hint="@string/email"/>
+        android:hint="@string/email"
+        android:layout_marginTop="30dp"/>
 
     <EditText
         android:layout_width="match_parent"
@@ -129,13 +104,13 @@
         android:layout_height="wrap_content"
         android:text="@string/submit"
         android:id="@+id/submitLogin"
-        android:layout_below="@+id/memberButton"
+        android:layout_below="@+id/inputPassword"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="5dp"
         android:layout_marginEnd="5dp"
-        android:background="#09405E"
+        android:background="#27588F"
         android:textColor="@android:color/white"
         />
 

@@ -1,0 +1,89 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.patels95.sanam.ewb.ui.HomeOldActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/announcements_title"
+        android:id="@+id/announcements"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp"
+        android:layout_marginTop="20dp"
+        />
+
+    <com.twitter.sdk.android.tweetui.TweetView
+        xmlns:twittersdk="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/photo_default_tweet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        twittersdk:tw__tweet_id="20"
+        />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:weightSum="100"
+        android:id="@+id/homeButtons">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/forum"
+            android:textSize="16sp"
+            android:id="@+id/button"
+            android:layout_gravity="bottom"
+            android:layout_weight="50"
+            android:background="#B8121C"
+            android:textColor="#FEFEFE"
+            />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/calendar"
+            android:textSize="16sp"
+            android:id="@+id/button2"
+            android:layout_gravity="bottom"
+            android:layout_weight="50"
+            android:background="#09405E"
+            android:textColor="#FEFEFE"
+            />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/projectsImageView"
+        android:layout_below="@+id/announcementList"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/zambia_water"
+        android:scaleType="fitXY"
+        android:layout_above="@+id/homeButtons"
+        android:clickable="true"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/projects"
+        android:id="@+id/projectsTextView"
+        android:layout_alignLeft="@+id/projectsImageView"
+        android:layout_alignRight="@+id/projectsImageView"
+        android:layout_alignStart="@+id/projectsImageView"
+        android:layout_alignEnd="@+id/projectsImageView"
+        android:layout_alignTop="@+id/projectsImageView"
+        android:layout_alignBottom="@+id/projectsImageView"
+        android:gravity="center"
+        android:textSize="48sp"
+        android:textColor="#FFFFFF"
+        />
+
+</RelativeLayout>

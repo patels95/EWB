@@ -1,10 +1,7 @@
 package com.patels95.sanam.ewb.ui;
 
-import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -19,7 +16,6 @@ import android.widget.Toast;
 
 import com.parse.LogInCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.RequestPasswordResetCallback;
 import com.patels95.sanam.ewb.R;
@@ -30,12 +26,12 @@ import butterknife.InjectView;
 
 public class MainActivity extends ActionBarActivity {
 
+    public static final String IS_MEMBER = "IS_MEMBER";
+    private boolean mIsMember = false;
+
     @InjectView(R.id.memberButton) Button mMember;
     @InjectView(R.id.guestButton) Button mGuest;
     @InjectView(R.id.registerLabel) TextView mRegister;
-    @InjectView(R.id.facebookIcon) ImageView mFacebook;
-    @InjectView(R.id.twitterIcon) ImageView mTwitter;
-    @InjectView(R.id.ewbWebsite) TextView mWebsite;
     @InjectView(R.id.inputEmail) EditText mEmail;
     @InjectView(R.id.inputPassword) EditText mPassword;
     @InjectView(R.id.forgotPassword) TextView mForgotPassword;
@@ -50,27 +46,6 @@ public class MainActivity extends ActionBarActivity {
 
         //login is invisible by default
         toggleLogin();
-
-        mWebsite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openEWB();
-            }
-        });
-
-        mFacebook.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                openFacebook();
-            }
-        });
-
-        mTwitter.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                openTwitter();
-            }
-        });
 
         mGuest.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -181,6 +156,8 @@ public class MainActivity extends ActionBarActivity {
 
     private void memberStartHome() {
         Intent intent = new Intent(this, HomeActivity.class);
+        mIsMember = true;
+        intent.putExtra(IS_MEMBER, mIsMember);
         startActivity(intent);
     }
 
@@ -232,6 +209,8 @@ public class MainActivity extends ActionBarActivity {
 
     private void guestStartHome() {
         Intent intent = new Intent(this, HomeActivity.class);
+        mIsMember = false;
+        intent.putExtra(IS_MEMBER, mIsMember);
         startActivity(intent);
     }
 

@@ -27,12 +27,26 @@
     <string name="ewb_url">http://www.ewbbu.com/</string>
     <string name="title_activity_projects">Projects</string>
     <string name="announcements_title">Announcements</string>
-    <string name="projects_title">Projects</string>
     <string name="ewb_member">EWB Member</string>
     <string name="guest">Guest</string>
     <string name="main_sign_up">Don\'t have an account? Sign Up</string>
     <string name="projects">Projects</string>
     <string name="right_arrow">right arrow</string>
     <string name="left_arrow">left arrow</string>
+    <string name="action_edit">Edit</string>
+    <string name="title_page_list">Pages</string>
+    <string name="title_page_detail">Page Detail</string>
+
+    <string name="title_section1">Home</string>
+    <string name="title_section2">Calendar</string>
+    <string name="title_section3">Projects</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Example action</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
