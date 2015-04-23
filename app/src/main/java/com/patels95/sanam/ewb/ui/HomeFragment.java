@@ -1,16 +1,23 @@
 package com.patels95.sanam.ewb.ui;
 
 import android.app.Activity;
+import android.support.v4.app.ListFragment;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.patels95.sanam.ewb.R;
+import com.twitter.sdk.android.tweetui.TweetTimelineListAdapter;
+import com.twitter.sdk.android.tweetui.UserTimeline;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,11 +27,12 @@ import com.patels95.sanam.ewb.R;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends ListFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_SECTION_NUMBER = "section_number";
 
+    //@InjectView(R.id.twitterTimeline) ListView mTimeline;
 
     // TODO: Rename and change types of parameters
     private int mSectionNumber;
@@ -56,12 +64,18 @@ public class HomeFragment extends Fragment {
         if (getArguments() != null) {
             mSectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
         }
+
+        final UserTimeline userTimeline = new UserTimeline.Builder().screenName("EWBBU").build();
+        final TweetTimelineListAdapter adapter = new TweetTimelineListAdapter(getActivity(), userTimeline);
+        setListAdapter(adapter);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        ButterKnife.inject(this, rootView);
         return rootView;
     }
 

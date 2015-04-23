@@ -5,6 +5,8 @@ import android.app.Application;
 import com.parse.Parse;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.tweetui.TweetUi;
+
 import io.fabric.sdk.android.Fabric;
 
 public class MyApplication extends Application {
@@ -17,7 +19,7 @@ public class MyApplication extends Application {
     public void onCreate(){
         super.onCreate();
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
-        Fabric.with(this, new Twitter(authConfig));
+        Fabric.with(this, new Twitter(authConfig), new TweetUi());
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, getString(R.string.parse_app_id), getString(R.string.parse_client_id));
     }
