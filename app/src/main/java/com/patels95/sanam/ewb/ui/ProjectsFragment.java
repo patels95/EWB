@@ -1,38 +1,27 @@
 package com.patels95.sanam.ewb.ui;
 
 import android.app.Activity;
-import android.support.v4.app.ListFragment;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.patels95.sanam.ewb.R;
-import com.twitter.sdk.android.tweetui.TweetTimelineListAdapter;
-import com.twitter.sdk.android.tweetui.UserTimeline;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link HomeFragment.OnFragmentInteractionListener} interface
+ * {@link ProjectsFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link HomeFragment#newInstance} factory method to
+ * Use the {@link ProjectsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends ListFragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+public class ProjectsFragment extends Fragment {
+
     private static final String ARG_SECTION_NUMBER = "section_number";
-    private static final String TAG = HomeFragment.class.getSimpleName();
-
-    //@InjectView(android.R.id.list) ListView mTimeline;
-
-
+    private static final String TAG = ProjectsFragment.class.getSimpleName();
     private int mSectionNumber;
 
     private OnFragmentInteractionListener mListener;
@@ -41,18 +30,19 @@ public class HomeFragment extends ListFragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment HomeFragment.
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment ProjectsFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(int sectionNumber) {
-        HomeFragment fragment = new HomeFragment();
+    public static ProjectsFragment newInstance(int sectionNumber) {
+        ProjectsFragment fragment = new ProjectsFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public HomeFragment() {
+    public ProjectsFragment() {
         // Required empty public constructor
     }
 
@@ -67,31 +57,16 @@ public class HomeFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-        //ButterKnife.inject(this, rootView);
-        // TRY TWITTER FEED HERE
-        return rootView;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        /* Debug twitter fabric timeline
-        ERROR -> adapter.isEmpty() == true
-        * */
-        final UserTimeline userTimeline = new UserTimeline.Builder().screenName("fabric").build();
-        Log.d(TAG, " " + userTimeline.toString());
-        final TweetTimelineListAdapter adapter = new TweetTimelineListAdapter(getListView().getContext(), userTimeline);
-        Log.d(TAG, " " + adapter.isEmpty());
-        setListAdapter(adapter);
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_projects, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-//    public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//            mListener.onFragmentInteraction(uri);
-//        }
-//    }
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
+    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -122,7 +97,7 @@ public class HomeFragment extends ListFragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(View view);
+        public void onFragmentInteraction(Uri uri);
     }
 
 }

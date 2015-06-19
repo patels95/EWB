@@ -2,11 +2,13 @@ package com.patels95.sanam.ewb.ui;
 
 import android.app.Activity;
 import android.app.ListActivity;
+import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,10 +18,15 @@ import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
 
 import com.patels95.sanam.ewb.R;
+import com.patels95.sanam.ewb.model.Project;
 
 public class HomeActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks,
-        HomeFragment.OnFragmentInteractionListener {
+        HomeFragment.OnFragmentInteractionListener,
+        CalendarFragment.OnFragmentInteractionListener,
+        ProjectsFragment.OnFragmentInteractionListener {
+
+    private static final String TAG = HomeActivity.class.getSimpleName();
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -54,14 +61,28 @@ public class HomeActivity extends ActionBarActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         switch (position) {
             case 0:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, HomeFragment.newInstance(position + 1))
+                        .commit();
                 break;
             case 1:
-                //fragment = new CalendarFragment();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, CalendarFragment.newInstance(position + 1))
+                        .commit();
+                break;
+            case 2:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, ProjectsFragment.newInstance(position + 1))
+                        .commit();
+                break;
+            default:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, HomeFragment.newInstance(position + 1))
+                        .commit();
+                break;
         }
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, HomeFragment.newInstance(position + 1))
-                .commit();
     }
+
 
     public void onSectionAttached(int number) {
         switch (number) {
@@ -115,6 +136,11 @@ public class HomeActivity extends ActionBarActivity
 
     @Override
     public void onFragmentInteraction(View view) {
+
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
     }
 
