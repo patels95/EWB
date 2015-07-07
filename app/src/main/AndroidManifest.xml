@@ -35,7 +35,7 @@
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="3de5a9c20fda241f408ac7d972ebe00dfcceb2db" />
+            android:value="426ec53741e6f6124da2975dff63c12881e3df35" />
 
         <activity
             android:name=".ui.HomeActivity"

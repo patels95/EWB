@@ -12,15 +12,29 @@ import io.fabric.sdk.android.Fabric;
 public class MyApplication extends Application {
 
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
-    private static final String TWITTER_KEY = "OuZb4XNtiRxHdxjPdEXkx1cTx";
-    private static final String TWITTER_SECRET = "r581PWY4ESS5mmARjzLSP0NfTyox0uxKL1eZgJhCeJB2F1Gtrb";
+    // Sanam's Twitter
+//    private static final String TWITTER_KEY = "OuZb4XNtiRxHdxjPdEXkx1cTx";
+//    private static final String TWITTER_SECRET = "r581PWY4ESS5mmARjzLSP0NfTyox0uxKL1eZgJhCeJB2F1Gtrb";
 
+    // Daniel's Twitter
+    private static final String TWITTER_KEY = "a1vsMbocLKBlZqLRzroibhQXZ";
+    private static final String TWITTER_SECRET = "RiLzY549zv60JCf586iZ7AmCj7TrbLQSqwNvHJWPfZKlWE2rLV";
+
+    // Daniel's parse keys
+    private static final String parseAppId = "KIlFW595YoyCLbh65tBvuFmdmXHGwDGLeJemfYJ5";
+    private static final String parseClientId = "DuM4muyMVNoz7eNlTo0xolkyfD1yM0BrWcbZYRx5";
 
     public void onCreate(){
+        // Sanam's Twitter keys for fabric:
+        // twitter_key: "OuZb4XNtiRxHdxjPdEXkx1cTx"
+        // twitter_secret: "r581PWY4ESS5mmARjzLSP0NfTyox0uxKL1eZgJhCeJB2F1Gtrb"
+        // Sanam's Parse keys:
+        // app_id: swbDtaPTGNfZ533isw8IFLwNwufY78HjeXFQRN0i
+        // client_id: Jx9sBzGV9XAFkAyv6kSXYtztHCOcuuCAt0hVKdQd
         super.onCreate();
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
         Fabric.with(this, new Twitter(authConfig), new TweetUi());
         Parse.enableLocalDatastore(this);
-        Parse.initialize(this, getString(R.string.parse_app_id), getString(R.string.parse_client_id));
+        Parse.initialize(this, parseAppId, parseClientId); // Change Parse keys here.
     }
 }

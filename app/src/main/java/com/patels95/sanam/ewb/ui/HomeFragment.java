@@ -70,6 +70,7 @@ public class HomeFragment extends ListFragment {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         //ButterKnife.inject(this, rootView);
         // TRY TWITTER FEED HERE
+
         return rootView;
     }
 
@@ -79,7 +80,8 @@ public class HomeFragment extends ListFragment {
         /* Debug twitter fabric timeline
         ERROR -> adapter.isEmpty() == true
         * */
-        final UserTimeline userTimeline = new UserTimeline.Builder().screenName("fabric").build();
+        String adminTwitterUsername = "aspacedog"; // Twitter username for timeline display.
+        final UserTimeline userTimeline = new UserTimeline.Builder().screenName(adminTwitterUsername).build();
         Log.d(TAG, " " + userTimeline.toString());
         final TweetTimelineListAdapter adapter = new TweetTimelineListAdapter(getListView().getContext(), userTimeline);
         Log.d(TAG, " " + adapter.isEmpty());
