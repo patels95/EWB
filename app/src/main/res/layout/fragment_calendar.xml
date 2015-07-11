@@ -4,7 +4,13 @@
              android:layout_height="match_parent"
              tools:context="com.patels95.sanam.ewb.ui.CalendarFragment"
              android:id="@+id/fragmentLayout"
-             android:orientation="vertical"
-             android:padding="16px">
+             android:padding="16dp"
+             android:orientation="vertical">
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create Event"
+        android:id="@+id/testButton"
+        android:layout_gravity="center_horizontal"/>
 </LinearLayout>

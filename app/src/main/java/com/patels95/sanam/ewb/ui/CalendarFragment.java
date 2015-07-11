@@ -11,12 +11,14 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -27,12 +29,21 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccoun
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.client.util.DateTime;
 import com.google.api.client.util.ExponentialBackOff;
+import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.CalendarScopes;
+import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.EventAttendee;
+import com.google.api.services.calendar.model.EventDateTime;
+import com.google.api.services.calendar.model.EventReminder;
 import com.patels95.sanam.ewb.R;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+
+import butterknife.InjectView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,11 +54,14 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class CalendarFragment extends Fragment {
-
     private static final String ARG_SECTION_NUMBER = "section_number";
     private static final String TAG = CalendarFragment.class.getSimpleName();
 
     private int mSectionNumber;
+
+    private LinearLayout mFragmentLayout;
+    private LinearLayout.LayoutParams mLayoutParams;
+    private ViewGroup.LayoutParams mViewGroupParams;
 
     private OnFragmentInteractionListener mListener;
 
@@ -102,35 +116,17 @@ public class CalendarFragment extends Fragment {
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        // Display Calendar
+        mFragmentLayout = (LinearLayout) getView().findViewById(R.id.fragmentLayout);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Original code from Google Developer
-        // TODO: activityLayout is not called - try to move everything to xml
-        LinearLayout activityLayout = new LinearLayout(getActivity());
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
-        activityLayout.setLayoutParams(lp);
-        activityLayout.setOrientation(LinearLayout.VERTICAL);
-        activityLayout.setPadding(16, 16, 16, 16);
-
-        ViewGroup.LayoutParams tlp = new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-
-        mStatusText = new TextView(getActivity());
-        mStatusText.setLayoutParams(tlp);
-        mStatusText.setTypeface(null, Typeface.BOLD);
-        mStatusText.setText("Retrieving data...");
-        activityLayout.addView(mStatusText);
-
-        mResultsText = new TextView(getActivity());
-        mResultsText.setLayoutParams(tlp);
-        mResultsText.setPadding(16, 16, 16, 16);
-        mResultsText.setVerticalScrollBarEnabled(true);
-        mResultsText.setMovementMethod(new ScrollingMovementMethod());
-        activityLayout.addView(mResultsText);
-
+        // Initializes some calendar stuff. I don't know what it does - check google developer site
+        addCalendar();
 //        // Initialize credentials and service object.
         SharedPreferences settings = getActivity().getPreferences(Context.MODE_PRIVATE);
         credential = GoogleAccountCredential.usingOAuth2(
@@ -144,7 +140,53 @@ public class CalendarFragment extends Fragment {
                 .build();
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_calendar, container, false);
+//        View returnView =  inflater.inflate(R.layout.fragment_calendar, container, false);
+        // Demos the calendar API create event feature. WORK IN PROGRESS!
+//        Button buttonEventCreateDemo = (Button) returnView.findViewById(R.id.testButton);
+//        buttonEventCreateDemo.setOnClickListener(new View.OnClickListener(){
+//            //TODO: Make asynch task for calendar actions.
+//            @Override
+//            public void onClick(View v) {
+//                try {
+//                    // Attempt an asynch task for this
+//                    createEvent();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+
+//        mFragmentLayout = (LinearLayout) getView().findViewById(R.id.fragmentLayout);
+        return mFragmentLayout;
+    }
+    public void addCalendar()
+    {
+        // Original code from Google Developer
+        mFragmentLayout = new LinearLayout(getActivity());
+        mLayoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        mFragmentLayout.setLayoutParams(mLayoutParams);
+        mFragmentLayout.setOrientation(LinearLayout.VERTICAL);
+        mFragmentLayout.setPadding(16, 16, 16, 16);
+
+        mViewGroupParams = new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        // We seem to need this
+        mStatusText = new TextView(getActivity());
+        mStatusText.setLayoutParams(mViewGroupParams);
+        mStatusText.setTypeface(null, Typeface.BOLD);
+        mStatusText.setText("Retrieving data...");
+        mFragmentLayout.addView(mStatusText);
+
+        mResultsText = new TextView(getActivity());
+        mResultsText.setLayoutParams(mViewGroupParams);
+        mResultsText.setPadding(16, 16, 16, 16);
+        mResultsText.setVerticalScrollBarEnabled(true);
+        mResultsText.setMovementMethod(new ScrollingMovementMethod());
+        mFragmentLayout.addView(mResultsText);
     }
 
     @Override
@@ -157,6 +199,46 @@ public class CalendarFragment extends Fragment {
             mStatusText.setText("Google Play Services required: " +
                     "after installing, close and relaunch this app.");
         }
+    }
+    public void createEvent() throws IOException {
+        Event event = new Event()
+                .setSummary("Google I/O 2015")
+                .setLocation("800 Howard St., San Francisco, CA 94103")
+                .setDescription("A chance to hear more about Google's developer products.");
+
+        DateTime startDateTime = new DateTime("2015-05-28T09:00:00-07:00");
+        EventDateTime start = new EventDateTime()
+                .setDateTime(startDateTime)
+                .setTimeZone("America/Los_Angeles");
+        event.setStart(start);
+
+        DateTime endDateTime = new DateTime("2015-05-28T17:00:00-07:00");
+        EventDateTime end = new EventDateTime()
+                .setDateTime(endDateTime)
+                .setTimeZone("America/Los_Angeles");
+        event.setEnd(end);
+
+        String[] recurrence = new String[] {"RRULE:FREQ=DAILY;COUNT=2"};
+        event.setRecurrence(Arrays.asList(recurrence));
+
+        EventAttendee[] attendees = new EventAttendee[] {
+                new EventAttendee().setEmail("lpage@example.com"),
+                new EventAttendee().setEmail("sbrin@example.com"),
+        };
+        event.setAttendees(Arrays.asList(attendees));
+
+        EventReminder[] reminderOverrides = new EventReminder[] {
+                new EventReminder().setMethod("email").setMinutes(24 * 60),
+                new EventReminder().setMethod("sms").setMinutes(10),
+        };
+        Event.Reminders reminders = new Event.Reminders()
+                .setUseDefault(false)
+                .setOverrides(Arrays.asList(reminderOverrides));
+        event.setReminders(reminders);
+
+        String calendarId = "primary";
+        event = mService.events().insert(calendarId, event).execute();
+        System.out.printf("Event created: %s\n", event.getHtmlLink());
     }
 
     // TODO: Rename method, update argument and hook method into UI event
