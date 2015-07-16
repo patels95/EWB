@@ -80,7 +80,7 @@ public class HomeFragment extends ListFragment {
         /* Debug twitter fabric timeline
         ERROR -> adapter.isEmpty() == true
         * */
-        String adminTwitterUsername = "fabric"; // Twitter username for timeline display.
+        String adminTwitterUsername = "ewbbu"; // Twitter username for timeline display.
         final UserTimeline userTimeline = new UserTimeline.Builder().screenName(adminTwitterUsername).build();
         Log.d(TAG, " " + userTimeline.toString());
         final TweetTimelineListAdapter adapter = new TweetTimelineListAdapter(getListView().getContext(), userTimeline);
