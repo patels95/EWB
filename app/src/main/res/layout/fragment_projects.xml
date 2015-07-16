@@ -2,31 +2,65 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
+             android:padding="8dp"
              tools:context="com.patels95.sanam.ewb.ui.ProjectsFragment">
 
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:tools="http://schemas.android.com/tools"
+                  xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                  android:layout_height="match_parent"
+                  android:layout_width="match_parent"
+                  android:orientation="vertical" >
 
-    <HorizontalScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/horizontalScrollView"
-        android:layout_gravity="top|start">
-
-        <LinearLayout
-            android:orientation="horizontal"
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:id="@+id/cv"
+            card_view:cardElevation="3dp"
+            >
 
-            <Button
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Biosand Filter"
-                android:id="@+id/biosand"/>
+                android:padding="16dp"
+                >
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Button"
-                android:id="@+id/transportation"/>
-        </LinearLayout>
-    </HorizontalScrollView>
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/person_photo"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:contentDescription="example"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/twitter"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/person_name"
+                    android:layout_toRightOf="@+id/person_photo"
+                    android:layout_toEndOf="@+id/person_photo"
+                    android:layout_alignParentTop="true"
+                    android:textSize="30sp"
+                    android:text="Sanam Patel"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/person_age"
+                    android:layout_toRightOf="@+id/person_photo"
+                    android:layout_toEndOf="@+id/person_photo"
+                    android:layout_below="@+id/person_name"
+                    android:text="patels326@gmail.com"
+                    />
+
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+
 </FrameLayout>

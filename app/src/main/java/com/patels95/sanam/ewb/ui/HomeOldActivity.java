@@ -34,7 +34,7 @@ public class HomeOldActivity extends ActionBarActivity {
         mProjectsImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startProjects();
+//                startProjects();
             }
         });
 
@@ -56,10 +56,10 @@ public class HomeOldActivity extends ActionBarActivity {
     // set the available actions in the action bar based on the type of user
 
 
-    private void startProjects() {
-        Intent intent = new Intent(this, ProjectsActivity.class);
-        startActivity(intent);
-    }
+//    private void startProjects() {
+//        Intent intent = new Intent(this, ProjectsActivity.class);
+//        startActivity(intent);
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
