@@ -1,24 +1,31 @@
 package com.patels95.sanam.ewb.ui;
 
 import android.accounts.AccountManager;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.provider.CalendarContract;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -31,7 +38,6 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.util.DateTime;
 import com.google.api.client.util.ExponentialBackOff;
-import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventAttendee;
@@ -62,6 +68,10 @@ public class CalendarFragment extends Fragment {
     private LinearLayout mFragmentLayout;
     private LinearLayout.LayoutParams mLayoutParams;
     private ViewGroup.LayoutParams mViewGroupParams;
+    private CalendarView mCalendarView;
+    private CalendarView.LayoutParams mCalendarParams;
+
+    private List<Event> mEventList;
 
     private OnFragmentInteractionListener mListener;
 
@@ -92,9 +102,6 @@ public class CalendarFragment extends Fragment {
 //     * @param param2 Parameter 2.
      * @return A new instance of fragment CalendarFragment.
      */
-
-
-
     public static CalendarFragment newInstance(int sectionNumber) {
         CalendarFragment fragment = new CalendarFragment();
         Bundle args = new Bundle();
@@ -106,7 +113,6 @@ public class CalendarFragment extends Fragment {
     public CalendarFragment() {
         // Required empty public constructor
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,50 +124,35 @@ public class CalendarFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        // Display Calendar
-        mFragmentLayout = (LinearLayout) getView().findViewById(R.id.fragmentLayout);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Initializes some calendar stuff. I don't know what it does - check google developer site
+        // Once loaded, default layout is turned invisible.
         addCalendar();
+        // SOME TEST STUFF
 //        // Initialize credentials and service object.
         SharedPreferences settings = getActivity().getPreferences(Context.MODE_PRIVATE);
         credential = GoogleAccountCredential.usingOAuth2(
                 getActivity().getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff())
-                .setSelectedAccountName(settings.getString(PREF_ACCOUNT_NAME, null));
-
+//                .setSelectedAccountName(settings.getString(PREF_ACCOUNT_NAME, null));
+//                Uncomment if you need to change accounts.
+                .setSelectedAccountName(null);
         mService = new com.google.api.services.calendar.Calendar.Builder(
                 transport, jsonFactory, credential)
-                .setApplicationName("Google Calendar API Android Quickstart")
+                .setApplicationName("Engineers Without Borders BU")
                 .build();
-
-        // Inflate the layout for this fragment
-//        View returnView =  inflater.inflate(R.layout.fragment_calendar, container, false);
-        // Demos the calendar API create event feature. WORK IN PROGRESS!
-//        Button buttonEventCreateDemo = (Button) returnView.findViewById(R.id.testButton);
-//        buttonEventCreateDemo.setOnClickListener(new View.OnClickListener(){
-//            //TODO: Make asynch task for calendar actions.
-//            @Override
-//            public void onClick(View v) {
-//                try {
-//                    // Attempt an asynch task for this
-//                    createEvent();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-
-//        mFragmentLayout = (LinearLayout) getView().findViewById(R.id.fragmentLayout);
+//        View view = inflater.inflate(R.layout.fragment_calendar, container, false);
         return mFragmentLayout;
     }
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void addCalendar()
     {
         // Original code from Google Developer
+        // Creates the layout for the calendar and API results
         mFragmentLayout = new LinearLayout(getActivity());
         mLayoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -174,19 +165,38 @@ public class CalendarFragment extends Fragment {
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        // We seem to need this
+        // An actual calendar. should be loaded with events
+        mCalendarView = new CalendarView(getActivity());
+        mCalendarParams = new CalendarView.LayoutParams(1200,1200); // Constant 1200x1200, bad?
+        mCalendarView.setLayoutParams(mCalendarParams);
+        mCalendarView.setForegroundGravity(Gravity.CENTER);
+        mCalendarView.setSelectedWeekBackgroundColor(getResources().getColor(R.color.green));
+        mCalendarView.setUnfocusedMonthDateColor(getResources().getColor(R.color.white));
+        mFragmentLayout.addView(mCalendarView);
+
+        // API EXAMPLES BELOW
+        // mStatusText displays if API successfully obtained data from Google
         mStatusText = new TextView(getActivity());
         mStatusText.setLayoutParams(mViewGroupParams);
         mStatusText.setTypeface(null, Typeface.BOLD);
         mStatusText.setText("Retrieving data...");
         mFragmentLayout.addView(mStatusText);
 
+        // mResultsText displays any events ongoing in users Google account.
         mResultsText = new TextView(getActivity());
         mResultsText.setLayoutParams(mViewGroupParams);
         mResultsText.setPadding(16, 16, 16, 16);
         mResultsText.setVerticalScrollBarEnabled(true);
         mResultsText.setMovementMethod(new ScrollingMovementMethod());
         mFragmentLayout.addView(mResultsText);
+
+        // Debugging related things.
+        TextView mTestTextView = new TextView(getActivity());
+        mTestTextView.setLayoutParams(mViewGroupParams);
+        mTestTextView.setPadding(16,16,16,16);
+//        Event event = mEventList.get(0);
+        mTestTextView.setText("Test string.");
+        mFragmentLayout.addView(mTestTextView);
     }
 
     @Override
@@ -265,6 +275,14 @@ public class CalendarFragment extends Fragment {
         mListener = null;
     }
 
+    public List<Event> getEventList() {
+        return mEventList;
+    }
+
+    public void setEventList(List<Event> eventList) {
+        mEventList = eventList;
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -335,6 +353,7 @@ public class CalendarFragment extends Fragment {
      * user can pick an account.
      */
     private void refreshResults() {
+        // credential.getSelectedAccountName() == null
         if (credential.getSelectedAccountName() == null) {
             chooseAccount();
         } else {

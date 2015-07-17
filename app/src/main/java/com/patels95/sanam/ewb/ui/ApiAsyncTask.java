@@ -68,7 +68,7 @@ public class ApiAsyncTask extends AsyncTask<Void, Void, Void> {
                 .setSingleEvents(true)
                 .execute();
         List<Event> items = events.getItems();
-
+        mFragment.setEventList(items); // Should fill mFragment's with events from Google Calendar
         for (Event event : items) {
             DateTime start = event.getStart().getDateTime();
             if (start == null) {
@@ -79,6 +79,7 @@ public class ApiAsyncTask extends AsyncTask<Void, Void, Void> {
             eventStrings.add(
                     String.format("%s (%s)", event.getSummary(), start));
         }
+
         return eventStrings;
     }
 
