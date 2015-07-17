@@ -26,36 +26,35 @@
                 >
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:id="@+id/person_photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/projectImage"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
                     android:contentDescription="example"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:src="@drawable/twitter"
+                    android:src="@drawable/filtration"
+                    android:scaleType="fitXY"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/projectTitle"
+                    android:layout_alignBottom="@+id/projectImage"
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="5dp"
+                    android:background="#40000000"
+                    android:textColor="#FFFFFF"
+                    android:textSize="26sp"
+                    android:text="Water Filtration"
                     />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/person_name"
-                    android:layout_toRightOf="@+id/person_photo"
-                    android:layout_toEndOf="@+id/person_photo"
-                    android:layout_alignParentTop="true"
-                    android:textSize="30sp"
-                    android:text="Sanam Patel"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/person_age"
-                    android:layout_toRightOf="@+id/person_photo"
-                    android:layout_toEndOf="@+id/person_photo"
-                    android:layout_below="@+id/person_name"
+                    android:id="@+id/projectDescription"
+                    android:layout_below="@+id/projectTitle"
                     android:text="patels326@gmail.com"
                     />
 
