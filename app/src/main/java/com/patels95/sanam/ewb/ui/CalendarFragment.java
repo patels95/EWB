@@ -55,18 +55,40 @@ import butterknife.InjectView;
  * Use the {@link CalendarFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CalendarFragment extends Fragment {
+public class CalendarFragment extends Fragment{
     private static final String ARG_SECTION_NUMBER = "section_number";
     private static final String TAG = CalendarFragment.class.getSimpleName();
 
+    // This email will be used for the calendar.
+    private String USETHISEMAIL = "metlifeyet@gmail.com";
+
+    //AsyncTask tools / interface.
+    private CalendarAsyncInterface mInterface = new CalendarAsyncInterface() {
+        @Override
+        public void onTaskComplete(List<Event> result) {
+            //this you will received result fired from async class of onPostExecute(result) method.
+            if (result != null){
+                System.out.println("onTaskComplete worked, no null!");
+                mEventList = result;
+            }
+            else{
+                System.out.println("Some sort of error.");
+                mEventList = null;
+            }
+        }
+    };
+
+    // No idea what does this.
     private int mSectionNumber;
 
+    // USER INTERFACE
     private LinearLayout mFragmentLayout;
     private LinearLayout.LayoutParams mLayoutParams;
     private ViewGroup.LayoutParams mViewGroupParams;
     private CalendarView mCalendarView;
     private CalendarView.LayoutParams mCalendarParams;
 
+    // Task related variables.
     private List<Event> mEventList;
 
     private OnFragmentInteractionListener mListener;
@@ -145,6 +167,7 @@ public class CalendarFragment extends Fragment {
                 .setApplicationName("Engineers Without Borders BU")
                 .build();
 //        View view = inflater.inflate(R.layout.fragment_calendar, container, false);
+//        return view;
         return mFragmentLayout;
     }
 
@@ -152,7 +175,9 @@ public class CalendarFragment extends Fragment {
         Calendar service = new Calendar.Builder(transport, jsonFactory, credential)
                 .setApplicationName("EWB").build();
         String pageToken = null;
-        CalendarAsyncTask task = new CalendarAsyncTask(pageToken, service);
+        CalendarAsyncTask task = new CalendarAsyncTask(mInterface, pageToken, service, USETHISEMAIL);
+//        CalendarAsyncTask task = new CalendarAsyncTask();
+//        task.response = (CalendarAsyncInterface) this;
         task.execute();
     }
 
@@ -183,21 +208,6 @@ public class CalendarFragment extends Fragment {
         mFragmentLayout.addView(mCalendarView);
 
         // API EXAMPLES BELOW
-        // mStatusText displays if API successfully obtained data from Google
-        mStatusText = new TextView(getActivity());
-        mStatusText.setLayoutParams(mViewGroupParams);
-        mStatusText.setTypeface(null, Typeface.BOLD);
-        mStatusText.setText("Retrieving data...");
-        mFragmentLayout.addView(mStatusText);
-
-        // mResultsText displays any events ongoing in users Google account.
-        mResultsText = new TextView(getActivity());
-        mResultsText.setLayoutParams(mViewGroupParams);
-        mResultsText.setPadding(16, 16, 16, 16);
-        mResultsText.setVerticalScrollBarEnabled(true);
-        mResultsText.setMovementMethod(new ScrollingMovementMethod());
-        mFragmentLayout.addView(mResultsText);
-
         // Debugging related things.
         TextView mTestTextView = new TextView(getActivity());
         mTestTextView.setLayoutParams(mViewGroupParams);
