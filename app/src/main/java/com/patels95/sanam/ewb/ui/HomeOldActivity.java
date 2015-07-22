@@ -3,7 +3,6 @@ package com.patels95.sanam.ewb.ui;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,7 +10,6 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.patels95.sanam.ewb.R;
-import com.patels95.sanam.ewb.adapters.AnnouncementAdapter;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -37,13 +35,6 @@ public class HomeOldActivity extends ActionBarActivity {
 //                startProjects();
             }
         });
-
-        // Announcement RecyclerView
-        AnnouncementAdapter adapter = new AnnouncementAdapter(); // insert parameters for constructor
-        mAnnouncementList.setAdapter(adapter);
-        RecyclerView.LayoutManager layoutManager =  new LinearLayoutManager(this);
-        mAnnouncementList.setLayoutManager(layoutManager);
-        mAnnouncementList.setHasFixedSize(true);
 
     }
 

@@ -12,54 +12,13 @@
                   android:layout_width="match_parent"
                   android:orientation="vertical" >
 
-        <android.support.v7.widget.CardView
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:scrollbars="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/cv"
-            card_view:cardElevation="3dp"
-            >
+            android:layout_height="match_parent"
+            />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                >
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/projectImage"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:contentDescription="example"
-                    android:src="@drawable/filtration"
-                    android:scaleType="fitXY"
-                    />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/projectTitle"
-                    android:layout_alignBottom="@+id/projectImage"
-                    android:paddingLeft="10dp"
-                    android:paddingBottom="5dp"
-                    android:background="#40000000"
-                    android:textColor="#FFFFFF"
-                    android:textSize="26sp"
-                    android:text="Water Filtration"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/projectDescription"
-                    android:layout_below="@+id/projectTitle"
-                    android:text="patels326@gmail.com"
-                    />
-
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
     </LinearLayout>
 
 </FrameLayout>
