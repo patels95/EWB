@@ -69,7 +69,6 @@ public class HomeFragment extends ListFragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         //ButterKnife.inject(this, rootView);
-        // TRY TWITTER FEED HERE
 
         return rootView;
     }

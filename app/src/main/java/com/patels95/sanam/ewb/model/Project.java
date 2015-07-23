@@ -7,9 +7,8 @@ public class Project {
     private String mDescription;
     private String mImage;
 
-    public Project(String title, String description, int index){
-        mTitle = title;
-        mDescription = description;
+    public Project() {
+        // default constructor
     }
 
     public String getTitle() {
