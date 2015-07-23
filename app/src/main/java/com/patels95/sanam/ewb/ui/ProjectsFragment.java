@@ -26,14 +26,6 @@ public class ProjectsFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProjectsFragment.
-     */
     public static ProjectsFragment newInstance(int sectionNumber) {
         ProjectsFragment fragment = new ProjectsFragment();
         Bundle args = new Bundle();

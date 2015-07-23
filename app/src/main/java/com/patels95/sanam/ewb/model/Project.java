@@ -5,12 +5,11 @@ public class Project {
 
     private String mTitle;
     private String mDescription;
-    private int mIndex;
+    private String mImage;
 
     public Project(String title, String description, int index){
         mTitle = title;
         mDescription = description;
-        mIndex = index;
     }
 
     public String getTitle() {
@@ -29,11 +28,11 @@ public class Project {
         mDescription = description;
     }
 
-    public int getIndex() {
-        return mIndex;
+    public String getImage() {
+        return mImage;
     }
 
-    public void setIndex(int index) {
-        mIndex = index;
+    public void setImage(String image) {
+        mImage = image;
     }
 }
