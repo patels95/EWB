@@ -18,6 +18,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -42,6 +44,7 @@ import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
 import com.patels95.sanam.ewb.R;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -70,23 +73,26 @@ public class CalendarFragment extends Fragment{
             if (result != null){
                 System.out.println("onTaskComplete worked, no null!");
                 mEventList = result;
+                extractEventListData();
             }
             else{
-                System.out.println("Some sort of error.");
+                System.out.println("onTaskComplete returned null.");
                 mEventList = null;
             }
         }
     };
+    private String mEventName;
+    private String mEventLocation;
+    private String mEventDescription;
 
     // No idea what does this.
     private int mSectionNumber;
 
-    // USER INTERFACE
-    private LinearLayout mFragmentLayout;
-    private LinearLayout.LayoutParams mLayoutParams;
-    private ViewGroup.LayoutParams mViewGroupParams;
-    private CalendarView mCalendarView;
-    private CalendarView.LayoutParams mCalendarParams;
+    // Recycler View.
+    private RecyclerView mRecyclerView;
+    private LinearLayoutManager mLinearLayoutManager;
+    private RecyclerView.Adapter mRecyclerAdapter;
+    private ArrayList<String> mDataset;
 
     // Task related variables.
     private List<Event> mEventList;
@@ -148,9 +154,6 @@ public class CalendarFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Initializes some calendar stuff. I don't know what it does - check google developer site
-        // Once loaded, default layout is turned invisible.
-        addCalendar();
-        // SOME TEST STUFF
 //        // Initialize credentials and service object.
         SharedPreferences settings = getActivity().getPreferences(Context.MODE_PRIVATE);
         credential = GoogleAccountCredential.usingOAuth2(
@@ -166,9 +169,18 @@ public class CalendarFragment extends Fragment{
                 transport, jsonFactory, credential)
                 .setApplicationName("Engineers Without Borders BU")
                 .build();
-//        View view = inflater.inflate(R.layout.fragment_calendar, container, false);
-//        return view;
-        return mFragmentLayout;
+
+        // Adapter functions.
+        // mDataset: String list.
+        View view = inflater.inflate(R.layout.fragment_calendar, container, false);
+//        mRecyclerView = (RecyclerView) view.findViewById(R.id.calendarRecyclerView);
+//        mLinearLayoutManager = new LinearLayoutManager(getActivity());
+//        mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+//        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+//        mRecyclerAdapter = new CalendarAdapter(mDataset);
+//        mRecyclerView.setHasFixedSize(true); // Experimental. Remove if recyclerView is not fixed.
+//        mRecyclerView.setAdapter(mRecyclerAdapter);
+        return view;
     }
 
     private void startAsyncCalendar() {
@@ -176,45 +188,7 @@ public class CalendarFragment extends Fragment{
                 .setApplicationName("EWB").build();
         String pageToken = null;
         CalendarAsyncTask task = new CalendarAsyncTask(mInterface, pageToken, service, USETHISEMAIL);
-//        CalendarAsyncTask task = new CalendarAsyncTask();
-//        task.response = (CalendarAsyncInterface) this;
         task.execute();
-    }
-
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    public void addCalendar()
-    {
-        // Original code from Google Developer
-        // Creates the layout for the calendar and API results
-        mFragmentLayout = new LinearLayout(getActivity());
-        mLayoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
-        mFragmentLayout.setLayoutParams(mLayoutParams);
-        mFragmentLayout.setOrientation(LinearLayout.VERTICAL);
-        mFragmentLayout.setPadding(16, 16, 16, 16);
-
-        mViewGroupParams = new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-
-        // An actual calendar. should be loaded with events
-        mCalendarView = new CalendarView(getActivity());
-        mCalendarParams = new CalendarView.LayoutParams(1200,1200); // Constant 1200x1200, bad?
-        mCalendarView.setLayoutParams(mCalendarParams);
-        mCalendarView.setForegroundGravity(Gravity.CENTER);
-        mCalendarView.setSelectedWeekBackgroundColor(getResources().getColor(R.color.green));
-        mCalendarView.setUnfocusedMonthDateColor(getResources().getColor(R.color.white));
-        mFragmentLayout.addView(mCalendarView);
-
-        // API EXAMPLES BELOW
-        // Debugging related things.
-        TextView mTestTextView = new TextView(getActivity());
-        mTestTextView.setLayoutParams(mViewGroupParams);
-        mTestTextView.setPadding(16,16,16,16);
-//        Event event = mEventList.get(0);
-        mTestTextView.setText("Test string.");
-        mFragmentLayout.addView(mTestTextView);
     }
 
     @Override
@@ -343,6 +317,20 @@ public class CalendarFragment extends Fragment{
             else{
                 mStatusText.setText("Credential account is null.");
             }
+        }
+    }
+
+    private void extractEventListData() {
+        if (mEventList != null){
+            Event event = mEventList.get(0);
+            System.out.println("Event name: " + event.getSummary());
+            System.out.println("Description: " + event.getDescription());
+            System.out.println("Location:" + event.getLocation());
+
+            mEventName = event.getSummary();
+            mEventDescription = event.getDescription();
+            mEventLocation = event.getLocation();
+
         }
     }
 

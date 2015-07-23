@@ -46,7 +46,7 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
             }
             List<Event> items = events.getItems();
             if (mCounter == 0 && events != null){
-                System.out.println("mCounter raised.");
+//                System.out.println("mCounter raised.");
                 mEventList = events.getItems();
                 mCounter = 1;
             }
