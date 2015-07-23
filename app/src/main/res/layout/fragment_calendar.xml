@@ -6,12 +6,11 @@
              android:id="@+id/fragmentLayout"
              android:padding="16dp"
              android:orientation="vertical">
-    <!-- Check CalendarFragment onViewCreate for actual (java programmed) layout. -->
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Loading calendar..."
-        android:id="@+id/textLoadingCalendar"
-        android:layout_gravity="center_horizontal"/>
+    <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/calendarRecyclerView"-->
+        <!--android:scrollbars="vertical"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"/>-->
+
 </LinearLayout>
