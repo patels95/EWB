@@ -64,7 +64,7 @@
         android:layout_below="@+id/announcementList"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:src="@drawable/zambia_water"
+        android:src="@drawable/borehole"
         android:scaleType="fitXY"
         android:layout_above="@+id/homeButtons"
         android:clickable="true"

@@ -5,7 +5,7 @@ public class Project {
 
     private String mTitle;
     private String mDescription;
-    private String mImage;
+    private String mImageUri;
 
     public Project() {
         // default constructor
@@ -27,11 +27,11 @@ public class Project {
         mDescription = description;
     }
 
-    public String getImage() {
-        return mImage;
+    public String getImageUri() {
+        return mImageUri;
     }
 
-    public void setImage(String image) {
-        mImage = image;
+    public void setImageUri(String imageUri) {
+        mImageUri = imageUri;
     }
 }

@@ -48,8 +48,7 @@
                 android:id="@+id/projectDescription"
                 android:layout_below="@+id/projectTitle"
                 android:padding="8dp"
-                android:text="Our Water Filtration Team piloted a biosand
-                    filtration device that will utilize locally found resources to naturally sanitize contaminated water."
+                android:text="Our Water Filtration Team piloted a biosandfiltration device that will utilize locally found resources to naturally sanitize contaminated water."
                 />
 
         </RelativeLayout>
