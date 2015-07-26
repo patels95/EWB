@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.patels95.sanam.ewb.R;
+import com.patels95.sanam.ewb.adapters.ProjectAdapter;
 import com.patels95.sanam.ewb.model.Project;
 
 import butterknife.ButterKnife;
@@ -65,14 +66,13 @@ public class ProjectsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_projects, container, false);
         ButterKnife.inject(this, view);
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mProjectRecyclerView.setLayoutManager(layoutManager);
-        return view;
-    }
+        ProjectAdapter adapter = new ProjectAdapter(getActivity(), mProjectCards);
+        mProjectRecyclerView.setAdapter(adapter);
 
-    @Override
-    public void onResume() {
-        super.onResume();
+        return view;
     }
 
     private Project[] setProjectsArray() {
