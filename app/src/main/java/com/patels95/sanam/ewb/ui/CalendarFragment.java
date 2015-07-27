@@ -43,6 +43,7 @@ import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
 import com.patels95.sanam.ewb.R;
+import com.patels95.sanam.ewb.adapters.CalendarAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -89,10 +90,12 @@ public class CalendarFragment extends Fragment{
     private int mSectionNumber;
 
     // Recycler View.
+//    @InjectView (R.id.calendarRecyclerView) RecyclerView mCalendarRecyclerView;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
     private RecyclerView.Adapter mRecyclerAdapter;
     private ArrayList<String> mDataset;
+    private List<Event> mDatasetEvent;
 
     // Task related variables.
     private List<Event> mEventList;
@@ -171,15 +174,15 @@ public class CalendarFragment extends Fragment{
                 .build();
 
         // Adapter functions.
-        // mDataset: String list.
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
-//        mRecyclerView = (RecyclerView) view.findViewById(R.id.calendarRecyclerView);
-//        mLinearLayoutManager = new LinearLayoutManager(getActivity());
-//        mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-//        mRecyclerView.setLayoutManager(mLinearLayoutManager);
-//        mRecyclerAdapter = new CalendarAdapter(mDataset);
-//        mRecyclerView.setHasFixedSize(true); // Experimental. Remove if recyclerView is not fixed.
-//        mRecyclerView.setAdapter(mRecyclerAdapter);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.calendarRecyclerView);
+        mLinearLayoutManager = new LinearLayoutManager(getActivity());
+        mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mDatasetEvent = mEventList; // Load dataset. This is probably meangingless - test if just using mEventList works if you can.
+        mRecyclerAdapter = new CalendarAdapter(mDatasetEvent); // Must take a List<Event>
+        mRecyclerView.setHasFixedSize(true); // Experimental. Remove if recyclerView is not fixed.
+        mRecyclerView.setAdapter(mRecyclerAdapter);
         return view;
     }
 
@@ -322,15 +325,18 @@ public class CalendarFragment extends Fragment{
 
     private void extractEventListData() {
         if (mEventList != null){
-            Event event = mEventList.get(0);
-            System.out.println("Event name: " + event.getSummary());
-            System.out.println("Description: " + event.getDescription());
-            System.out.println("Location:" + event.getLocation());
+            for (Event event : mEventList) {
+                System.out.println("Event name: " + event.getSummary());
+                System.out.println("Description: " + event.getDescription());
+                System.out.println("Location:" + event.getLocation());
+                System.out.println("Time Start: " + event.getStart());
 
-            mEventName = event.getSummary();
-            mEventDescription = event.getDescription();
-            mEventLocation = event.getLocation();
+                mEventName = event.getSummary();
+                mEventDescription = event.getDescription();
+                mEventLocation = event.getLocation();
 
+                mDatasetEvent = mEventList;
+            }
         }
     }
 

@@ -2,13 +2,18 @@ package com.patels95.sanam.ewb.ui;
 
 import android.os.AsyncTask;
 
+import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.Events;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Created by Daniel on 7/17/2015.
@@ -22,7 +27,7 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
     private static final String TAG = CalendarFragment.class.getSimpleName();
     private String mPageToken;
     private Calendar mService;
-    private String displayThisAccount;
+    private String displayThisAccount; // ACCOUNT WHOSE CALENDAR YOU WANT TO DISPLAY
     private List<Event> mEventList = new ArrayList<>();
     private Integer mCounter = 0;
 
@@ -41,22 +46,19 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
             Events events = null;
             try {
                 events = mService.events().list(displayThisAccount).setPageToken(mPageToken).execute();
+                Calendar.Events.List eventList = mService.events().list(displayThisAccount);
+                Date date = new Date();
+                com.google.api.client.util.DateTime dt = new DateTime(date);
+//                System.out.println("dt date = " + dt.toString());
+                eventList.setTimeMin(dt);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            List<Event> items = events.getItems();
+//            List<Event> items = events.getItems();
             if (mCounter == 0 && events != null){
 //                System.out.println("mCounter raised.");
                 mEventList = events.getItems();
                 mCounter = 1;
-            }
-
-            for (Event event : items) {
-                // Print all event summaries in Logcat.
-//                System.out.println(event.getSummary());
-//                System.out.println("Event name: " + event.getSummary());
-//                System.out.println("Description: " + event.getDescription());
-//                System.out.println("Location:" + event.getLocation());
             }
             mPageToken = events.getNextPageToken();
         } while (mPageToken != null);
