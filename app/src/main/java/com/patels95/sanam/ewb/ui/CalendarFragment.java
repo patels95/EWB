@@ -72,12 +72,10 @@ public class CalendarFragment extends Fragment{
         public void onTaskComplete(List<Event> result) {
             //this you will received result fired from async class of onPostExecute(result) method.
             if (result != null){
-                System.out.println("onTaskComplete worked, no null!");
                 mEventList = result;
                 extractEventListData();
             }
             else{
-                System.out.println("onTaskComplete returned null.");
                 mEventList = null;
             }
         }
@@ -85,6 +83,8 @@ public class CalendarFragment extends Fragment{
     private String mEventName;
     private String mEventLocation;
     private String mEventDescription;
+    private String mEventTimeStart;
+    private String mEventTimeEnd;
 
     // No idea what does this.
     private int mSectionNumber;
@@ -94,7 +94,7 @@ public class CalendarFragment extends Fragment{
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
     private RecyclerView.Adapter mRecyclerAdapter;
-    private ArrayList<String> mDataset;
+    private CalendarAdapter mCalendarAdapter;
     private List<Event> mDatasetEvent;
 
     // Task related variables.
@@ -146,17 +146,6 @@ public class CalendarFragment extends Fragment{
         if (getArguments() != null) {
             mSectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
         }
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Initializes some calendar stuff. I don't know what it does - check google developer site
 //        // Initialize credentials and service object.
         SharedPreferences settings = getActivity().getPreferences(Context.MODE_PRIVATE);
         credential = GoogleAccountCredential.usingOAuth2(
@@ -166,44 +155,51 @@ public class CalendarFragment extends Fragment{
 ////                Uncomment if you need to change accounts.
 //                .setSelectedAccountName(null);
 
-//        startAsyncCalendar();
-
         mService = new com.google.api.services.calendar.Calendar.Builder(
                 transport, jsonFactory, credential)
                 .setApplicationName("Engineers Without Borders BU")
                 .build();
+        refreshResults();
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         // Adapter functions.
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.calendarRecyclerView);
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
-        mDatasetEvent = mEventList; // Load dataset. This is probably meangingless - test if just using mEventList works if you can.
-        mRecyclerAdapter = new CalendarAdapter(mDatasetEvent); // Must take a List<Event>
+//        mRecyclerAdapter = new CalendarAdapter(mEventList); // Must take a List<Event>
         mRecyclerView.setHasFixedSize(true); // Experimental. Remove if recyclerView is not fixed.
-        mRecyclerView.setAdapter(mRecyclerAdapter);
+        mCalendarAdapter = new CalendarAdapter(getActivity(), mEventList);
+//        mRecyclerView.setAdapter(mRecyclerAdapter);
+        mRecyclerView.setAdapter(mCalendarAdapter);
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState){
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
     }
 
     private void startAsyncCalendar() {
         Calendar service = new Calendar.Builder(transport, jsonFactory, credential)
                 .setApplicationName("EWB").build();
         String pageToken = null;
-        CalendarAsyncTask task = new CalendarAsyncTask(mInterface, pageToken, service, USETHISEMAIL);
+        CalendarAsyncTask task = new CalendarAsyncTask(this, mInterface, pageToken, service, USETHISEMAIL);
         task.execute();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        super.onResume();
-        if (isGooglePlayServicesAvailable()) {
-            refreshResults();
-        } else {
-            mStatusText.setText("Google Play Services required: " +
-                    "after installing, close and relaunch this app.");
-        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -228,10 +224,6 @@ public class CalendarFragment extends Fragment{
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    public List<Event> getEventList() {
-        return mEventList;
     }
 
     public void setEventList(List<Event> eventList) {
@@ -313,7 +305,6 @@ public class CalendarFragment extends Fragment{
         } else {
             if (isDeviceOnline() && credential.getSelectedAccountName() != null) {
                 startAsyncCalendar();
-//                new ApiAsyncTask(this).execute();
             } else if (isDeviceOnline() == false){
                 mStatusText.setText("No network connection available.");
             }
@@ -325,18 +316,15 @@ public class CalendarFragment extends Fragment{
 
     private void extractEventListData() {
         if (mEventList != null){
+//            System.out.println("extractEventListData() - mEventList valid, now extracting...");
             for (Event event : mEventList) {
-                System.out.println("Event name: " + event.getSummary());
-                System.out.println("Description: " + event.getDescription());
-                System.out.println("Location:" + event.getLocation());
-                System.out.println("Time Start: " + event.getStart());
-
-                mEventName = event.getSummary();
-                mEventDescription = event.getDescription();
-                mEventLocation = event.getLocation();
-
-                mDatasetEvent = mEventList;
+                System.out.println("extractEventListData() - event extracted.");
+                mCalendarAdapter.addItemToDataset(event);
             }
+            mCalendarAdapter.notifyDataSetChanged();
+        }
+        else {
+            System.out.println("extractEventListData() - mEventList was null.");
         }
     }
 

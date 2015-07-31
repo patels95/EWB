@@ -2,6 +2,8 @@ package com.patels95.sanam.ewb.ui;
 
 import android.os.AsyncTask;
 
+import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
+import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.Event;
@@ -22,7 +24,8 @@ import java.util.TimeZone;
 public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
     // INTERFACE HERE, interface lets us move Async result to the actual fragment.
     public CalendarAsyncInterface response = null;
-
+    // FRAGMENT variable
+    private CalendarFragment mFragment;
     // Member variables
     private static final String TAG = CalendarFragment.class.getSimpleName();
     private String mPageToken;
@@ -31,13 +34,13 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
     private List<Event> mEventList = new ArrayList<>();
     private Integer mCounter = 0;
 
-    CalendarAsyncTask(CalendarAsyncInterface listener, String pageToken, Calendar calendar, String account){
+    CalendarAsyncTask(CalendarFragment frag, CalendarAsyncInterface listener, String pageToken, Calendar calendar, String account){
+        mFragment = frag;
         response = listener;
         mPageToken = pageToken;
         mService = calendar;
         displayThisAccount = account;
     }
-
     CalendarAsyncTask(){ // Default Constructor.
     }
     @Override
@@ -45,32 +48,42 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
         do {
             Events events = null;
             try {
-                events = mService.events().list(displayThisAccount).setPageToken(mPageToken).execute();
                 Calendar.Events.List eventList = mService.events().list(displayThisAccount);
                 Date date = new Date();
                 com.google.api.client.util.DateTime dt = new DateTime(date);
 //                System.out.println("dt date = " + dt.toString());
                 eventList.setTimeMin(dt);
+                events = eventList
+                        .setPageToken(mPageToken)
+                        .setMaxResults(10)
+                        .setOrderBy("startTime")
+                        .setSingleEvents(true)
+                        .execute();
+            } catch (final GooglePlayServicesAvailabilityIOException availabilityException) {
+                mFragment.showGooglePlayServicesAvailabilityErrorDialog(
+                        availabilityException.getConnectionStatusCode());
+            } catch (UserRecoverableAuthIOException userRecoverableException) {
+                mFragment.startActivityForResult(
+                        userRecoverableException.getIntent(),
+                        CalendarFragment.REQUEST_AUTHORIZATION);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-//            List<Event> items = events.getItems();
             if (mCounter == 0 && events != null){
-//                System.out.println("mCounter raised.");
                 mEventList = events.getItems();
-                mCounter = 1;
             }
             mPageToken = events.getNextPageToken();
+            mCounter += 1;
         } while (mPageToken != null);
+        mFragment.setEventList(mEventList);
         return mEventList;
     }
 
+    @Override
     protected void onPostExecute(List<Event> resultEventList){
         // Take result from doInBackground and perform something with it.
         // In this case, return a valid mEventList.
         if (mEventList != null && response != null) {
-//            Event event = mEventList.get(0);
-//            System.out.println("Event name: " + event.getSummary());
             response.onTaskComplete(mEventList);
         }
     }
