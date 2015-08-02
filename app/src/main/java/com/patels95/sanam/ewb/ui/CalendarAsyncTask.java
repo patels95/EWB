@@ -51,7 +51,6 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
                 Calendar.Events.List eventList = mService.events().list(displayThisAccount);
                 Date date = new Date();
                 com.google.api.client.util.DateTime dt = new DateTime(date);
-//                System.out.println("dt date = " + dt.toString());
                 eventList.setTimeMin(dt);
                 events = eventList
                         .setPageToken(mPageToken)

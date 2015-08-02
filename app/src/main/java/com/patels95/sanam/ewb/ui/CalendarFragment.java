@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -29,6 +30,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -66,6 +68,11 @@ public class CalendarFragment extends Fragment{
     // This email will be used for the calendar.
     private String USETHISEMAIL = "metlifeyet@gmail.com";
 
+    // Fragment interface variables.
+    private LinearLayout mFragmentLayout;
+    private ProgressBar mProgressBar;
+    private TextView mLoadingText;
+
     //AsyncTask tools / interface.
     private CalendarAsyncInterface mInterface = new CalendarAsyncInterface() {
         @Override
@@ -80,17 +87,11 @@ public class CalendarFragment extends Fragment{
             }
         }
     };
-    private String mEventName;
-    private String mEventLocation;
-    private String mEventDescription;
-    private String mEventTimeStart;
-    private String mEventTimeEnd;
 
     // No idea what does this.
     private int mSectionNumber;
 
     // Recycler View.
-//    @InjectView (R.id.calendarRecyclerView) RecyclerView mCalendarRecyclerView;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
     private RecyclerView.Adapter mRecyclerAdapter;
@@ -99,7 +100,6 @@ public class CalendarFragment extends Fragment{
 
     // Task related variables.
     private List<Event> mEventList;
-
     private OnFragmentInteractionListener mListener;
 
     /**
@@ -167,14 +167,21 @@ public class CalendarFragment extends Fragment{
                              Bundle savedInstanceState) {
         // Adapter functions.
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
+        mFragmentLayout = (LinearLayout) view.findViewById(R.id.fragmentLayout);
+        mProgressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+        mLoadingText = (TextView) view.findViewById(R.id.textLoading);
+        // If app successfully retrieves data from API
+        mProgressBar.setVisibility(View.GONE);
+        mFragmentLayout.setBackgroundColor(Color.WHITE);
+        mLoadingText.setVisibility(View.GONE);
+        // Set up RecyclerView / CardView for event catalogue.
         mRecyclerView = (RecyclerView) view.findViewById(R.id.calendarRecyclerView);
+        mRecyclerView.setVisibility(View.VISIBLE);
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
-//        mRecyclerAdapter = new CalendarAdapter(mEventList); // Must take a List<Event>
         mRecyclerView.setHasFixedSize(true); // Experimental. Remove if recyclerView is not fixed.
         mCalendarAdapter = new CalendarAdapter(getActivity(), mEventList);
-//        mRecyclerView.setAdapter(mRecyclerAdapter);
         mRecyclerView.setAdapter(mCalendarAdapter);
         return view;
     }
