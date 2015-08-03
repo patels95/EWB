@@ -15,6 +15,7 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 import com.patels95.sanam.ewb.R;
+import com.patels95.sanam.ewb.model.ParseConstants;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -40,7 +41,7 @@ public class SignUpActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 boolean validationError = validate();
-                //no error -> sign up user
+                // no error -> sign up user
                 if(!validationError){
                     //Set up a progress dialog
                     final ProgressDialog dlg = new ProgressDialog(SignUpActivity.this);
@@ -48,15 +49,25 @@ public class SignUpActivity extends ActionBarActivity {
                     dlg.setMessage("Signing Up. Please wait.");
                     dlg.show();
 
-                    //Create a new Parse user
+                    ParseUser.enableRevocableSessionInBackground();
+                    // create a new Parse user
                     ParseUser user = new ParseUser();
                     user.setEmail(mEmail.getText().toString());
                     user.setUsername(mEmail.getText().toString());
                     user.setPassword(mPassword.getText().toString());
-                    user.put("FirstName", mFirstName.getText().toString());
-                    user.put("LastName", mLastName.getText().toString());
+                    user.put(ParseConstants.FIRST_NAME, mFirstName.getText().toString());
+                    user.put(ParseConstants.LAST_NAME, mLastName.getText().toString());
 
-                    //Call the Parse sign up method
+                    // set user's role
+                    if (mEmail.getText().toString().equals("patels95@bu.edu") ||
+                            mEmail.getText().toString().equals("ewb@bu.edu")) {
+                        user.put(ParseConstants.ADMIN, true);
+                    }
+                    else {
+                        user.put(ParseConstants.ADMIN, false);
+                    }
+
+                    // call the Parse sign up method
                     user.signUpInBackground(new SignUpCallback() {
                         @Override
                         public void done(ParseException e) {

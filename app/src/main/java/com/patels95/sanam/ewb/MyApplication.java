@@ -3,6 +3,7 @@ package com.patels95.sanam.ewb;
 import android.app.Application;
 
 import com.parse.Parse;
+import com.parse.ParseUser;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.tweetui.TweetUi;
@@ -21,8 +22,12 @@ public class MyApplication extends Application {
     private static final String TWITTER_SECRET = "RiLzY549zv60JCf586iZ7AmCj7TrbLQSqwNvHJWPfZKlWE2rLV";
 
     // Daniel's parse keys
-    private static final String parseAppId = "KIlFW595YoyCLbh65tBvuFmdmXHGwDGLeJemfYJ5";
-    private static final String parseClientId = "DuM4muyMVNoz7eNlTo0xolkyfD1yM0BrWcbZYRx5";
+//    private static final String parseAppId = "KIlFW595YoyCLbh65tBvuFmdmXHGwDGLeJemfYJ5";
+//    private static final String parseClientId = "DuM4muyMVNoz7eNlTo0xolkyfD1yM0BrWcbZYRx5";
+
+    // Sanam's Parse Keys
+    private static final String parseAppId = "6w4hqUBySmTvypIDoGOSKO0WQ5hNfJKZUsTcunfH";
+    private static final String parseClientId = "htBr1Ti6Wyi9rZIdBYo8gwrzLeHsxWHvfea1obVY";
 
     public void onCreate(){
         // Sanam's Twitter keys for fabric:
@@ -36,5 +41,6 @@ public class MyApplication extends Application {
         Fabric.with(this, new Twitter(authConfig), new TweetUi());
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, parseAppId, parseClientId); // Change Parse keys here.
+        ParseUser.enableRevocableSessionInBackground();
     }
 }
