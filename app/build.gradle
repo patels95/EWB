@@ -25,6 +25,7 @@ android {
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -49,8 +50,8 @@ dependencies {
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.google.android.gms:play-services:7.3.0'
-    compile 'com.google.api-client:google-api-client:1.17.0-rc'
-    compile 'com.google.api-client:google-api-client-android:1.17.0-rc'
-    compile 'com.google.api-client:google-api-client-gson:1.17.0-rc'
-    compile 'com.google.apis:google-api-services-calendar:v3-rev75-1.17.0-rc'
+    compile 'com.google.api-client:google-api-client:1.20.0'
+    compile 'com.google.api-client:google-api-client-android:1.20.0'
+    compile 'com.google.api-client:google-api-client-gson:1.20.0'
+    compile 'com.google.apis:google-api-services-calendar:v3-rev133-1.20.0'
 }
