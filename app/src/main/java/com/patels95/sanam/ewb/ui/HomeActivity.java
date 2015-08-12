@@ -1,24 +1,23 @@
 package com.patels95.sanam.ewb.ui;
 
 import android.app.Activity;
-import android.app.ListActivity;
+import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
 
+import com.parse.ParseUser;
 import com.patels95.sanam.ewb.R;
-import com.patels95.sanam.ewb.model.Project;
 
 public class HomeActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks,
@@ -112,9 +111,11 @@ public class HomeActivity extends ActionBarActivity
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
-            getMenuInflater().inflate(R.menu.home, menu);
-            restoreActionBar();
-            return true;
+            if (ParseUser.getCurrentUser() != null) {
+                getMenuInflater().inflate(R.menu.menu_home, menu);
+                restoreActionBar();
+                return true;
+            }
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -130,8 +131,18 @@ public class HomeActivity extends ActionBarActivity
         if (id == R.id.action_settings) {
             return true;
         }
+        else if (id == R.id.action_logout) {
+            ParseUser.logOut();
+            navigateToMain();
+        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    // start main activity after logout
+    private void navigateToMain() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     @Override
