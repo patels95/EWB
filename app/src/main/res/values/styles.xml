@@ -1,6 +1,6 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="Theme.Ewb" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+    <style name="EWBTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <item name="actionBarItemBackground">@drawable/selectable_background_ewb</item>
         <item name="popupMenuStyle">@style/PopupMenu.Ewb</item>
         <item name="dropDownListViewStyle">@style/DropDownListView.Ewb</item>
