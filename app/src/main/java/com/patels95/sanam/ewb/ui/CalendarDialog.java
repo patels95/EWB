@@ -61,7 +61,6 @@ public class CalendarDialog extends android.app.DialogFragment {
         body.setText (mEventDescription);
         attachLayout.setVisibility(View.GONE);
         if (mEventAttachments != null){
-            System.out.println("Not empty.");
             attachLayout.setVisibility(View.VISIBLE);
             for (EventAttachment ea :  mEventAttachments){
                 TextView urlView = new TextView(context);

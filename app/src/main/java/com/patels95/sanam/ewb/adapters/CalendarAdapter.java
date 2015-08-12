@@ -32,7 +32,6 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
     // Constructor variable
     private Context mContext;
     private List<Event> mDataset = new ArrayList<>();
-//    private List<EventAttachment> mEventAttachments = new ArrayList<>();
 
     public CalendarAdapter(Context context, List<Event> list){
         this.mContext = context;
