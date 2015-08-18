@@ -20,8 +20,8 @@
     <string name="ewb_url">http://www.ewbbu.com/</string>
     <string name="title_activity_projects">Projects</string>
     <string name="announcements_title">Announcements</string>
+    <string name="ewb_admin">EWB Admin</string>
     <string name="ewb_member">EWB Member</string>
-    <string name="guest">Guest</string>
     <string name="main_sign_up">Don\'t have an account? Sign Up</string>
     <string name="projects">Projects</string>
     <string name="right_arrow">right arrow</string>
@@ -56,6 +56,9 @@
     <string name="borehole_title">Borehole and Well</string>
     <string name="borehole_description">A borehole is a narrow shaft bored in the ground, either vertically or horizontally. Typically, a borehole used as a water well is completed by installing a vertical pipe (casing) and well screen to keep the borehole from caving.</string>
     <string name="action_logout">Logout</string>
+
+    <string name="project_section1">Tasks</string>
+    <string name="project_section2">Resources</string>
 
 
 </resources>

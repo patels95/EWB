@@ -20,27 +20,27 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/ewb_member"
+        android:text="@string/ewb_admin"
         android:id="@+id/memberButton"
         android:layout_below="@+id/ewbLogo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:textSize="17sp"
-        android:background="#27588F"
-        android:textColor="#FEFEFE"
+        android:background="@color/main_button"
+        android:textColor="@android:color/white"
         />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/guest"
+        android:text="@string/ewb_member"
         android:id="@+id/guestButton"
         android:layout_below="@+id/memberButton"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:textSize="17sp"
-        android:background="#27588F"
-        android:textColor="#FEFEFE"
+        android:background="@color/main_button"
+        android:textColor="@android:color/white"
         />
 
     <TextView
