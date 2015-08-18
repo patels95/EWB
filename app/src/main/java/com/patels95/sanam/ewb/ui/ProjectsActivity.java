@@ -1,5 +1,6 @@
 package com.patels95.sanam.ewb.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,10 +16,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.patels95.sanam.ewb.R;
+import com.patels95.sanam.ewb.adapters.ProjectAdapter;
+import com.patels95.sanam.ewb.model.Project;
 
 import java.util.Locale;
 
 public class ProjectsActivity extends ActionBarActivity implements ActionBar.TabListener {
+
+    private String mProjectTitle;
+    private Project[] mProjects;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -73,6 +79,11 @@ public class ProjectsActivity extends ActionBarActivity implements ActionBar.Tab
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
+
+        // Get the project's title from intent and set the action bar title
+        Intent cardIntent = getIntent();
+        mProjectTitle = cardIntent.getStringExtra(ProjectAdapter.PROJECT_TITLE);
+        setTitle(mProjectTitle);
     }
 
 

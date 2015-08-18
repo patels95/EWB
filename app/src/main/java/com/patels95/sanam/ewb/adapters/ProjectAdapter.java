@@ -14,8 +14,9 @@ import com.patels95.sanam.ewb.R;
 import com.patels95.sanam.ewb.model.Project;
 import com.patels95.sanam.ewb.ui.ProjectsActivity;
 
-
 public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectViewHolder> {
+
+    public static final String PROJECT_TITLE = "project title";
 
     private Project[] mProjectCards;
     private Context mContext;
@@ -72,8 +73,9 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
 
         @Override
         public void onClick(View v) {
-//            Toast.makeText(mContext, mTitle.getText().toString(), Toast.LENGTH_LONG).show();
+            mTitle = (TextView) v.findViewById(R.id.projectTitle);
             Intent intent = new Intent(mContext, ProjectsActivity.class);
+            intent.putExtra(PROJECT_TITLE, mTitle.getText());
             mContext.startActivity(intent);
         }
     }
