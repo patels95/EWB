@@ -45,7 +45,7 @@ public class HomeActivity extends ActionBarActivity
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-        mTitle = getTitle();
+        mTitle = "Twitter";
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
@@ -56,25 +56,29 @@ public class HomeActivity extends ActionBarActivity
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
-        //Fragment fragment = new CalendarFragment();
+        // Fragment fragment = new CalendarFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         switch (position) {
             case 0:
+                mTitle = "Twitter";
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, HomeFragment.newInstance(position + 1))
                         .commit();
                 break;
             case 1:
+                mTitle = "Calendar";
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, CalendarFragment.newInstance(position + 1))
                         .commit();
                 break;
             case 2:
+                mTitle = "Projects";
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, ProjectsFragment.newInstance(position + 1))
                         .commit();
                 break;
             default:
+                mTitle = "Twitter";
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, HomeFragment.newInstance(position + 1))
                         .commit();

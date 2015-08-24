@@ -6,6 +6,7 @@ public class Project {
     private String mTitle;
     private String mDescription;
     private String mImageUri;
+    private Task[] mTasks;
 
     public Project() {
         // default constructor
@@ -33,5 +34,13 @@ public class Project {
 
     public void setImageUri(String imageUri) {
         mImageUri = imageUri;
+    }
+
+    public Task[] getTasks() {
+        return mTasks;
+    }
+
+    public void setTasks(Task[] tasks) {
+        mTasks = tasks;
     }
 }
