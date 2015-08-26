@@ -1,6 +1,8 @@
 package com.patels95.sanam.ewb.ui;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -49,6 +51,8 @@ public class ProjectsActivity extends ActionBarActivity implements ActionBar.Tab
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        actionBar.setStackedBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFFFFF")));
+        actionBar.setStackedBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.projects_tab)));
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.

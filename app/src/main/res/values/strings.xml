@@ -59,6 +59,7 @@
 
     <string name="project_section1">Tasks</string>
     <string name="project_section2">Resources</string>
+    <string name="back_label">Go back</string>
 
 
 </resources>
