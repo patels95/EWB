@@ -14,7 +14,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.parse.ParseUser;
 import com.patels95.sanam.ewb.R;
 import com.patels95.sanam.ewb.adapters.ProjectAdapter;
 import com.patels95.sanam.ewb.adapters.SectionsPagerAdapter;
@@ -106,8 +108,18 @@ public class ProjectsActivity extends ActionBarActivity implements ActionBar.Tab
         if (id == R.id.action_settings) {
             return true;
         }
-
+        else if(id == R.id.action_logout){
+            ParseUser.logOut();
+            navigateToMain();
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    // start main activity after logout
+    private void navigateToMain() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        Toast.makeText(this, "You have been logged out.", Toast.LENGTH_LONG).show();
     }
 
     @Override

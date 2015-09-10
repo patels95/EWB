@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import com.parse.ParseUser;
 import com.patels95.sanam.ewb.R;
@@ -147,6 +148,7 @@ public class HomeActivity extends ActionBarActivity
     private void navigateToMain() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        Toast.makeText(this, "You have been logged out.", Toast.LENGTH_LONG).show();
     }
 
     @Override
