@@ -29,7 +29,7 @@
                     android:layout_width="80dp"
                     android:layout_height="70dp"
                     android:id="@+id/eventIcon"
-                    android:src="@drawable/ewb_icon"
+                    android:src="@drawable/ic_launcher"
                     android:focusableInTouchMode="false"
                     />
 

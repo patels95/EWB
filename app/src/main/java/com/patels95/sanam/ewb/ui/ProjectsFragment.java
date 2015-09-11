@@ -11,8 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.parse.ParseObject;
 import com.patels95.sanam.ewb.R;
 import com.patels95.sanam.ewb.adapters.ProjectAdapter;
+import com.patels95.sanam.ewb.model.ParseConstants;
 import com.patels95.sanam.ewb.model.Project;
 
 import butterknife.ButterKnife;
@@ -96,8 +98,14 @@ public class ProjectsFragment extends Fragment {
         borehole.setDescription(getString(R.string.borehole_description));
         borehole.setImageUri("@drawable/borehole");
 
-        Project[] projectCards = {filtration, storage, hygiene, borehole};
-        return projectCards;
+        ParseObject parseFiltration = new ParseObject("Project");
+        parseFiltration.put(ParseConstants.PROJECT_TITLE, getString(R.string.filtration_title));
+        parseFiltration.put(ParseConstants.PROJECT_DESCRIPTION, getString(R.string.filtration_description));
+        parseFiltration.put(ParseConstants.PROJECT_IMAGEURI, getString(R.string.filtration_image_uri));
+        parseFiltration.saveInBackground();
+
+
+        return new Project[] {filtration, storage, hygiene, borehole};
     }
 
     public void onButtonPressed(Uri uri) {
