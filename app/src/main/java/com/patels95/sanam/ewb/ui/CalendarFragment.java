@@ -96,9 +96,7 @@ public class CalendarFragment extends Fragment{
     // Recycler View.
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
-    private RecyclerView.Adapter mRecyclerAdapter;
     private CalendarAdapter mCalendarAdapter;
-    private List<Event> mDatasetEvent;
 
     // Task related variables.
     private List<Event> mEventList;
@@ -112,8 +110,6 @@ public class CalendarFragment extends Fragment{
     com.google.api.services.calendar.Calendar mService;
 
     GoogleAccountCredential credential;
-    private TextView mStatusText;
-    private TextView mResultsText;
     final HttpTransport transport = AndroidHttp.newCompatibleTransport();
     final JsonFactory jsonFactory = GsonFactory.getDefaultInstance();
 
@@ -202,6 +198,7 @@ public class CalendarFragment extends Fragment{
         Calendar service = new Calendar.Builder(transport, jsonFactory, credential)
                 .setApplicationName("EWB").build();
         String pageToken = null;
+        System.out.println("This is pageToken:" + pageToken);
         CalendarAsyncTask task = new CalendarAsyncTask(this, mInterface, pageToken, service, USETHISEMAIL);
         task.execute();
     }
@@ -281,6 +278,7 @@ public class CalendarFragment extends Fragment{
                         data.getExtras() != null) {
                     String accountName =
                             data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+                    System.out.println("This is accountName: " + accountName);
                     if (accountName != null) {
                         credential.setSelectedAccountName(accountName);
                         SharedPreferences settings =
@@ -289,8 +287,9 @@ public class CalendarFragment extends Fragment{
                         editor.putString(PREF_ACCOUNT_NAME, accountName);
                         editor.commit();
                     }
-                } else if (resultCode == getActivity().RESULT_CANCELED) {
-                    mStatusText.setText("Account unspecified.");
+                } else if (resultCode == getActivity().RESULT_CANCELED) { // 0
+//                    mStatusText.setText("Account unspecified.");
+                    Toast.makeText(getActivity(), "Account unspecified.", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case REQUEST_AUTHORIZATION:
@@ -315,16 +314,16 @@ public class CalendarFragment extends Fragment{
             if (isDeviceOnline() && credential.getSelectedAccountName() != null) {
                 startAsyncCalendar();
             } else if (isDeviceOnline() == false){
-                mStatusText.setText("No network connection available.");
+                Toast.makeText(getActivity(), "No network connection is available.", Toast.LENGTH_SHORT).show();
             }
             else{
-                mStatusText.setText("Credential account is null.");
+                Toast.makeText(getActivity(), "Credential account is null.", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
     private void extractEventListData() {
-        if (mEventList != null){
+        if (mEventList.size() != 0){
 //            System.out.println("extractEventListData() - mEventList valid, now extracting...");
             for (Event event : mEventList) {
                 System.out.println("extractEventListData() - event extracted.");
@@ -340,59 +339,6 @@ public class CalendarFragment extends Fragment{
             toast.show();
         }
     }
-
-    /**
-     * Clear any existing Google Calendar API data from the TextView and update
-     * the header message; called from background threads and async tasks
-     * that need to update the UI (in the UI thread).
-     */
-    public void clearResultsText() {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mStatusText.setText("Retrieving data…");
-                mResultsText.setText("");
-            }
-        });
-    }
-
-    /**
-     * Fill the data TextView with the given List of Strings; called from
-     * background threads and async tasks that need to update the UI (in the
-     * UI thread).
-     * @param dataStrings a List of Strings to populate the main TextView with.
-     */
-    public void updateResultsText(final List<String> dataStrings) {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (dataStrings == null) {
-                    mStatusText.setText("Error retrieving data!");
-                } else if (dataStrings.size() == 0) {
-                    mStatusText.setText("No data found.");
-                } else {
-                    mStatusText.setText("Data retrieved using" +
-                            " the Google Calendar API:");
-                    mResultsText.setText(TextUtils.join("\n\n", dataStrings));
-                }
-            }
-        });
-    }
-
-    /**
-     * Show a status message in the list header TextView; called from background
-     * threads and async tasks that need to update the UI (in the UI thread).
-     * @param message a String to display in the UI header TextView.
-     */
-    public void updateStatus(final String message) {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mStatusText.setText(message);
-            }
-        });
-    }
-
     /**
      * Starts an activity in Google Play Services so the user can pick an
      * account.

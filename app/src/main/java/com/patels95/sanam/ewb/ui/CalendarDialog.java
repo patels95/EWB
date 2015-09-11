@@ -1,5 +1,6 @@
 package com.patels95.sanam.ewb.ui;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -10,8 +11,10 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.google.api.services.calendar.model.EventAttachment;
@@ -57,15 +60,25 @@ public class CalendarDialog extends android.app.DialogFragment {
         LinearLayout attachLayout = (LinearLayout) dialog.findViewById(R.id.layoutAttachments);
         Button button = (Button) dialog.findViewById(R.id.buttonOK);
 
+        title.setLayoutParams(new RadioGroup.LayoutParams(
+                RadioGroup.LayoutParams.FILL_PARENT,
+                RadioGroup.LayoutParams.FILL_PARENT
+        ));
         title.setText(mEventTitle);
         body.setText (mEventDescription);
         attachLayout.setVisibility(View.GONE);
+        // Attachment feature for the dialog.
+        // If an attachment is available, it will appear at the bottom under "Attachments"
+        // An attachment is tied to the Google Drive of EWB's account.
+        // An attachment MUST be set as public in Google Drive, otherwise it cannot be accessed by anyone.
+        // The user will be prompted to access EWB's google drive.
         if (mEventAttachments != null){
             attachLayout.setVisibility(View.VISIBLE);
             for (EventAttachment ea :  mEventAttachments){
                 TextView urlView = new TextView(context);
                 urlView.setText(ea.getTitle());
                 final String stringUrl = ea.getFileUrl();
+//                final String stringUrl = ea.getFileUrl
                 urlView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
