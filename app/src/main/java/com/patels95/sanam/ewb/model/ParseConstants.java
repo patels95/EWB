@@ -7,6 +7,7 @@ public class ParseConstants {
     public static final String ADMIN = "admin";
 
     // Project
+    public static final String PROJECT_CLASS = "Project";
     public static final String PROJECT_TITLE = "title";
     public static final String PROJECT_DESCRIPTION = "description";
     public static final String PROJECT_IMAGEURI = "imageUri";

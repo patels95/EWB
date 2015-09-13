@@ -55,6 +55,7 @@
     <string name="hygiene_image_uri">\@drawable/hygiene</string>
     <string name="borehole_title">Borehole and Well</string>
     <string name="borehole_description">A borehole is a narrow shaft bored in the ground, either vertically or horizontally. Typically, a borehole used as a water well is completed by installing a vertical pipe (casing) and well screen to keep the borehole from caving.</string>
+    <string name="borehold_image_uri">\@drawable/borehole</string>
     <string name="action_logout">Logout</string>
 
     <string name="project_section1">Tasks</string>
