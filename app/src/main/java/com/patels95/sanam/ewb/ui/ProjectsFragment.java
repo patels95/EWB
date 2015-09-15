@@ -6,15 +6,22 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.patels95.sanam.ewb.R;
 import com.patels95.sanam.ewb.adapters.ProjectAdapter;
 import com.patels95.sanam.ewb.model.ParseConstants;
 import com.patels95.sanam.ewb.model.Project;
+
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -76,7 +83,19 @@ public class ProjectsFragment extends Fragment {
         return view;
     }
 
+
     private Project[] setProjectsArray() {
+
+        // create getParseProjects() with code below for query
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.PROJECT_CLASS);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+
+            }
+        });
+
         Project filtration = new Project();
         filtration.setTitle(getString(R.string.filtration_title));
         filtration.setDescription(getString(R.string.filtration_description));
@@ -96,6 +115,8 @@ public class ProjectsFragment extends Fragment {
         borehole.setTitle(getString(R.string.borehole_title));
         borehole.setDescription(getString(R.string.borehole_description));
         borehole.setImageUri(getString(R.string.borehold_image_uri));
+
+        // create setParseProjects() with code below
 
         // Create parse objects for Project class
 
