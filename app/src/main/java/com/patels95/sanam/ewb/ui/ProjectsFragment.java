@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -21,6 +22,7 @@ import com.patels95.sanam.ewb.adapters.ProjectAdapter;
 import com.patels95.sanam.ewb.model.ParseConstants;
 import com.patels95.sanam.ewb.model.Project;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -63,7 +65,8 @@ public class ProjectsFragment extends Fragment {
         if (getArguments() != null) {
             mSectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
         }
-        mProjectCards = setProjectsArray();
+
+        getParseProjects();
     }
 
 
@@ -84,40 +87,32 @@ public class ProjectsFragment extends Fragment {
     }
 
 
-    private Project[] setProjectsArray() {
-
-        // create getParseProjects() with code below for query
-
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.PROJECT_CLASS);
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> list, ParseException e) {
-
-            }
-        });
+    private void setProjectsArray(ArrayList<String> projectStrings) {
 
         Project filtration = new Project();
-        filtration.setTitle(getString(R.string.filtration_title));
-        filtration.setDescription(getString(R.string.filtration_description));
-        filtration.setImageUri(getString(R.string.filtration_image_uri));
+        filtration.setTitle(projectStrings.get(0));
+        filtration.setDescription(projectStrings.get(1));
+        filtration.setImageUri(projectStrings.get(2));
 
         Project storage = new Project();
-        storage.setTitle(getString(R.string.storage_title));
-        storage.setDescription(getString(R.string.storage_description));
-        storage.setImageUri(getString(R.string.storage_image_uri));
+        storage.setTitle(projectStrings.get(3));
+        storage.setDescription(projectStrings.get(4));
+        storage.setImageUri(projectStrings.get(5));
 
         Project hygiene = new Project();
-        hygiene.setTitle(getString(R.string.hygiene_title));
-        hygiene.setDescription(getString(R.string.hygiene_description));
-        hygiene.setImageUri(getString(R.string.hygiene_image_uri));
+        hygiene.setTitle(projectStrings.get(6));
+        hygiene.setDescription(projectStrings.get(7));
+        hygiene.setImageUri(projectStrings.get(8));
 
         Project borehole = new Project();
-        borehole.setTitle(getString(R.string.borehole_title));
-        borehole.setDescription(getString(R.string.borehole_description));
-        borehole.setImageUri(getString(R.string.borehold_image_uri));
+        borehole.setTitle(projectStrings.get(9));
+        borehole.setDescription(projectStrings.get(10));
+        borehole.setImageUri(projectStrings.get(11));
 
-        // create setParseProjects() with code below
+        mProjectCards = new Project[]{filtration, storage, hygiene, borehole};
+    }
 
+    private void setParseProjects() {
         // Create parse objects for Project class
 
 //        ParseObject parseFiltration = new ParseObject(ParseConstants.PROJECT_CLASS);
@@ -143,9 +138,48 @@ public class ProjectsFragment extends Fragment {
 //        parseBorehole.put(ParseConstants.PROJECT_DESCRIPTION, getString(R.string.borehole_description));
 //        parseBorehole.put(ParseConstants.PROJECT_IMAGEURI, getString(R.string.borehold_image_uri));
 //        parseBorehole.saveInBackground();
+    }
 
+    private void getParseProjects() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.PROJECT_CLASS);
+        try {
+            List<ParseObject> list = query.find();
+            ArrayList<String> projectStrings = new ArrayList<String>();
+            for (int i = 0; i < list.size(); i++){
+                projectStrings.add(list.get(i).getString(ParseConstants.PROJECT_TITLE));
+                projectStrings.add(list.get(i).getString(ParseConstants.PROJECT_DESCRIPTION));
+                projectStrings.add(list.get(i).getString(ParseConstants.PROJECT_IMAGEURI));
+            }
+            setProjectsArray(projectStrings);
+        }
+        catch (ParseException e) {
+            e.printStackTrace();
+            setProjectsArrayLocal();
+        }
+    }
 
-        return new Project[] {filtration, storage, hygiene, borehole};
+    private void setProjectsArrayLocal() {
+        Project filtration = new Project();
+        filtration.setTitle(getString(R.string.filtration_title));
+        filtration.setDescription(getString(R.string.filtration_description));
+        filtration.setImageUri(getString(R.string.filtration_image_uri));
+
+        Project storage = new Project();
+        storage.setTitle(getString(R.string.storage_title));
+        storage.setDescription(getString(R.string.storage_description));
+        storage.setImageUri(getString(R.string.storage_image_uri));
+
+        Project hygiene = new Project();
+        hygiene.setTitle(getString(R.string.hygiene_title));
+        hygiene.setDescription(getString(R.string.hygiene_description));
+        hygiene.setImageUri(getString(R.string.hygiene_image_uri));
+
+        Project borehole = new Project();
+        borehole.setTitle(getString(R.string.borehole_title));
+        borehole.setDescription(getString(R.string.borehole_description));
+        borehole.setImageUri(getString(R.string.borehold_image_uri));
+
+        mProjectCards = new Project[]{filtration, storage, hygiene, borehole};
     }
 
     public void onButtonPressed(Uri uri) {
