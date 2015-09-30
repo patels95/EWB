@@ -29,6 +29,13 @@ import java.util.List;
  * Created by Daniel on 7/22/2015.
  */
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder> {
+    /*
+    / This file controls the actual list that displays the events in Calendar.
+    / The adapter itself is a RecyclerView
+    / Each event uses the xml file "cardview_calendarevent.xml"
+    / Use thie file to change the display of events, or the adapter list itself.
+     */
+
     // Constructor variable
     private Context mContext;
     private List<Event> mDataset = new ArrayList<>();
@@ -39,7 +46,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
     }
 
     public class CalendarViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        // Event variables
+        // Event variables.
         CardView mCardView;
         ImageView mEventIcon;
         TextView mEventTitle;
@@ -49,6 +56,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
         TextView mEventTimeEnd;
         TextView mEventTimeEndSubtext; // "Ends: "
         String mEventDescriptionString;
+        String mEventNoTagTitle; // Title without Tag at beginning
         List<EventAttachment> mEventAttachments = new ArrayList<>();
 
         public CalendarViewHolder(View v){
@@ -92,11 +100,29 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
         if (mDataset != null) {
             Event ev = mDataset.get(position);
             holder.mEventAttachments = ev.getAttachments();
+            setupIconImage(holder,ev);
             setupTitle(holder, ev);
             setupLocation(holder, ev);
             setupTimeStart(holder, ev);
             setupTimeEnd(holder, ev);
             setupDescription(holder, ev);
+        }
+    }
+
+    private void setupIconImage(CalendarViewHolder holder, Event ev) {
+        // Will change icon according to tags put in the event title.
+        // Icons themselves stored in drawables.
+        // The tags will be removed from the title through regex.
+        // mEventNoTagTitle will be used for title if a tag was removed.
+        String title = ev.getSummary().toString();
+        if (title.startsWith("[ALERT]")){
+            holder.mEventIcon.setImageResource(R.drawable.icon_emergency);
+        }
+        if (title.startsWith("[CAT]")){
+            holder.mEventIcon.setImageResource(R.drawable.cat);
+        }
+        else{
+            // Just use the default EWB icon.
         }
     }
 
@@ -106,6 +132,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
 
     private void setupTitle(CalendarViewHolder holder, Event ev) {
         String title = ev.getSummary().toString();
+        title = title.replaceAll("\\[.*?\\]", ""); // Remove tags.
         holder.mEventTitle.setText(title);
         holder.mEventTitle.setSelected(true);
     }

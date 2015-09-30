@@ -34,6 +34,7 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
     private String displayThisAccount; // ACCOUNT WHOSE CALENDAR YOU WANT TO DISPLAY
     private List<Event> mEventList = new ArrayList<>();
     private Boolean errorDetected = false;
+    private Boolean isAccountSet = false;
 
     CalendarAsyncTask(CalendarFragment frag, CalendarAsyncInterface listener, String pageToken, Calendar calendar, String account){
         mFragment = frag;
@@ -82,6 +83,8 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
                 System.out.println("Error: IOException");
 //                e.printStackTrace();
             }
+            // If no errors are met, then account must have been set or was just set.
+            isAccountSet = true;
             if (events != null) {
                 mEventList = events.getItems();
                 if (events.getNextPageToken() != null) {
@@ -92,6 +95,7 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
             }
             else {
                 System.out.println("CalendarAsyncTask.java - Account set. Please refresh the page.");
+
             }
         } while (mPageToken != null);
         mFragment.setEventList(mEventList);

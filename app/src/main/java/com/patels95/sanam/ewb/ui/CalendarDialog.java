@@ -56,14 +56,10 @@ public class CalendarDialog extends android.app.DialogFragment {
         Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_calendar);
         TextView title = (TextView) dialog.findViewById(R.id.textTitle);
-        TextView body = (TextView ) dialog.findViewById(R.id.textBody);
+        TextView body = (TextView) dialog.findViewById(R.id.textBody);
         LinearLayout attachLayout = (LinearLayout) dialog.findViewById(R.id.layoutAttachments);
         Button button = (Button) dialog.findViewById(R.id.buttonOK);
 
-        title.setLayoutParams(new RadioGroup.LayoutParams(
-                RadioGroup.LayoutParams.FILL_PARENT,
-                RadioGroup.LayoutParams.FILL_PARENT
-        ));
         title.setText(mEventTitle);
         body.setText (mEventDescription);
         attachLayout.setVisibility(View.GONE);
