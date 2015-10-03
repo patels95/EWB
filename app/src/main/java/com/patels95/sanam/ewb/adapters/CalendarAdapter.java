@@ -2,7 +2,6 @@ package com.patels95.sanam.ewb.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Parcel;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,13 +12,11 @@ import android.widget.TextView;
 
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.Event;
-
 import com.google.api.services.calendar.model.EventAttachment;
 import com.patels95.sanam.ewb.R;
 import com.patels95.sanam.ewb.ui.CalendarDialog;
 import com.patels95.sanam.ewb.ui.CalendarSerializable;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -116,10 +113,10 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
         // mEventNoTagTitle will be used for title if a tag was removed.
         String title = ev.getSummary().toString();
         if (title.startsWith("[ALERT]")){
-            holder.mEventIcon.setImageResource(R.drawable.icon_emergency);
+//            holder.mEventIcon.setImageResource(R.drawable.icon_emergency);
         }
         if (title.startsWith("[CAT]")){
-            holder.mEventIcon.setImageResource(R.drawable.cat);
+//            holder.mEventIcon.setImageResource(R.drawable.cat);
         }
         else{
             // Just use the default EWB icon.

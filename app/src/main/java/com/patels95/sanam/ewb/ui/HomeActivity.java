@@ -1,20 +1,21 @@
 package com.patels95.sanam.ewb.ui;
 
-import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.parse.ParseUser;
@@ -132,17 +133,60 @@ public class HomeActivity extends ActionBarActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        else if (id == R.id.action_logout) {
-            ParseUser.logOut();
-            navigateToMain();
+        switch (id){
+            case R.id.action_settings:
+                return true;
+            case R.id.action_logout:
+                ParseUser.logOut();
+                navigateToMain();
+            case R.id.action_edit:
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setItems(R.array.edit_projects_dialog, mDialogListener);
+                builder.setTitle(R.string.edit_project_dialog_title);
+                AlertDialog dialog = builder.create();
+                dialog.show();
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    // Admin chooses a project to edit
+    protected DialogInterface.OnClickListener mDialogListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+
+            final EditText title = new EditText(HomeActivity.this);
+            title.setHint("Title");
+            final EditText description = new EditText(HomeActivity.this);
+            description.setHint("Description");
+
+            LinearLayout textEntryView = new LinearLayout(HomeActivity.this);
+            textEntryView.setOrientation(LinearLayout.VERTICAL);
+            textEntryView.addView(title);
+            textEntryView.addView(description);
+
+            // Admin changes title and description text
+            AlertDialog.Builder response = new AlertDialog.Builder(HomeActivity.this);
+            response.setTitle("Change title and description");
+            response.setView(textEntryView);
+            response.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // text has been changed
+                    Log.i(TAG, title.getText().toString());
+                    Log.i(TAG, description.getText().toString());
+                }
+            });
+            response.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // cancelled
+                    Log.i(TAG, "cancelled");
+                }
+            });
+            response.show();
+        }
+    };
 
     // start main activity after logout
     private void navigateToMain() {
@@ -159,51 +203,6 @@ public class HomeActivity extends ActionBarActivity
     @Override
     public void onFragmentInteraction(Uri uri) {
 
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public void onCreate(Bundle savedInstanceState){
-
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-            return rootView;
-        }
-
-        @Override
-        public void onAttach(Activity activity) {
-            super.onAttach(activity);
-            ((HomeActivity) activity).onSectionAttached(
-                    getArguments().getInt(ARG_SECTION_NUMBER));
-        }
     }
 
 }

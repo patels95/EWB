@@ -29,6 +29,7 @@
     <string name="action_edit">Edit</string>
     <string name="title_page_list">Pages</string>
     <string name="title_page_detail">Page Detail</string>
+    <string name="back_label">Not an admin? Go back</string>
 
     <!-- ACTION BAR TITLES -->
     <string name="title_section1">Twitter</string>
@@ -60,7 +61,14 @@
 
     <string name="project_section1">Tasks</string>
     <string name="project_section2">Resources</string>
-    <string name="back_label">Not an admin? Go back</string>
+    <string-array name="edit_projects_dialog">
+        <item>Water Filtration</item>
+        <item>Transportation and Storage</item>
+        <item>Hygiene and Sanitation</item>
+        <item>Borehole and Well</item>
+    </string-array>
+    <string name="edit_project_dialog_title">Choose a Project to Edit</string>
+
 
 
 </resources>
