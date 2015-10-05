@@ -169,14 +169,6 @@ public class HomeActivity extends ActionBarActivity
             AlertDialog.Builder response = new AlertDialog.Builder(HomeActivity.this);
             response.setTitle("Change title and description");
             response.setView(textEntryView);
-            response.setPositiveButton("Save", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // text has been changed
-                    Log.i(TAG, title.getText().toString());
-                    Log.i(TAG, description.getText().toString());
-                }
-            });
             response.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -184,6 +176,48 @@ public class HomeActivity extends ActionBarActivity
                     Log.i(TAG, "cancelled");
                 }
             });
+            switch (which){
+                case 0:
+                    // water filtration 
+                    response.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // text has been changed
+                            Log.i(TAG, title.getText().toString());
+                            Log.i(TAG, description.getText().toString());
+                        }
+                    });
+                case 1:
+                    // transportation and storage
+                    response.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // text has been changed
+                            Log.i(TAG, title.getText().toString());
+                            Log.i(TAG, description.getText().toString());
+                        }
+                    });
+                case 2:
+                    // hygiene and sanitation
+                    response.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // text has been changed
+                            Log.i(TAG, title.getText().toString());
+                            Log.i(TAG, description.getText().toString());
+                        }
+                    });
+                case 3:
+                    // borehole and well
+                    response.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // text has been changed
+                            Log.i(TAG, title.getText().toString());
+                            Log.i(TAG, description.getText().toString());
+                        }
+                    });
+            }
             response.show();
         }
     };
