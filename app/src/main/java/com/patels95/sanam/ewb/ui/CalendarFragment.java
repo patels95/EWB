@@ -28,6 +28,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -74,12 +75,14 @@ public class CalendarFragment extends Fragment{
     private LinearLayout mFragmentLayout;
     private ProgressBar mProgressBar;
     private TextView mLoadingText;
+    private Button mRefreshButton;
 
     //AsyncTask tools / interface.
     private CalendarAsyncInterface mInterface = new CalendarAsyncInterface() {
         @Override
         public void onTaskComplete(List<Event> result) {
             //this you will received result fired from async class of onPostExecute(result) method.
+            System.out.println("CalendarFragment - mInterface onTaskComplete complete.");
             if (result != null){
                 mEventList = result;
                 extractEventListData();
@@ -168,6 +171,7 @@ public class CalendarFragment extends Fragment{
         mFragmentLayout = (LinearLayout) view.findViewById(R.id.fragmentLayout);
         mProgressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         mLoadingText = (TextView) view.findViewById(R.id.textFragment);
+        mRefreshButton = (Button) view.findViewById(R.id.refreshButton);
         // If app successfully retrieves data from API
         mProgressBar.setVisibility(View.GONE);
         mFragmentLayout.setBackgroundColor(Color.WHITE);
@@ -237,6 +241,29 @@ public class CalendarFragment extends Fragment{
     }
 
     /**
+ * Once the asynctask is complete, then mEventList should be initiated with an EventList.
+ * This method successfully extracts the required data and loads it into the CalendarAdapter.
+ * If the EventList is null, then the method will return a toast message warning the user.
+ */
+    private void extractEventListData() {
+        if (mEventList.size() != 0){
+            for (Event event : mEventList) {
+                System.out.println("extractEventListData() - event extracted.");
+                mCalendarAdapter.addItemToDataset(event);
+            }
+            mCalendarAdapter.notifyDataSetChanged();
+        }
+        else {
+            System.out.println("extractEventListData() - mEventList was null.");
+            mLoadingText.setText("No events were found.");
+            mLoadingText.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.GONE);
+            Toast toast = Toast.makeText(getActivity().getApplicationContext(), "No events found! Please refresh this page.", Toast.LENGTH_LONG);
+            toast.show();
+        }
+    }
+
+    /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
@@ -287,6 +314,7 @@ public class CalendarFragment extends Fragment{
                         editor.putString(PREF_ACCOUNT_NAME, accountName);
                         editor.commit();
                     }
+                    startAsyncCalendar();
                 } else if (resultCode == getActivity().RESULT_CANCELED) { // 0
 //                    mStatusText.setText("Account unspecified.");
                     Toast.makeText(getActivity(), "Account unspecified.", Toast.LENGTH_SHORT).show();
@@ -322,23 +350,6 @@ public class CalendarFragment extends Fragment{
         }
     }
 
-    private void extractEventListData() {
-        if (mEventList.size() != 0){
-//            System.out.println("extractEventListData() - mEventList valid, now extracting...");
-            for (Event event : mEventList) {
-                System.out.println("extractEventListData() - event extracted.");
-                mCalendarAdapter.addItemToDataset(event);
-            }
-            mCalendarAdapter.notifyDataSetChanged();
-        }
-        else {
-            System.out.println("extractEventListData() - mEventList was null.");
-            TextView nulltext = (TextView) getView().findViewById(R.id.textFragment);
-            nulltext.setText("No events were found.");
-            Toast toast = Toast.makeText(getActivity().getApplicationContext(), "No events found! Please refresh this page.", Toast.LENGTH_SHORT);
-            toast.show();
-        }
-    }
     /**
      * Starts an activity in Google Play Services so the user can pick an
      * account.
@@ -346,6 +357,7 @@ public class CalendarFragment extends Fragment{
     private void chooseAccount() {
         startActivityForResult(
                 credential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
+
     }
 
     /**

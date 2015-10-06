@@ -45,8 +45,13 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
     }
     CalendarAsyncTask(){ // Default Constructor.
     }
+
+
     @Override
     protected List<Event> doInBackground(Void... params) {
+        // From Google Developer documentation.
+        // Pulls events from Calendar.Events.List (Not EventsList)
+
         do {
             Events events = null;
             try {
@@ -74,10 +79,6 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
                             userRecoverableException.getIntent(),
                             CalendarFragment.REQUEST_AUTHORIZATION);
                 }
-                // TEMPORARY SOLUTION TO REFRESH THING
-//                Toast.makeText(mFragment.getActivity(), "Please refresh the calendar.", Toast.LENGTH_LONG).show(); // THIS DOESNT WORK, cant call handler inside thread that has not called Looper.prepare()
-
-                //TODO: Implement a refresh of Calendar here after Permission is accepted/denied.
             } catch (IOException e) {
                 errorDetected = true;
                 System.out.println("Error: IOException");
@@ -95,7 +96,6 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
             }
             else {
                 System.out.println("CalendarAsyncTask.java - Account set. Please refresh the page.");
-
             }
         } while (mPageToken != null);
         mFragment.setEventList(mEventList);
@@ -107,6 +107,7 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
         // Take result from doInBackground and perform something with it.
         // In this case, return a valid mEventList.
         if (mEventList != null && response != null && errorDetected == false && mFragment.isAdded()) {
+            System.out.println("CalendarAsyncTask.java - now on onPostExecute.");
             response.onTaskComplete(mEventList);
         }
     }
