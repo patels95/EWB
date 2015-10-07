@@ -153,19 +153,19 @@ public class CalendarFragment extends Fragment{
                 getActivity().getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff())
                 .setSelectedAccountName(settings.getString(PREF_ACCOUNT_NAME, null));
-////                Uncomment if you need to change accounts.
-//                .setSelectedAccountName(null);
 
         mService = new com.google.api.services.calendar.Calendar.Builder(
                 transport, jsonFactory, credential)
                 .setApplicationName("Engineers Without Borders BU")
                 .build();
         refreshResults();
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Callever every time the fragment is utilized.
         // Adapter functions.
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
         mFragmentLayout = (LinearLayout) view.findViewById(R.id.fragmentLayout);
@@ -185,6 +185,16 @@ public class CalendarFragment extends Fragment{
         mRecyclerView.setHasFixedSize(true); // Experimental. Remove if recyclerView is not fixed.
         mCalendarAdapter = new CalendarAdapter(getActivity(), mEventList);
         mRecyclerView.setAdapter(mCalendarAdapter);
+        // Set up refresh button. Refresh button visible if no events are found via
+
+        mRefreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshResults();
+            }
+        });
+
+
         return view;
     }
 
@@ -202,7 +212,6 @@ public class CalendarFragment extends Fragment{
         Calendar service = new Calendar.Builder(transport, jsonFactory, credential)
                 .setApplicationName("EWB").build();
         String pageToken = null;
-        System.out.println("This is pageToken:" + pageToken);
         CalendarAsyncTask task = new CalendarAsyncTask(this, mInterface, pageToken, service, USETHISEMAIL);
         task.execute();
     }
