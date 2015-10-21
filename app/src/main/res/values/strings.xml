@@ -69,6 +69,13 @@
     </string-array>
     <string name="edit_project_dialog_title">Choose a Project to Edit</string>
 
+    <!-- PARSE OBJECT IDS -->
+    <string name="filtration_id">cUryqF7MGf</string>
+    <string name="storage_id">eD2ehQr0YF</string>
+    <string name="hygiene_id">e6KauliqDC</string>
+    <string name="borehole_id">coLup3vAUH</string>
+
+    <string name="refresh_failed">Refresh Failed. Please Try Again.</string>
 
 
 </resources>

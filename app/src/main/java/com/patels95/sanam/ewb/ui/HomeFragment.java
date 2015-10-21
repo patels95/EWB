@@ -4,12 +4,19 @@ import android.app.Activity;
 import android.support.v4.app.ListFragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.patels95.sanam.ewb.R;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.tweetui.TimelineResult;
 import com.twitter.sdk.android.tweetui.TweetTimelineListAdapter;
 import com.twitter.sdk.android.tweetui.UserTimeline;
 
@@ -30,8 +37,7 @@ public class HomeFragment extends ListFragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
     private static final String TAG = HomeFragment.class.getSimpleName();
 
-    //@InjectView(android.R.id.list) ListView mTimeline;
-
+    @InjectView(R.id.swipeRefreshLayout) SwipeRefreshLayout mTwitterRefresh;
 
     private int mSectionNumber;
 
@@ -68,8 +74,7 @@ public class HomeFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-        //ButterKnife.inject(this, rootView);
-
+        ButterKnife.inject(this, rootView);
         return rootView;
     }
 
@@ -81,10 +86,27 @@ public class HomeFragment extends ListFragment {
         * */
         String adminTwitterUsername = "ewbbu"; // Twitter username for timeline display.
         final UserTimeline userTimeline = new UserTimeline.Builder().screenName(adminTwitterUsername).build();
-        Log.d(TAG, " " + userTimeline.toString());
         final TweetTimelineListAdapter adapter = new TweetTimelineListAdapter(getListView().getContext(), userTimeline);
-        Log.d(TAG, " " + adapter.isEmpty());
         setListAdapter(adapter);
+
+        mTwitterRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mTwitterRefresh.setRefreshing(true);
+                adapter.refresh(new Callback<TimelineResult<Tweet>>() {
+                    @Override
+                    public void success(Result<TimelineResult<Tweet>> result) {
+                        mTwitterRefresh.setRefreshing(false);
+                        Toast.makeText(getActivity(), "Success", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void failure(TwitterException e) {
+                        Toast.makeText(getActivity(), R.string.refresh_failed, Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event

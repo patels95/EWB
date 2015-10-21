@@ -18,8 +18,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.patels95.sanam.ewb.R;
+import com.patels95.sanam.ewb.model.ParseConstants;
 
 public class HomeActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks,
@@ -182,9 +187,21 @@ public class HomeActivity extends ActionBarActivity
                     response.setPositiveButton("Save", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            // text has been changed
-                            Log.i(TAG, title.getText().toString());
-                            Log.i(TAG, description.getText().toString());
+                            ParseQuery<ParseObject> query = ParseQuery.getQuery("Project");
+
+                            query.getInBackground(getString(R.string.filtration_id), new GetCallback<ParseObject>() {
+                                @Override
+                                public void done(ParseObject filtration, ParseException e) {
+                                    if (e == null){
+                                        if (!title.getText().toString().isEmpty()){
+                                            filtration.put(ParseConstants.PROJECT_TITLE, title.getText().toString());
+                                        }
+                                        if (!description.getText().toString().isEmpty()){
+                                            filtration.put(ParseConstants.PROJECT_DESCRIPTION, description.getText().toString());
+                                        }
+                                    }
+                                }
+                            });
                         }
                     });
                 case 1:
