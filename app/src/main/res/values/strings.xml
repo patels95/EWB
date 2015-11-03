@@ -76,6 +76,7 @@
     <string name="borehole_id">coLup3vAUH</string>
 
     <string name="refresh_failed">Refresh Failed. Please Try Again.</string>
+    <string name="refresh">Refresh</string>
 
 
 </resources>

@@ -65,6 +65,7 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
                         .setOrderBy("startTime")
                         .setSingleEvents(true)
                         .execute();
+
             } catch (final GooglePlayServicesAvailabilityIOException availabilityException) {
                 System.out.println("Error: GooglePlayServicesAvailabilityIOException");
                 errorDetected = true;
@@ -91,7 +92,7 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
                 if (events.getNextPageToken() != null) {
                     // Theoretically, you should only have one page token. It should not ask for another one.
                     mPageToken = events.getNextPageToken();
-                    System.out.println("from AsyncTask " + mPageToken);
+//                    System.out.println("from AsyncTask " + mPageToken);
                 }
             }
             else {

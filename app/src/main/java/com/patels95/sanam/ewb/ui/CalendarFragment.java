@@ -69,7 +69,7 @@ public class CalendarFragment extends Fragment{
 
     // This email will be used for the calendar.
 //    private String USETHISEMAIL = "ewbbu.webmaster@gmail.com";
-    private String USETHISEMAIL = "metlifeyet@gmail.com";
+    private String USETHISEMAIL = "ewbbu.webmaster@gmail.com";
 
     // Fragment interface variables.
     private LinearLayout mFragmentLayout;
@@ -255,11 +255,14 @@ public class CalendarFragment extends Fragment{
  * If the EventList is null, then the method will return a toast message warning the user.
  */
     private void extractEventListData() {
+        mCalendarAdapter.clearList(); // Reset list.
         if (mEventList.size() != 0){
             for (Event event : mEventList) {
                 System.out.println("extractEventListData() - event extracted.");
                 mCalendarAdapter.addItemToDataset(event);
             }
+            mLoadingText.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.VISIBLE);
             mCalendarAdapter.notifyDataSetChanged();
         }
         else {
