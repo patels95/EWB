@@ -145,11 +145,13 @@ public class HomeActivity extends ActionBarActivity
                 ParseUser.logOut();
                 navigateToMain();
             case R.id.action_edit:
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setItems(R.array.edit_projects_dialog, mDialogListener);
-                builder.setTitle(R.string.edit_project_dialog_title);
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                Intent intent = new Intent(HomeActivity.this, EditProjectsActivity.class);
+                startActivity(intent);
+//                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//                builder.setItems(R.array.edit_projects_dialog, mDialogListener);
+//                builder.setTitle(R.string.edit_project_dialog_title);
+//                AlertDialog dialog = builder.create();
+//                dialog.show();
         }
 
         return super.onOptionsItemSelected(item);
@@ -183,16 +185,18 @@ public class HomeActivity extends ActionBarActivity
             });
             switch (which){
                 case 0:
-                    // water filtration 
+                    // water filtration
+                    Log.d(TAG, "case 0");
                     response.setPositiveButton("Save", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             ParseQuery<ParseObject> query = ParseQuery.getQuery("Project");
-
+                            Log.d(TAG, "save clicked");
                             query.getInBackground(getString(R.string.filtration_id), new GetCallback<ParseObject>() {
                                 @Override
                                 public void done(ParseObject filtration, ParseException e) {
                                     if (e == null){
+                                        Log.d(TAG, "success");
                                         if (!title.getText().toString().isEmpty()){
                                             filtration.put(ParseConstants.PROJECT_TITLE, title.getText().toString());
                                         }
@@ -200,10 +204,15 @@ public class HomeActivity extends ActionBarActivity
                                             filtration.put(ParseConstants.PROJECT_DESCRIPTION, description.getText().toString());
                                         }
                                     }
+                                    else {
+                                        Log.e(TAG, e.toString());
+                                    }
                                 }
                             });
                         }
                     });
+                    Log.d(TAG, "break");
+                    break;
                 case 1:
                     // transportation and storage
                     response.setPositiveButton("Save", new DialogInterface.OnClickListener() {
@@ -214,6 +223,7 @@ public class HomeActivity extends ActionBarActivity
                             Log.i(TAG, description.getText().toString());
                         }
                     });
+                    break;
                 case 2:
                     // hygiene and sanitation
                     response.setPositiveButton("Save", new DialogInterface.OnClickListener() {
@@ -224,6 +234,7 @@ public class HomeActivity extends ActionBarActivity
                             Log.i(TAG, description.getText().toString());
                         }
                     });
+                    break;
                 case 3:
                     // borehole and well
                     response.setPositiveButton("Save", new DialogInterface.OnClickListener() {
@@ -234,6 +245,7 @@ public class HomeActivity extends ActionBarActivity
                             Log.i(TAG, description.getText().toString());
                         }
                     });
+                    break;
             }
             response.show();
         }

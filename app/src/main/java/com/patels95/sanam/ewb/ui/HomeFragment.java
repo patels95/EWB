@@ -97,7 +97,6 @@ public class HomeFragment extends ListFragment {
                     @Override
                     public void success(Result<TimelineResult<Tweet>> result) {
                         mTwitterRefresh.setRefreshing(false);
-                        Toast.makeText(getActivity(), "Success", Toast.LENGTH_LONG).show();
                     }
 
                     @Override

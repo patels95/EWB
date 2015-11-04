@@ -78,5 +78,6 @@
     <string name="refresh_failed">Refresh Failed. Please Try Again.</string>
     <string name="refresh">Refresh</string>
 
+    <string name="title_activity_edit_projects">Edit Projects</string>
 
 </resources>
