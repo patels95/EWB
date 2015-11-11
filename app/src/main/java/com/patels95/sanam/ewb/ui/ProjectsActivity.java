@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +25,8 @@ import com.patels95.sanam.ewb.model.Project;
 
 public class ProjectsActivity extends ActionBarActivity implements ActionBar.TabListener,
     TaskFragment.OnFragmentInteractionListener {
+
+    private static final String TAG = ProjectsActivity.class.getSimpleName();
 
     private String mProjectTitle;
     private Project[] mProjects;
@@ -93,8 +96,11 @@ public class ProjectsActivity extends ActionBarActivity implements ActionBar.Tab
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_projects, menu);
-        return true;
+        if (ParseUser.getCurrentUser() != null) {
+            getMenuInflater().inflate(R.menu.menu_projects, menu);
+            return true;
+        }
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -104,13 +110,15 @@ public class ProjectsActivity extends ActionBarActivity implements ActionBar.Tab
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        else if(id == R.id.action_logout){
-            ParseUser.logOut();
-            navigateToMain();
+        switch (id) {
+            case R.id.action_settings:
+                return true;
+            case R.id.action_logout:
+                ParseUser.logOut();
+                navigateToMain();
+            case R.id.action_edit:
+                Intent intent = new Intent(ProjectsActivity.this, EditProjectsActivity.class);
+                startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
