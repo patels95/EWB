@@ -12,6 +12,8 @@ public class EditProjectsActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_projects);
         //getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // get parse objectid from projects activity
     }
 
 }
