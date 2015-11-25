@@ -11,12 +11,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.patels95.sanam.ewb.R;
+import com.patels95.sanam.ewb.model.ParseConstants;
 import com.patels95.sanam.ewb.model.Project;
 import com.patels95.sanam.ewb.ui.ProjectsActivity;
 
+import org.w3c.dom.Text;
+
 public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectViewHolder> {
 
-    public static final String PROJECT_TITLE = "project title";
+    public static final String PROJECT_TITLE = "PROJECT_TITLE";
 
     private Project[] mProjectCards;
     private Context mContext;
@@ -49,6 +52,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
         public TextView mTitle;
         public TextView mDescription;
         public ImageView mImage;
+        public TextView mParseId;
 
 
         public ProjectViewHolder(View itemView) {
@@ -57,6 +61,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
             mTitle = (TextView) itemView.findViewById(R.id.projectTitle);
             mDescription = (TextView) itemView.findViewById(R.id.projectDescription);
             mImage = (ImageView) itemView.findViewById(R.id.projectImage);
+            mParseId = (TextView) itemView.findViewById(R.id.parseId);
 
             itemView.setOnClickListener(this);
         }
@@ -69,13 +74,16 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
             mTitle.setText(projectCard.getTitle());
             mDescription.setText(projectCard.getDescription());
             mImage.setImageDrawable(drawable);
+            mParseId.setText(projectCard.getParseId());
         }
 
         @Override
         public void onClick(View v) {
-            mTitle = (TextView) v.findViewById(R.id.projectTitle);
+            TextView title = (TextView) v.findViewById(R.id.projectTitle);
+            TextView parseId = (TextView) v.findViewById(R.id.parseId);
             Intent intent = new Intent(mContext, ProjectsActivity.class);
-            intent.putExtra(PROJECT_TITLE, mTitle.getText());
+            intent.putExtra(PROJECT_TITLE, title.getText().toString());
+            intent.putExtra(ParseConstants.PARSE_ID, parseId.getText().toString());
             mContext.startActivity(intent);
         }
     }

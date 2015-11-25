@@ -93,21 +93,25 @@ public class ProjectsFragment extends Fragment {
         filtration.setTitle(projectStrings.get(0));
         filtration.setDescription(projectStrings.get(1));
         filtration.setImageUri(projectStrings.get(2));
+        filtration.setParseId(projectStrings.get(3));
 
         Project storage = new Project();
-        storage.setTitle(projectStrings.get(3));
-        storage.setDescription(projectStrings.get(4));
-        storage.setImageUri(projectStrings.get(5));
+        storage.setTitle(projectStrings.get(4));
+        storage.setDescription(projectStrings.get(5));
+        storage.setImageUri(projectStrings.get(6));
+        storage.setParseId(projectStrings.get(7));
 
         Project hygiene = new Project();
-        hygiene.setTitle(projectStrings.get(6));
-        hygiene.setDescription(projectStrings.get(7));
-        hygiene.setImageUri(projectStrings.get(8));
+        hygiene.setTitle(projectStrings.get(8));
+        hygiene.setDescription(projectStrings.get(9));
+        hygiene.setImageUri(projectStrings.get(10));
+        hygiene.setParseId(projectStrings.get(11));
 
         Project borehole = new Project();
-        borehole.setTitle(projectStrings.get(9));
-        borehole.setDescription(projectStrings.get(10));
-        borehole.setImageUri(projectStrings.get(11));
+        borehole.setTitle(projectStrings.get(12));
+        borehole.setDescription(projectStrings.get(13));
+        borehole.setImageUri(projectStrings.get(14));
+        borehole.setParseId(projectStrings.get(15));
 
         mProjectCards = new Project[]{filtration, storage, hygiene, borehole};
     }
@@ -149,6 +153,7 @@ public class ProjectsFragment extends Fragment {
                 projectStrings.add(list.get(i).getString(ParseConstants.PROJECT_TITLE));
                 projectStrings.add(list.get(i).getString(ParseConstants.PROJECT_DESCRIPTION));
                 projectStrings.add(list.get(i).getString(ParseConstants.PROJECT_IMAGEURI));
+                projectStrings.add(list.get(i).getObjectId());
             }
             setProjectsArray(projectStrings);
         }

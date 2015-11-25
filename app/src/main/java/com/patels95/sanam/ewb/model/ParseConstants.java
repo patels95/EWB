@@ -11,12 +11,6 @@ public class ParseConstants {
     public static final String PROJECT_TITLE = "title";
     public static final String PROJECT_DESCRIPTION = "description";
     public static final String PROJECT_IMAGEURI = "imageUri";
-
-    // Project Ids
-    public static final String FILTRATION_ID = "cUryqF7MGf";
-    public static final String STORAGE_ID = "eD2ehQr0YF";
-    public static final String HYGIENE_ID = "e6KauliqDC";
-    public static final String BOREHOLE_ID = "coLup3vAUH";
-
+    public static final String PARSE_ID = "PARSE_ID";
 
 }

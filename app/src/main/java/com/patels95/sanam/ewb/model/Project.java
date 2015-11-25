@@ -7,6 +7,7 @@ public class Project {
     private String mDescription;
     private String mImageUri;
     private Task[] mTasks;
+    private String parseId;
 
     public Project() {
         // default constructor
@@ -42,5 +43,13 @@ public class Project {
 
     public void setTasks(Task[] tasks) {
         mTasks = tasks;
+    }
+
+    public String getParseId() {
+        return parseId;
+    }
+
+    public void setParseId(String parseId) {
+        this.parseId = parseId;
     }
 }

@@ -51,6 +51,11 @@
                 android:padding="8dp"
                 android:text="Our Water Filtration Team piloted a biosandfiltration device that will utilize locally found resources to naturally sanitize contaminated water."
                 />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/parseId"
+                android:visibility="gone"/>
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>
