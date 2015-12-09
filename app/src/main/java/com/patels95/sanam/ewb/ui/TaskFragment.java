@@ -1,6 +1,7 @@
 package com.patels95.sanam.ewb.ui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v4.app.ListFragment;
 import android.os.Bundle;
 import android.view.View;
@@ -34,7 +35,7 @@ public class TaskFragment extends ListFragment {
 
         // TODO: Change Adapter to display your content
         setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
-                android.R.layout.simple_list_item_checked, android.R.id.text1, DummyContent.ITEMS));
+                android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS));
     }
 
 
@@ -62,7 +63,9 @@ public class TaskFragment extends ListFragment {
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
+            //mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
+            Intent intent = new Intent(getActivity(), TaskActivity.class);
+            startActivity(intent);
         }
     }
 

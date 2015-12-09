@@ -82,5 +82,8 @@
 
     <!-- ERROR MESSAGES -->
     <string name="edit_info_admin_error">You must be an admin to edit app info.</string>
+    <string name="title_activity_task">TaskActivity</string>
+    <string name="add_task">Add Task</string>
+    <string name="title_activity_new_task">NewTaskActivity</string>
 
 </resources>
