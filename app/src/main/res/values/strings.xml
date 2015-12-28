@@ -78,12 +78,12 @@
     <string name="refresh_failed">Refresh Failed. Please Try Again.</string>
     <string name="refresh">Refresh</string>
 
-    <string name="title_activity_edit_projects">Edit Projects</string>
+    <string name="title_activity_edit_projects">Edit Project</string>
 
     <!-- ERROR MESSAGES -->
     <string name="edit_info_admin_error">You must be an admin to edit app info.</string>
     <string name="title_activity_task">TaskActivity</string>
     <string name="add_task">Add Task</string>
-    <string name="title_activity_new_task">NewTaskActivity</string>
 
+    <string name="title_activity_new_task">Create New Task</string>
 </resources>

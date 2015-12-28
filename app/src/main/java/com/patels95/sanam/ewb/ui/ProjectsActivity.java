@@ -3,6 +3,7 @@ package com.patels95.sanam.ewb.ui;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
@@ -28,6 +29,7 @@ public class ProjectsActivity extends ActionBarActivity implements ActionBar.Tab
     TaskFragment.OnFragmentInteractionListener {
 
     private static final String TAG = ProjectsActivity.class.getSimpleName();
+    private static final String PROJECT_TITLE = "PROJECT_TITLE";
 
     private String mProjectTitle;
     private String mParseId;
@@ -119,13 +121,16 @@ public class ProjectsActivity extends ActionBarActivity implements ActionBar.Tab
             case R.id.action_logout:
                 ParseUser.logOut();
                 navigateToMain();
+                break;
             case R.id.action_edit:
                 Intent intent = new Intent(ProjectsActivity.this, EditProjectsActivity.class);
                 intent.putExtra(ParseConstants.PARSE_ID, mParseId);
                 startActivity(intent);
+                break;
             case R.id.action_new:
                 Intent newTaskIntent = new Intent(ProjectsActivity.this, NewTaskActivity.class);
                 startActivity(newTaskIntent);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

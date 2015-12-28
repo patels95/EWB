@@ -49,7 +49,8 @@
             android:configChanges="orientation"
             android:label="@string/title_activity_home"
             android:parentActivityName=".ui.MainActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.patels95.sanam.ewb.ui.MainActivity"/>
@@ -58,7 +59,8 @@
             android:name=".ui.ProjectsActivity"
             android:label="@string/title_activity_projects"
             android:parentActivityName=".ui.HomeActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.patels95.sanam.ewb.ui.HomeActivity"/>
