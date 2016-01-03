@@ -3,15 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:state_activated="true"
-        android:color="#34fec7">
+        android:color="#5D97CF">
     </item>
 
     <item android:state_pressed="true"
-        android:color="#34fec7">
+        android:color="#5D97CF">
     </item>
 
     <item android:state_pressed="false"
-        android:color="#ffffff">
+        android:color="#FFFFFF">
     </item>
 
 </selector>

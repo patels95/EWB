@@ -86,4 +86,5 @@
     <string name="add_task">Add Task</string>
 
     <string name="title_activity_new_task">Create New Task</string>
+    <string name="action_delete_task">Delete Task</string>
 </resources>
