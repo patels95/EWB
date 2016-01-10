@@ -10,4 +10,18 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.patels95.sanam.ewb.ui.NewTaskActivity">
 
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/layout_new_task_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/new_task_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_new_task_title"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+
 </RelativeLayout>
