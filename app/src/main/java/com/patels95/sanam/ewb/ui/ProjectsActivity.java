@@ -3,19 +3,13 @@ package com.patels95.sanam.ewb.ui;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.parse.ParseUser;
@@ -58,7 +52,7 @@ public class ProjectsActivity extends ActionBarActivity implements ActionBar.Tab
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        actionBar.setStackedBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.projects_tab)));
+        actionBar.setStackedBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.accent)));
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.

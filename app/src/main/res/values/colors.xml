@@ -6,5 +6,5 @@
     <item name="green" type="color">#4499CC00</item>
     <item name="darkgreen" type="color">#FF669900</item>
     <color name="primary">#27588F</color>
-    <color name="projects_tab">#5D97CF</color>
+    <color name="accent">#5D97CF</color>
 </resources>
