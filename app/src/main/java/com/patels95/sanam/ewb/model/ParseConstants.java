@@ -13,4 +13,12 @@ public class ParseConstants {
     public static final String PROJECT_IMAGEURI = "imageUri";
     public static final String PARSE_ID = "PARSE_ID";
 
+    // Task
+    public static final String TASK_CLASS = "Task";
+    public static final String TASK_TITLE = "title";
+    public static final String TASK_DESCRIPTION = "description";
+    public static final String TASK_PROJECT_ID = "projectId";
+    public static final String TASK_COMPLETE = "complete";
+    public static final String TASK_DUE_DATE = "dueDate";
+
 }

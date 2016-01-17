@@ -10,9 +10,12 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import com.parse.ParseObject;
 import com.patels95.sanam.ewb.R;
+import com.patels95.sanam.ewb.model.ParseConstants;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import butterknife.InjectView;
 
@@ -21,6 +24,8 @@ public class NewTaskActivity extends ActionBarActivity {
     private static final java.lang.String DATE_PICKER_TAG = "DATE_PICKER";
     @InjectView(R.id.new_task_title) EditText mTaskTitle;
     @InjectView(R.id.new_task_description) EditText mTaskDescription;
+
+    private static Date mDueDate;
 
 
     @Override
@@ -33,6 +38,11 @@ public class NewTaskActivity extends ActionBarActivity {
     public void showDatePicker(View view) {
         DialogFragment dialogFragment = new DatePickerFragment();
         dialogFragment.show(getSupportFragmentManager(), DATE_PICKER_TAG);
+    }
+
+    public void saveTask(View view) {
+        ParseObject task = new ParseObject(ParseConstants.TASK_CLASS);
+        //task.put(ParseConstants.TASK_TITLE, );
     }
 
     public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
