@@ -23,7 +23,8 @@ public class ProjectsActivity extends ActionBarActivity implements ActionBar.Tab
     TaskFragment.OnFragmentInteractionListener {
 
     private static final String TAG = ProjectsActivity.class.getSimpleName();
-    private static final String PROJECT_TITLE = "PROJECT_TITLE";
+    public static final String PROJECT_TITLE = "PROJECT_TITLE";
+    public static final String PROJECT_PARSE_ID = "PROJECT_PARSE_ID";
 
     private String mProjectTitle;
     private String mParseId;
@@ -123,6 +124,7 @@ public class ProjectsActivity extends ActionBarActivity implements ActionBar.Tab
                 break;
             case R.id.action_new:
                 Intent newTaskIntent = new Intent(ProjectsActivity.this, NewTaskActivity.class);
+                newTaskIntent.putExtra(PROJECT_PARSE_ID, mParseId);
                 startActivity(newTaskIntent);
                 break;
         }

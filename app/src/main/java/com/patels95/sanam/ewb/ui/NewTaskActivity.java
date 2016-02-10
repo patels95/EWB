@@ -2,6 +2,7 @@ package com.patels95.sanam.ewb.ui;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
@@ -25,24 +26,34 @@ public class NewTaskActivity extends ActionBarActivity {
     @InjectView(R.id.new_task_title) EditText mTaskTitle;
     @InjectView(R.id.new_task_description) EditText mTaskDescription;
 
-    private static Date mDueDate;
+    private static Calendar mDueDate;
+    private String mProjectParseId;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_task);
+
+        Intent newTaskIntent = getIntent();
+        mProjectParseId = newTaskIntent.getStringExtra(ProjectsActivity.PROJECT_PARSE_ID);
     }
 
-
+    // called when due date button is clicked
     public void showDatePicker(View view) {
         DialogFragment dialogFragment = new DatePickerFragment();
         dialogFragment.show(getSupportFragmentManager(), DATE_PICKER_TAG);
     }
 
-    public void saveTask(View view) {
+    // called when save button is clicked
+    public void saveTask() {
         ParseObject task = new ParseObject(ParseConstants.TASK_CLASS);
-        //task.put(ParseConstants.TASK_TITLE, );
+        task.put(ParseConstants.TASK_TITLE, mTaskTitle.getText().toString());
+        task.put(ParseConstants.TASK_DESCRIPTION, mTaskDescription.getText().toString());
+        task.put(ParseConstants.TASK_COMPLETE, false);
+        task.put(ParseConstants.TASK_DUE_DATE, mDueDate);
+        task.put(ParseConstants.TASK_PROJECT_ID, mProjectParseId);
+        task.saveInBackground();
     }
 
     public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
@@ -60,7 +71,7 @@ public class NewTaskActivity extends ActionBarActivity {
 
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-
+            mDueDate.set(year, monthOfYear, dayOfMonth);
         }
     }
 }
