@@ -58,7 +58,7 @@
         android:textColor="@android:color/white"
         android:background="@color/primary"
         android:layout_alignParentBottom="true"
-        android:onClick="saveTask"/>
+        android:id="@+id/saveTask"/>
 
 
 </RelativeLayout>

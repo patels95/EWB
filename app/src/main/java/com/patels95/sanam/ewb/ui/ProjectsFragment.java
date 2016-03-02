@@ -44,6 +44,7 @@ public class ProjectsFragment extends Fragment {
 
     @InjectView(R.id.projectRecyclerView) RecyclerView mProjectRecyclerView;
 
+
     private OnFragmentInteractionListener mListener;
     private Project[] mProjectCards;
 
