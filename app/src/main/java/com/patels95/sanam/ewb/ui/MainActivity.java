@@ -43,6 +43,11 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
 
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null) {
+            memberStartHome();
+        }
+
         //login is invisible by default
         toggleLogin();
 
