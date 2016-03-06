@@ -110,9 +110,13 @@ public class HomeActivity extends ActionBarActivity
 
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
+        if (actionBar != null) {
+            //actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+            //actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_36dp);
+            actionBar.setDisplayShowTitleEnabled(true);
+            actionBar.setTitle(mTitle);
+        }
+
     }
 
 
