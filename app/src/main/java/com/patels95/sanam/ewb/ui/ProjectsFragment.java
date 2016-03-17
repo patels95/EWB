@@ -6,14 +6,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -145,6 +141,10 @@ public class ProjectsFragment extends Fragment {
 //        parseBorehole.saveInBackground();
     }
 
+    private void updateParseProjects() {
+        //ParseQuery<ParseObject> query
+    }
+
     private void getParseProjects() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.PROJECT_CLASS);
         try {
@@ -171,7 +171,7 @@ public class ProjectsFragment extends Fragment {
         filtration.setImageUri(getString(R.string.filtration_image_uri));
 
         Project storage = new Project();
-        storage.setTitle(getString(R.string.storage_title));
+        storage.setTitle(getString(R.string.collection_title));
         storage.setDescription(getString(R.string.storage_description));
         storage.setImageUri(getString(R.string.storage_image_uri));
 
