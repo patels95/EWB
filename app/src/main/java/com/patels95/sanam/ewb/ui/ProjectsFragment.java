@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -63,6 +64,7 @@ public class ProjectsFragment extends Fragment {
             mSectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
         }
 
+        updateParseProjects();
         getParseProjects();
     }
 
@@ -86,31 +88,31 @@ public class ProjectsFragment extends Fragment {
 
     private void setProjectsArray(ArrayList<String> projectStrings) {
 
-        Project filtration = new Project();
-        filtration.setTitle(projectStrings.get(0));
-        filtration.setDescription(projectStrings.get(1));
-        filtration.setImageUri(projectStrings.get(2));
-        filtration.setParseId(projectStrings.get(3));
+        Project filter = new Project();
+        filter.setTitle(projectStrings.get(0));
+        filter.setDescription(projectStrings.get(1));
+        filter.setImageUri(projectStrings.get(2));
+        filter.setParseId(projectStrings.get(3));
 
-        Project storage = new Project();
-        storage.setTitle(projectStrings.get(4));
-        storage.setDescription(projectStrings.get(5));
-        storage.setImageUri(projectStrings.get(6));
-        storage.setParseId(projectStrings.get(7));
+        Project collection = new Project();
+        collection.setTitle(projectStrings.get(4));
+        collection.setDescription(projectStrings.get(5));
+        collection.setImageUri(projectStrings.get(6));
+        collection.setParseId(projectStrings.get(7));
 
-        Project hygiene = new Project();
-        hygiene.setTitle(projectStrings.get(8));
-        hygiene.setDescription(projectStrings.get(9));
-        hygiene.setImageUri(projectStrings.get(10));
-        hygiene.setParseId(projectStrings.get(11));
+        Project sanitation = new Project();
+        sanitation.setTitle(projectStrings.get(8));
+        sanitation.setDescription(projectStrings.get(9));
+        sanitation.setImageUri(projectStrings.get(10));
+        sanitation.setParseId(projectStrings.get(11));
 
-        Project borehole = new Project();
-        borehole.setTitle(projectStrings.get(12));
-        borehole.setDescription(projectStrings.get(13));
-        borehole.setImageUri(projectStrings.get(14));
-        borehole.setParseId(projectStrings.get(15));
+        Project solar = new Project();
+        solar.setTitle(projectStrings.get(12));
+        solar.setDescription(projectStrings.get(13));
+        solar.setImageUri(projectStrings.get(14));
+        solar.setParseId(projectStrings.get(15));
 
-        mProjectCards = new Project[]{filtration, storage, hygiene, borehole};
+        mProjectCards = new Project[]{filter, collection, sanitation, solar};
     }
 
     private void setParseProjects() {
@@ -142,7 +144,56 @@ public class ProjectsFragment extends Fragment {
     }
 
     private void updateParseProjects() {
-        //ParseQuery<ParseObject> query
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.PROJECT_CLASS);
+
+
+        // Biosand Filter
+//        query.getInBackground(ParseConstants.FILTER_ID, new GetCallback<ParseObject>() {
+//            @Override
+//            public void done(ParseObject filter, ParseException e) {
+//                if (e == null) {
+//                    filter.put(ParseConstants.PROJECT_TITLE, getString(R.string.filter_title));
+//                    filter.put(ParseConstants.PROJECT_DESCRIPTION, getString(R.string.filter_description));
+//                    filter.saveInBackground();
+//                }
+//            }
+//        });
+
+        // Water Transportation & Collection
+//        query.getInBackground(ParseConstants.COLLECTION_ID, new GetCallback<ParseObject>() {
+//            @Override
+//            public void done(ParseObject collection, ParseException e) {
+//                if (e == null) {
+//                    collection.put(ParseConstants.PROJECT_TITLE, getString(R.string.collection_title));
+//                    collection.put(ParseConstants.PROJECT_DESCRIPTION, getString(R.string.collection_description));
+//                    collection.saveInBackground();
+//                }
+//            }
+//        });
+
+//        // Sanitation Systems
+//        query.getInBackground(ParseConstants.SANITATION_ID, new GetCallback<ParseObject>() {
+//            @Override
+//            public void done(ParseObject sanitation, ParseException e) {
+//                if (e == null) {
+//                    sanitation.put(ParseConstants.PROJECT_TITLE, getString(R.string.sanitation_title));
+//                    sanitation.put(ParseConstants.PROJECT_DESCRIPTION, getString(R.string.sanitation_description));
+//                    sanitation.saveInBackground();
+//                }
+//            }
+//        });
+//
+//        // Solar Pump
+        query.getInBackground(ParseConstants.SOLAR_ID, new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject solar, ParseException e) {
+                if (e == null) {
+                    solar.put(ParseConstants.PROJECT_TITLE, getString(R.string.solar_title));
+                    solar.put(ParseConstants.PROJECT_DESCRIPTION, getString(R.string.solar_description));
+                    solar.saveInBackground();
+                }
+            }
+        });
     }
 
     private void getParseProjects() {
@@ -165,27 +216,27 @@ public class ProjectsFragment extends Fragment {
     }
 
     private void setProjectsArrayLocal() {
-        Project filtration = new Project();
-        filtration.setTitle(getString(R.string.filtration_title));
-        filtration.setDescription(getString(R.string.filtration_description));
-        filtration.setImageUri(getString(R.string.filtration_image_uri));
+        Project filter = new Project();
+        filter.setTitle(getString(R.string.filter_title));
+        filter.setDescription(getString(R.string.filter_description));
+        filter.setImageUri(getString(R.string.filter_image_uri));
 
-        Project storage = new Project();
-        storage.setTitle(getString(R.string.collection_title));
-        storage.setDescription(getString(R.string.storage_description));
-        storage.setImageUri(getString(R.string.storage_image_uri));
+        Project collection = new Project();
+        collection.setTitle(getString(R.string.collection_title));
+        collection.setDescription(getString(R.string.collection_description));
+        collection.setImageUri(getString(R.string.collection_image_uri));
 
-        Project hygiene = new Project();
-        hygiene.setTitle(getString(R.string.hygiene_title));
-        hygiene.setDescription(getString(R.string.hygiene_description));
-        hygiene.setImageUri(getString(R.string.hygiene_image_uri));
+        Project sanitation = new Project();
+        sanitation.setTitle(getString(R.string.sanitation_title));
+        sanitation.setDescription(getString(R.string.sanitation_description));
+        sanitation.setImageUri(getString(R.string.sanitation_image_uri));
 
-        Project borehole = new Project();
-        borehole.setTitle(getString(R.string.borehole_title));
-        borehole.setDescription(getString(R.string.borehole_description));
-        borehole.setImageUri(getString(R.string.borehold_image_uri));
+        Project solar = new Project();
+        solar.setTitle(getString(R.string.solar_title));
+        solar.setDescription(getString(R.string.solar_description));
+        solar.setImageUri(getString(R.string.solar_image_uri));
 
-        mProjectCards = new Project[]{filtration, storage, hygiene, borehole};
+        mProjectCards = new Project[]{filter, collection, sanitation, solar};
     }
 
     public void onButtonPressed(Uri uri) {
