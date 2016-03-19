@@ -184,16 +184,16 @@ public class ProjectsFragment extends Fragment {
 //        });
 //
 //        // Solar Pump
-        query.getInBackground(ParseConstants.SOLAR_ID, new GetCallback<ParseObject>() {
-            @Override
-            public void done(ParseObject solar, ParseException e) {
-                if (e == null) {
-                    solar.put(ParseConstants.PROJECT_TITLE, getString(R.string.solar_title));
-                    solar.put(ParseConstants.PROJECT_DESCRIPTION, getString(R.string.solar_description));
-                    solar.saveInBackground();
-                }
-            }
-        });
+//        query.getInBackground(ParseConstants.SOLAR_ID, new GetCallback<ParseObject>() {
+//            @Override
+//            public void done(ParseObject solar, ParseException e) {
+//                if (e == null) {
+//                    solar.put(ParseConstants.PROJECT_TITLE, getString(R.string.solar_title));
+//                    solar.put(ParseConstants.PROJECT_DESCRIPTION, getString(R.string.solar_description));
+//                    solar.saveInBackground();
+//                }
+//            }
+//        });
     }
 
     private void getParseProjects() {
