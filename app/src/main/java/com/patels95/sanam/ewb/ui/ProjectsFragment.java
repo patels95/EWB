@@ -63,8 +63,6 @@ public class ProjectsFragment extends Fragment {
         if (getArguments() != null) {
             mSectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
         }
-
-        updateParseProjects();
         getParseProjects();
     }
 
@@ -115,36 +113,8 @@ public class ProjectsFragment extends Fragment {
         mProjectCards = new Project[]{filter, collection, sanitation, solar};
     }
 
-    private void setParseProjects() {
-        // Create parse objects for Project class
-
-//        ParseObject parseFiltration = new ParseObject(ParseConstants.PROJECT_CLASS);
-//        parseFiltration.put(ParseConstants.PROJECT_TITLE, getString(R.string.filtration_title));
-//        parseFiltration.put(ParseConstants.PROJECT_DESCRIPTION, getString(R.string.filtration_description));
-//        parseFiltration.put(ParseConstants.PROJECT_IMAGEURI, getString(R.string.filtration_image_uri));
-//        parseFiltration.saveInBackground();
-//
-//        ParseObject parseStorage = new ParseObject(ParseConstants.PROJECT_CLASS);
-//        parseStorage.put(ParseConstants.PROJECT_TITLE, getString(R.string.storage_title));
-//        parseStorage.put(ParseConstants.PROJECT_DESCRIPTION, getString(R.string.storage_description));
-//        parseStorage.put(ParseConstants.PROJECT_IMAGEURI, getString(R.string.storage_image_uri));
-//        parseStorage.saveInBackground();
-//
-//        ParseObject parseHygiene = new ParseObject(ParseConstants.PROJECT_CLASS);
-//        parseHygiene.put(ParseConstants.PROJECT_TITLE, getString(R.string.hygiene_title));
-//        parseHygiene.put(ParseConstants.PROJECT_DESCRIPTION, getString(R.string.hygiene_description));
-//        parseHygiene.put(ParseConstants.PROJECT_IMAGEURI, getString(R.string.hygiene_image_uri));
-//        parseHygiene.saveInBackground();
-//
-//        ParseObject parseBorehole = new ParseObject(ParseConstants.PROJECT_CLASS);
-//        parseBorehole.put(ParseConstants.PROJECT_TITLE, getString(R.string.borehole_title));
-//        parseBorehole.put(ParseConstants.PROJECT_DESCRIPTION, getString(R.string.borehole_description));
-//        parseBorehole.put(ParseConstants.PROJECT_IMAGEURI, getString(R.string.borehold_image_uri));
-//        parseBorehole.saveInBackground();
-    }
-
     private void updateParseProjects() {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.PROJECT_CLASS);
+        //ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.PROJECT_CLASS);
 
 
         // Biosand Filter

@@ -42,7 +42,7 @@
     <string name="action_example">Example action</string>
     <string name="googlePublicKey">AIzaSyAy-iwqjyFruP9Px31TTRYSVpSpuJKAnts</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="timeline_empty">Timeline is empty</string>
+    <string name="timeline_empty">Swipe down to refresh</string>
 
     <!-- PROJECT STRINGS -->
     <string name="filter_title">Biosand Filter</string>
