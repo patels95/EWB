@@ -55,4 +55,6 @@ dependencies {
     compile 'com.google.api-client:google-api-client-android:1.20.0'
     compile 'com.google.api-client:google-api-client-gson:1.20.0'
     compile 'com.google.apis:google-api-services-calendar:v3-rev133-1.20.0'
+
+    compile 'org.apache.directory.studio:org.apache.commons.io:2.4'
 }

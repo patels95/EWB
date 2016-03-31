@@ -68,7 +68,6 @@ public class CalendarFragment extends Fragment{
     private static final String TAG = CalendarFragment.class.getSimpleName();
 
     // This email will be used for the calendar.
-//    private String USETHISEMAIL = "ewbbu.webmaster@gmail.com";
     private String USETHISEMAIL = "ewbbu.webmaster@gmail.com";
 
     // Fragment interface variables.

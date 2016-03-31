@@ -11,6 +11,7 @@ public class ParseConstants {
     public static final String PROJECT_TITLE = "title";
     public static final String PROJECT_DESCRIPTION = "description";
     public static final String PROJECT_IMAGEURI = "imageUri";
+    public static final String PROJECT_RESOURCE = "resource";
     public static final String PARSE_ID = "PARSE_ID";
 
     // Project IDs

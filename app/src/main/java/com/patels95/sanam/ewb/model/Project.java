@@ -1,6 +1,8 @@
 package com.patels95.sanam.ewb.model;
 
 
+import java.io.File;
+
 public class Project {
 
     private String mTitle;
@@ -8,6 +10,7 @@ public class Project {
     private String mImageUri;
     private Task[] mTasks;
     private String parseId;
+    private File[] mResources;
 
     public Project() {
         // default constructor
@@ -51,5 +54,13 @@ public class Project {
 
     public void setParseId(String parseId) {
         this.parseId = parseId;
+    }
+
+    public File[] getResources() {
+        return mResources;
+    }
+
+    public void setResources(File[] resources) {
+        mResources = resources;
     }
 }

@@ -1,6 +1,8 @@
 package com.patels95.sanam.ewb.ui;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.patels95.sanam.ewb.R;
@@ -19,8 +22,16 @@ import com.patels95.sanam.ewb.adapters.ProjectAdapter;
 import com.patels95.sanam.ewb.model.ParseConstants;
 import com.patels95.sanam.ewb.model.Project;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.io.IOUtils;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -40,7 +51,6 @@ public class ProjectsFragment extends Fragment {
     private int mSectionNumber;
 
     @InjectView(R.id.projectRecyclerView) RecyclerView mProjectRecyclerView;
-
 
     private OnFragmentInteractionListener mListener;
     private Project[] mProjectCards;
@@ -113,17 +123,20 @@ public class ProjectsFragment extends Fragment {
         mProjectCards = new Project[]{filter, collection, sanitation, solar};
     }
 
-    private void updateParseProjects() {
-        //ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.PROJECT_CLASS);
+    private void updateParseProjects() throws IOException {
 
+        // get file from assets folder and convert to byte array
+//        AssetManager am = getResources().getAssets();
+//        InputStream inputStream = am.open("SPSpring2016.pdf");
+//        byte[] data = IOUtils.toByteArray(inputStream);
+
+//        ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.PROJECT_CLASS);
 
         // Biosand Filter
 //        query.getInBackground(ParseConstants.FILTER_ID, new GetCallback<ParseObject>() {
 //            @Override
 //            public void done(ParseObject filter, ParseException e) {
 //                if (e == null) {
-//                    filter.put(ParseConstants.PROJECT_TITLE, getString(R.string.filter_title));
-//                    filter.put(ParseConstants.PROJECT_DESCRIPTION, getString(R.string.filter_description));
 //                    filter.saveInBackground();
 //                }
 //            }
@@ -134,36 +147,52 @@ public class ProjectsFragment extends Fragment {
 //            @Override
 //            public void done(ParseObject collection, ParseException e) {
 //                if (e == null) {
-//                    collection.put(ParseConstants.PROJECT_TITLE, getString(R.string.collection_title));
-//                    collection.put(ParseConstants.PROJECT_DESCRIPTION, getString(R.string.collection_description));
 //                    collection.saveInBackground();
 //                }
 //            }
 //        });
 
-//        // Sanitation Systems
+        // Sanitation Systems
 //        query.getInBackground(ParseConstants.SANITATION_ID, new GetCallback<ParseObject>() {
 //            @Override
 //            public void done(ParseObject sanitation, ParseException e) {
 //                if (e == null) {
-//                    sanitation.put(ParseConstants.PROJECT_TITLE, getString(R.string.sanitation_title));
-//                    sanitation.put(ParseConstants.PROJECT_DESCRIPTION, getString(R.string.sanitation_description));
 //                    sanitation.saveInBackground();
 //                }
 //            }
 //        });
-//
-//        // Solar Pump
+
+        // Solar Pump
 //        query.getInBackground(ParseConstants.SOLAR_ID, new GetCallback<ParseObject>() {
 //            @Override
 //            public void done(ParseObject solar, ParseException e) {
 //                if (e == null) {
-//                    solar.put(ParseConstants.PROJECT_TITLE, getString(R.string.solar_title));
-//                    solar.put(ParseConstants.PROJECT_DESCRIPTION, getString(R.string.solar_description));
 //                    solar.saveInBackground();
 //                }
 //            }
 //        });
+    }
+
+    private File createFileFromInputStream(InputStream inputStream) {
+        try {
+            File file = new File("BSFSpring2016.pdf");
+            OutputStream outputStream = new FileOutputStream(file);
+            byte buffer[] = new byte[1024];
+            int length = 0;
+
+            while ((length = inputStream.read(buffer)) > 0) {
+                outputStream.write(buffer, 0, length);
+            }
+
+            outputStream.close();
+            inputStream.close();
+
+            return file;
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private void getParseProjects() {
