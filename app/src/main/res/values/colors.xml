@@ -7,4 +7,9 @@
     <item name="darkgreen" type="color">#FF669900</item>
     <color name="primary">#27588F</color>
     <color name="accent">#5D97CF</color>
+    <color name="filter">#9AF710</color>
+    <color name="solar">#FEB60C</color>
+    <color name="sanitation">#31BDC4</color>
+    <color name="collection">#2CD86E</color>
+
 </resources>

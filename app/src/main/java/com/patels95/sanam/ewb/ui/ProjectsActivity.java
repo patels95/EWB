@@ -26,7 +26,7 @@ public class ProjectsActivity extends ActionBarActivity implements ActionBar.Tab
     public static final String PROJECT_TITLE = "PROJECT_TITLE";
     public static final String PROJECT_PARSE_ID = "PROJECT_PARSE_ID";
 
-    private String mProjectTitle;
+    private static String mProjectTitle;
     private String mParseId;
     private Project[] mProjects;
 
@@ -136,6 +136,10 @@ public class ProjectsActivity extends ActionBarActivity implements ActionBar.Tab
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         Toast.makeText(this, "You have been logged out.", Toast.LENGTH_LONG).show();
+    }
+
+    public static String getProjectTitle() {
+        return mProjectTitle;
     }
 
     @Override

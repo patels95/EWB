@@ -16,6 +16,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +25,10 @@ import java.io.OutputStream;
 public class ResourceFragment extends Fragment {
 
     private static final String TAG = ResourceFragment.class.getSimpleName();
+
+    private String mProjectTitle;
+
+    private Map<String, String> fileNameMap = new HashMap<>();
 
     public ResourceFragment() {
         // Required empty public constructor
@@ -32,6 +38,11 @@ public class ResourceFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        mProjectTitle = ProjectsActivity.getProjectTitle();
+
+        // set hashmap with (projectName, fileName) pairs
+
+
         return inflater.inflate(R.layout.fragment_resource, container, false);
     }
 
@@ -55,7 +66,7 @@ public class ResourceFragment extends Fragment {
     private void copyFile(InputStream in, OutputStream out) throws IOException {
         byte[] buffer = new byte[1024];
         int read;
-        while((read = in.read(buffer)) != -1){
+        while((read = in.read(buffer)) != -1) {
             out.write(buffer, 0, read);
         }
     }
