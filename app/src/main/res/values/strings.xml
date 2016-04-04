@@ -102,4 +102,14 @@
     <string name="save">Save</string>
     <string name="choose_due_date">Choose Due Date</string>
     <string name="file_name">File Name</string>
+
+    <!-- PDF FILE NAMES -->
+    <string name="filter_file">BSFSpring2016.pdf</string>
+    <string name="collection_file">WTCSpring2016.pdf</string>
+    <string name="sanitation_file">SSSpring2016.pdf</string>
+    <string name="solar_file">SPSpring2016.pdf</string>
+
+    <!-- PROJECT SHORT NAMES -->
+
+
 </resources>
