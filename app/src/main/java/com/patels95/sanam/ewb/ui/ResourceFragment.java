@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.patels95.sanam.ewb.R;
 
@@ -63,27 +64,30 @@ public class ResourceFragment extends Fragment {
 
         // set hashmap with (projectName, color) pairs
         mColorMap.put(getString(R.string.filter_title), ContextCompat.getColor(getActivity() , R.color.filter));
+        mColorMap.put(getString(R.string.collection_title), ContextCompat.getColor(getActivity(), R.color.collection));
+        mColorMap.put(getString(R.string.sanitation_title), ContextCompat.getColor(getActivity(), R.color.sanitation));
+        mColorMap.put(getString(R.string.solar_title), ContextCompat.getColor(getActivity(), R.color.solar));
 
-        setCardView(mFileNameMap.get(mProjectTitle));
+        setCardView(mFileNameMap.get(mProjectTitle), mColorMap.get(mProjectTitle));
 
         mResourceCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "clicked");
+                copyAsset(mFileNameMap.get(mProjectTitle));
+                Toast.makeText(getActivity(), "File Download Complete", Toast.LENGTH_LONG).show();
             }
         });
 
         return view;
     }
 
-    private void setCardView(String fileName) {
+    private void setCardView(String fileName, int color) {
         mFileName.setText(fileName);
-//        mPDFImage.setColorFilter(getResources().getColor());
+        mPDFImage.setColorFilter(color);
     }
 
-    private void copyAsset() {
+    private void copyAsset(String filename) {
         AssetManager am = getResources().getAssets();
-        String filename = "SSSpring2016.pdf";
         try {
             InputStream inputStream = am.open(filename);
             File outFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), filename);
