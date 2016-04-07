@@ -4,11 +4,20 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.ListFragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.patels95.sanam.ewb.model.ParseConstants;
+import com.patels95.sanam.ewb.model.Task;
 import com.patels95.sanam.ewb.ui.dummy.DummyContent;
+
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -19,7 +28,11 @@ import com.patels95.sanam.ewb.ui.dummy.DummyContent;
  */
 public class TaskFragment extends ListFragment {
 
+    private static final String TAG = TaskFragment.class.getSimpleName();
     private OnFragmentInteractionListener mListener;
+
+    private String mParseProjectId;
+    private Task[] mTasks;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -32,8 +45,10 @@ public class TaskFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mParseProjectId = ProjectsActivity.getParseProjectId();
 
-        // TODO: Change Adapter to display your content
+        getParseTasks();
+
         setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
                 android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS));
     }
@@ -66,6 +81,28 @@ public class TaskFragment extends ListFragment {
             //mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
             Intent intent = new Intent(getActivity(), TaskActivity.class);
             startActivity(intent);
+        }
+    }
+
+    private void getParseTasks() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.TASK_CLASS).whereEqualTo(ParseConstants.TASK_PROJECT_ID, mParseProjectId);
+        try {
+            List<ParseObject> list = query.find();
+            mTasks = new Task[list.size()];
+            for (int i = 0; i < list.size(); i++) {
+                Task task = new Task();
+                task.setTitle(list.get(i).getString(ParseConstants.TASK_TITLE));
+                task.setDescription(list.get(i).getString(ParseConstants.TASK_DESCRIPTION));
+                task.setTaskId(list.get(i).getObjectId());
+                task.setProjectId(list.get(i).getString(ParseConstants.TASK_PROJECT_ID));
+                task.setComplete(list.get(i).getBoolean(ParseConstants.TASK_COMPLETE));
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(list.get(i).getDate(ParseConstants.TASK_DUE_DATE));
+                task.setDueDate(calendar);
+                mTasks[i] = task;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
     }
 

@@ -18,7 +18,6 @@ import com.patels95.sanam.ewb.R;
 import com.patels95.sanam.ewb.model.ParseConstants;
 
 import java.util.Calendar;
-import java.util.Date;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;

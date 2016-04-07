@@ -27,8 +27,7 @@ public class ProjectsActivity extends ActionBarActivity implements ActionBar.Tab
     public static final String PROJECT_PARSE_ID = "PROJECT_PARSE_ID";
 
     private static String mProjectTitle;
-    private String mParseId;
-    private Project[] mProjects;
+    private static String mParseId;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -140,6 +139,10 @@ public class ProjectsActivity extends ActionBarActivity implements ActionBar.Tab
 
     public static String getProjectTitle() {
         return mProjectTitle;
+    }
+
+    public static String getParseProjectId() {
+        return mParseId;
     }
 
     @Override
