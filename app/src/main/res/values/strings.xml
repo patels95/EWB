@@ -108,6 +108,8 @@
     <string name="collection_file">WTCSpring2016.pdf</string>
     <string name="sanitation_file">SSSpring2016.pdf</string>
     <string name="solar_file">SPSpring2016.pdf</string>
+    <string name="task_title">Task Title</string>
+    <string name="task_due_date">Due Date</string>
 
     <!-- PROJECT SHORT NAMES -->
 

@@ -8,10 +8,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.patels95.sanam.ewb.adapters.TaskAdapter;
 import com.patels95.sanam.ewb.model.ParseConstants;
 import com.patels95.sanam.ewb.model.Task;
 import com.patels95.sanam.ewb.ui.dummy.DummyContent;
@@ -49,10 +51,17 @@ public class TaskFragment extends ListFragment {
 
         getParseTasks();
 
-        setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS));
+        TaskAdapter taskAdapter = new TaskAdapter(getActivity(), mTasks);
+        setListAdapter(taskAdapter);
+//        setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
+//                android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS));
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setEmptyText("There are no tasks for this project");
+    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -78,7 +87,7 @@ public class TaskFragment extends ListFragment {
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            //mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
+//            mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
             Intent intent = new Intent(getActivity(), TaskActivity.class);
             startActivity(intent);
         }
