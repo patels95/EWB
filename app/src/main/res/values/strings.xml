@@ -72,18 +72,18 @@
     <string name="project_section1">Tasks</string>
     <string name="project_section2">Resources</string>
     <string-array name="edit_projects_dialog">
-        <item>Water Filtration</item>
-        <item>Transportation and Storage</item>
-        <item>Hygiene and Sanitation</item>
-        <item>Borehole and Well</item>
+        <item>Biosand Filter</item>
+        <item>Water Transportation &amp; Collection</item>
+        <item>Sanitation Systems</item>
+        <item>Solar Pump</item>
     </string-array>
     <string name="edit_project_dialog_title">Choose a Project to Edit</string>
 
     <!-- PARSE OBJECT IDS -->
-    <string name="filtration_id">cUryqF7MGf</string>
-    <string name="storage_id">eD2ehQr0YF</string>
-    <string name="hygiene_id">e6KauliqDC</string>
-    <string name="borehole_id">coLup3vAUH</string>
+    <string name="filter_id">cUryqF7MGf</string>
+    <string name="collection_id">eD2ehQr0YF</string>
+    <string name="sanitation_id">e6KauliqDC</string>
+    <string name="solar_id">coLup3vAUH</string>
 
     <string name="refresh_failed">Refresh Failed. Please Try Again.</string>
     <string name="refresh">Refresh</string>
@@ -92,9 +92,10 @@
 
     <!-- ERROR MESSAGES -->
     <string name="edit_info_admin_error">You must be an admin to edit app info.</string>
+
+
     <string name="title_activity_task">TaskActivity</string>
     <string name="add_task">Add Task</string>
-
     <string name="title_activity_new_task">Create New Task</string>
     <string name="action_delete_task">Delete Task</string>
     <string name="hint_new_task_title">Task Title</string>
@@ -110,8 +111,5 @@
     <string name="solar_file">SPSpring2016.pdf</string>
     <string name="task_title">Task Title</string>
     <string name="task_due_date">Due Date</string>
-
-    <!-- PROJECT SHORT NAMES -->
-
 
 </resources>
