@@ -30,6 +30,7 @@ public class TaskFragment extends ListFragment {
     private OnFragmentInteractionListener mListener;
 
     private String mParseProjectId;
+    private String mProjectTitle;
     private Task[] mTasks;
 
     /**
@@ -44,13 +45,12 @@ public class TaskFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
         mParseProjectId = ProjectsActivity.getParseProjectId();
+        mProjectTitle = ProjectsActivity.getProjectTitle();
 
         getParseTasks();
 
         TaskAdapter taskAdapter = new TaskAdapter(getActivity(), mTasks);
         setListAdapter(taskAdapter);
-//        setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
-//                android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS));
     }
 
     @Override
@@ -85,6 +85,7 @@ public class TaskFragment extends ListFragment {
             // fragment is attached to one) that an item has been selected.
 //            mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
             Intent intent = new Intent(getActivity(), TaskActivity.class);
+            intent.putExtra(ParseConstants.PROJECT_TITLE, mProjectTitle);
             startActivity(intent);
         }
     }
