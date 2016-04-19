@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:text="@string/task_title"
         android:textSize="18sp"
-        android:id="@+id/taskTitle"
+        android:id="@+id/taskListTitle"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:text="@string/task_due_date"
         android:textSize="14sp"
-        android:id="@+id/taskDueDate"
+        android:id="@+id/taskListDueDate"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"/>

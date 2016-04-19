@@ -111,5 +111,8 @@
     <string name="solar_file">SPSpring2016.pdf</string>
     <string name="task_title">Task Title</string>
     <string name="task_due_date">Due Date</string>
+    <string name="task_description">Task Description</string>
+    <string name="delete_task">Delete Task</string>
+    <string name="complete_task">Complete Task</string>
 
 </resources>

@@ -46,8 +46,8 @@ public class TaskAdapter extends BaseAdapter {
             // new view
             convertView = LayoutInflater.from(mContext).inflate(R.layout.task_list_item, null);
             holder = new ViewHolder();
-            holder.taskTitle = (TextView) convertView.findViewById(R.id.taskTitle);
-            holder.taskDueDate = (TextView) convertView.findViewById(R.id.taskDueDate);
+            holder.taskTitle = (TextView) convertView.findViewById(R.id.taskListTitle);
+            holder.taskDueDate = (TextView) convertView.findViewById(R.id.taskListDueDate);
 
             convertView.setTag(holder);
         }
