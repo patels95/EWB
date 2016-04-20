@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.ListFragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
@@ -86,6 +87,7 @@ public class TaskFragment extends ListFragment {
 //            mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
             Intent intent = new Intent(getActivity(), TaskActivity.class);
             intent.putExtra(ParseConstants.PROJECT_TITLE, mProjectTitle);
+            intent.putExtra(ParseConstants.TASK_ID, mTasks[position].getTaskId());
             startActivity(intent);
         }
     }

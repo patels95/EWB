@@ -7,13 +7,22 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.ParseUser;
 import com.patels95.sanam.ewb.R;
 import com.patels95.sanam.ewb.model.ParseConstants;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class TaskActivity extends AppCompatActivity {
+
+    @InjectView(R.id.taskTitle) TextView mTaskTitle;
+    @InjectView(R.id.taskDescription) TextView mTaskDescription;
+
+    private String mTaskId;
 
     private DialogInterface.OnClickListener mDialogListener = new DialogInterface.OnClickListener() {
         @Override
@@ -34,9 +43,11 @@ public class TaskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
+        ButterKnife.inject(this);
 
         Intent intent = getIntent();
         String projectTitle = intent.getStringExtra(ParseConstants.PROJECT_TITLE);
+        mTaskId = intent.getStringExtra(ParseConstants.TASK_ID);
         setTitle(projectTitle);
     }
 
