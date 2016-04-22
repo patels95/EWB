@@ -48,7 +48,7 @@ public class TaskFragment extends ListFragment {
         mParseProjectId = ProjectsActivity.getParseProjectId();
         mProjectTitle = ProjectsActivity.getProjectTitle();
 
-        getParseTasks();
+        mTasks = getParseTasks();
 
         TaskAdapter taskAdapter = new TaskAdapter(getActivity(), mTasks);
         setListAdapter(taskAdapter);
@@ -92,11 +92,12 @@ public class TaskFragment extends ListFragment {
         }
     }
 
-    private void getParseTasks() {
+    private Task[] getParseTasks() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.TASK_CLASS).whereEqualTo(ParseConstants.TASK_PROJECT_ID, mParseProjectId);
+        Task[] tasks = null;
         try {
             List<ParseObject> list = query.find();
-            mTasks = new Task[list.size()];
+            tasks = new Task[list.size()];
             for (int i = 0; i < list.size(); i++) {
                 Task task = new Task();
                 task.setTitle(list.get(i).getString(ParseConstants.TASK_TITLE));
@@ -107,11 +108,12 @@ public class TaskFragment extends ListFragment {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(list.get(i).getDate(ParseConstants.TASK_DUE_DATE));
                 task.setDueDate(calendar);
-                mTasks[i] = task;
+                tasks[i] = task;
             }
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        return tasks;
     }
 
     /**

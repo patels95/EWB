@@ -10,9 +10,16 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.patels95.sanam.ewb.R;
 import com.patels95.sanam.ewb.model.ParseConstants;
+import com.patels95.sanam.ewb.model.Task;
+
+import java.util.Calendar;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -23,6 +30,7 @@ public class TaskActivity extends AppCompatActivity {
     @InjectView(R.id.taskDescription) TextView mTaskDescription;
 
     private String mTaskId;
+    private Task mTask;
 
     private DialogInterface.OnClickListener mDialogListener = new DialogInterface.OnClickListener() {
         @Override
@@ -49,6 +57,8 @@ public class TaskActivity extends AppCompatActivity {
         String projectTitle = intent.getStringExtra(ParseConstants.PROJECT_TITLE);
         mTaskId = intent.getStringExtra(ParseConstants.TASK_ID);
         setTitle(projectTitle);
+
+        mTask = getTaskFromParse(mTaskId);
     }
 
     @Override
@@ -92,6 +102,25 @@ public class TaskActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         Toast.makeText(this, "You have been logged out.", Toast.LENGTH_LONG).show();
+    }
+
+    private Task getTaskFromParse(String taskId) {
+        final Task task = new Task();
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(ParseConstants.TASK_CLASS);
+        query.getInBackground(taskId, new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject parseObject, ParseException e) {
+                task.setTitle(parseObject.getString(ParseConstants.TASK_TITLE));
+                task.setDescription(parseObject.getString(ParseConstants.TASK_DESCRIPTION));
+                task.setTaskId(parseObject.getString(ParseConstants.TASK_ID));
+                task.setProjectId(parseObject.getString(ParseConstants.TASK_PROJECT_ID));
+                task.setComplete(parseObject.getBoolean(ParseConstants.TASK_COMPLETE));
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(parseObject.getDate(ParseConstants.TASK_DUE_DATE));
+                task.setDueDate(calendar);
+            }
+        });
+        return task;
     }
 
 }
