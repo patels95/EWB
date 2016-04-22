@@ -5,8 +5,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +27,8 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class TaskActivity extends AppCompatActivity {
+
+    private static final String TAG = TaskActivity.class.getSimpleName();
 
     @InjectView(R.id.taskTitle) TextView mTaskTitle;
     @InjectView(R.id.taskDescription) TextView mTaskDescription;
@@ -59,6 +63,7 @@ public class TaskActivity extends AppCompatActivity {
         setTitle(projectTitle);
 
         mTask = getTaskFromParse(mTaskId);
+        setTaskInfo();
     }
 
     @Override
@@ -104,23 +109,33 @@ public class TaskActivity extends AppCompatActivity {
         Toast.makeText(this, "You have been logged out.", Toast.LENGTH_LONG).show();
     }
 
+    // get Task from parse using task id
     private Task getTaskFromParse(String taskId) {
         final Task task = new Task();
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(ParseConstants.TASK_CLASS);
-        query.getInBackground(taskId, new GetCallback<ParseObject>() {
-            @Override
-            public void done(ParseObject parseObject, ParseException e) {
-                task.setTitle(parseObject.getString(ParseConstants.TASK_TITLE));
-                task.setDescription(parseObject.getString(ParseConstants.TASK_DESCRIPTION));
-                task.setTaskId(parseObject.getString(ParseConstants.TASK_ID));
-                task.setProjectId(parseObject.getString(ParseConstants.TASK_PROJECT_ID));
-                task.setComplete(parseObject.getBoolean(ParseConstants.TASK_COMPLETE));
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(parseObject.getDate(ParseConstants.TASK_DUE_DATE));
-                task.setDueDate(calendar);
-            }
-        });
+        try {
+            ParseObject object = query.get(taskId);
+            task.setTitle(object.getString(ParseConstants.TASK_TITLE));
+            task.setDescription(object.getString(ParseConstants.TASK_DESCRIPTION));
+            task.setTaskId(object.getString(ParseConstants.TASK_ID));
+            task.setProjectId(object.getString(ParseConstants.TASK_PROJECT_ID));
+            task.setComplete(object.getBoolean(ParseConstants.TASK_COMPLETE));
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(object.getDate(ParseConstants.TASK_DUE_DATE));
+            task.setDueDate(calendar);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return task;
     }
 
+    // set ui elements
+    private void setTaskInfo() {
+        mTaskTitle.setText(mTask.getTitle());
+        mTaskDescription.setText(mTask.getDescription());
+    }
+
+    public void completeTask(View view) {
+        Log.d(TAG, "clicked complete button");
+    }
 }
