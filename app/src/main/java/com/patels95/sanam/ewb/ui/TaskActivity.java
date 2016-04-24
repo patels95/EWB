@@ -35,6 +35,8 @@ public class TaskActivity extends AppCompatActivity {
 
     private String mTaskId;
     private Task mTask;
+    private static String mProjectTitle;
+    private static String mProjectParseId;
 
     private DialogInterface.OnClickListener mDialogListener = new DialogInterface.OnClickListener() {
         @Override
@@ -42,6 +44,11 @@ public class TaskActivity extends AppCompatActivity {
             switch (which) {
                 case DialogInterface.BUTTON_POSITIVE:
                     // delete the task
+                    deleteTask();
+                    Intent intent = new Intent(TaskActivity.this, ProjectsActivity.class);
+                    intent.putExtra(ParseConstants.PROJECT_TITLE, mProjectTitle);
+                    intent.putExtra(ParseConstants.PARSE_ID, mProjectParseId);
+                    startActivity(intent);
                     break;
                 case DialogInterface.BUTTON_NEGATIVE:
                     // close dialog
@@ -58,9 +65,10 @@ public class TaskActivity extends AppCompatActivity {
         ButterKnife.inject(this);
 
         Intent intent = getIntent();
-        String projectTitle = intent.getStringExtra(ParseConstants.PROJECT_TITLE);
+        mProjectTitle = intent.getStringExtra(ParseConstants.PROJECT_TITLE);
+        mProjectParseId = intent.getStringExtra(ParseConstants.PARSE_ID);
         mTaskId = intent.getStringExtra(ParseConstants.TASK_ID);
-        setTitle(projectTitle);
+        setTitle(mProjectTitle);
 
         mTask = getTaskFromParse(mTaskId);
         setTaskInfo();
@@ -136,6 +144,25 @@ public class TaskActivity extends AppCompatActivity {
     }
 
     public void completeTask(View view) {
-        Log.d(TAG, "clicked complete button");
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(ParseConstants.TASK_CLASS);
+        query.getInBackground(mTaskId, new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject task, ParseException e) {
+                task.put(ParseConstants.TASK_COMPLETE, true);
+                task.saveInBackground();
+                Toast.makeText(TaskActivity.this, "This task has been marked as complete", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void deleteTask() {
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(ParseConstants.TASK_CLASS);
+        query.getInBackground(mTaskId, new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject task, ParseException e) {
+                task.deleteInBackground();
+                Toast.makeText(TaskActivity.this, "This task has been deleted", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

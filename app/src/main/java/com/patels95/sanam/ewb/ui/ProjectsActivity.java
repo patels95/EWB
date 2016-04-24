@@ -23,7 +23,6 @@ public class ProjectsActivity extends ActionBarActivity implements ActionBar.Tab
     TaskFragment.OnFragmentInteractionListener {
 
     private static final String TAG = ProjectsActivity.class.getSimpleName();
-    public static final String PROJECT_TITLE = "PROJECT_TITLE";
     public static final String PROJECT_PARSE_ID = "PROJECT_PARSE_ID";
 
     private static String mProjectTitle;
@@ -86,7 +85,7 @@ public class ProjectsActivity extends ActionBarActivity implements ActionBar.Tab
 
         // Get the project's title from intent and set the action bar title
         Intent cardIntent = getIntent();
-        mProjectTitle = cardIntent.getStringExtra(ProjectAdapter.PROJECT_TITLE);
+        mProjectTitle = cardIntent.getStringExtra(ParseConstants.PROJECT_TITLE);
         mParseId = cardIntent.getStringExtra(ParseConstants.PARSE_ID);
         setTitle(mProjectTitle);
     }

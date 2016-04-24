@@ -87,6 +87,7 @@ public class TaskFragment extends ListFragment {
 //            mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
             Intent intent = new Intent(getActivity(), TaskActivity.class);
             intent.putExtra(ParseConstants.PROJECT_TITLE, mProjectTitle);
+            intent.putExtra(ParseConstants.PARSE_ID, mParseProjectId);
             intent.putExtra(ParseConstants.TASK_ID, mTasks[position].getTaskId());
             startActivity(intent);
         }
