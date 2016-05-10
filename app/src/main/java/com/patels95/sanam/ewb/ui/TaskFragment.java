@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.ListFragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
@@ -47,7 +48,7 @@ public class TaskFragment extends ListFragment {
         mParseProjectId = ProjectsActivity.getParseProjectId();
         mProjectTitle = ProjectsActivity.getProjectTitle();
 
-        getParseTasks();
+        mTasks = getParseTasks();
 
         TaskAdapter taskAdapter = new TaskAdapter(getActivity(), mTasks);
         setListAdapter(taskAdapter);
@@ -86,15 +87,18 @@ public class TaskFragment extends ListFragment {
 //            mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
             Intent intent = new Intent(getActivity(), TaskActivity.class);
             intent.putExtra(ParseConstants.PROJECT_TITLE, mProjectTitle);
+            intent.putExtra(ParseConstants.PARSE_ID, mParseProjectId);
+            intent.putExtra(ParseConstants.TASK_ID, mTasks[position].getTaskId());
             startActivity(intent);
         }
     }
 
-    private void getParseTasks() {
+    private Task[] getParseTasks() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.TASK_CLASS).whereEqualTo(ParseConstants.TASK_PROJECT_ID, mParseProjectId);
+        Task[] tasks = null;
         try {
             List<ParseObject> list = query.find();
-            mTasks = new Task[list.size()];
+            tasks = new Task[list.size()];
             for (int i = 0; i < list.size(); i++) {
                 Task task = new Task();
                 task.setTitle(list.get(i).getString(ParseConstants.TASK_TITLE));
@@ -105,11 +109,12 @@ public class TaskFragment extends ListFragment {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(list.get(i).getDate(ParseConstants.TASK_DUE_DATE));
                 task.setDueDate(calendar);
-                mTasks[i] = task;
+                tasks[i] = task;
             }
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        return tasks;
     }
 
     /**

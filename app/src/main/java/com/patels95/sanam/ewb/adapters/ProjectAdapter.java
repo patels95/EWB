@@ -82,7 +82,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
             TextView title = (TextView) v.findViewById(R.id.projectTitle);
             TextView parseId = (TextView) v.findViewById(R.id.parseId);
             Intent intent = new Intent(mContext, ProjectsActivity.class);
-            intent.putExtra(PROJECT_TITLE, title.getText().toString());
+            intent.putExtra(ParseConstants.PROJECT_TITLE, title.getText().toString());
             intent.putExtra(ParseConstants.PARSE_ID, parseId.getText().toString());
             mContext.startActivity(intent);
         }
