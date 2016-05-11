@@ -1,44 +1,78 @@
 package com.patels95.sanam.ewb.ui;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.parse.GetCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.patels95.sanam.ewb.R;
-import com.patels95.sanam.ewb.model.ParseConstants;
 
-public class HomeActivity extends ActionBarActivity
+public class HomeActivity extends AppCompatActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks,
         HomeFragment.OnFragmentInteractionListener,
         CalendarFragment.OnFragmentInteractionListener,
         ProjectsFragment.OnFragmentInteractionListener {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
-
-    /**
-     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-     */
     private NavigationDrawerFragment mNavigationDrawerFragment;
+    private Toolbar mToolbar;
+    private NavigationView mNavigationView;
+    private DrawerLayout mDrawerLayout;
+    private FragmentManager mFragmentManager = getSupportFragmentManager();
+
+    private NavigationView.OnNavigationItemSelectedListener mNavigationItemSelectedListener =
+            new NavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(MenuItem item) {
+            if (item.isChecked()) {
+                item.setChecked(false);
+            }
+            else {
+                item.setChecked(true);
+            }
+
+            mDrawerLayout.closeDrawers();
+
+            switch (item.getItemId()) {
+                case R.id.twitter:
+                    mTitle = "Twitter";
+                    mFragmentManager.beginTransaction()
+                            .replace(R.id.container, HomeFragment.newInstance(0))
+                            .commit();
+                    return true;
+                case R.id.calendar:
+                    mTitle = "Calendar";
+                    mFragmentManager.beginTransaction()
+                            .replace(R.id.container, CalendarFragment.newInstance(1))
+                            .commit();
+                    return true;
+                case R.id.projects:
+                    mTitle = "Projects";
+                    mFragmentManager.beginTransaction()
+                            .replace(R.id.container, ProjectsFragment.newInstance(2))
+                            .commit();
+                    return true;
+                default:
+                    mTitle = "Twitter";
+                    mFragmentManager.beginTransaction()
+                            .replace(R.id.container, HomeFragment.newInstance(3))
+                            .commit();
+                    return true;
+            }
+        }
+    };
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
@@ -51,14 +85,26 @@ public class HomeActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+//        mNavigationDrawerFragment = (NavigationDrawerFragment)
+//                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = "Twitter";
 
         // Set up the drawer.
-        mNavigationDrawerFragment.setUp(
-                R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
+//        mNavigationDrawerFragment.setUp(
+//                R.id.navigation_drawer,
+//                (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
+        mNavigationView.setNavigationItemSelectedListener(mNavigationItemSelectedListener);
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
+                this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
+
+        mDrawerLayout.setDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+
     }
 
     @Override
@@ -98,13 +144,13 @@ public class HomeActivity extends ActionBarActivity
     public void onSectionAttached(int number) {
         switch (number) {
             case 1:
-                mTitle = getString(R.string.title_section1);
+                mTitle = getString(R.string.drawer_twitter);
                 break;
             case 2:
-                mTitle = getString(R.string.title_section2);
+                mTitle = getString(R.string.drawer_calendar);
                 break;
             case 3:
-                mTitle = getString(R.string.title_section3);
+                mTitle = getString(R.string.drawer_projects);
                 break;
         }
     }
@@ -123,15 +169,10 @@ public class HomeActivity extends ActionBarActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!mNavigationDrawerFragment.isDrawerOpen()) {
-            // Only show items in the action bar relevant to this screen
-            // if the drawer is not showing. Otherwise, let the drawer
-            // decide what to show in the action bar.
-            if (ParseUser.getCurrentUser() != null) {
-                getMenuInflater().inflate(R.menu.menu_home, menu);
-                restoreActionBar();
-                return true;
-            }
+        if (ParseUser.getCurrentUser() != null) {
+            getMenuInflater().inflate(R.menu.menu_home, menu);
+            restoreActionBar();
+            return true;
         }
         return super.onCreateOptionsMenu(menu);
     }
