@@ -6,6 +6,7 @@
     <item name="green" type="color">#4499CC00</item>
     <item name="dark_green" type="color">#FF669900</item>
     <color name="primary">#27588F</color>
+    <color name="primary_dark">#153458</color>
     <color name="accent">#5D97CF</color>
     <color name="filter">#9AF710</color>
     <color name="solar">#FEB60C</color>

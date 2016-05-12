@@ -2,8 +2,10 @@
 <resources>
 
     <style name="TextAppearance.App.TextInputLayout" parent="@android:style/TextAppearance">
+        <item name="android:colorPrimary">@color/primary</item>
+        <item name="android:colorPrimaryDark">@color/primary_dark</item>
         <item name="android:textColor">@color/primary</item>
-        <item name="android:colorAccent">@color/primary</item>
+        <item name="android:colorAccent">@color/accent</item>
         <item name="android:colorControlNormal">@color/primary</item>
     </style>
 </resources>
