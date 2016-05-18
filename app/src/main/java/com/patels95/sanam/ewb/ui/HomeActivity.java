@@ -19,18 +19,21 @@ import android.widget.Toast;
 import com.parse.ParseUser;
 import com.patels95.sanam.ewb.R;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class HomeActivity extends AppCompatActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks,
-        HomeFragment.OnFragmentInteractionListener,
+        implements HomeFragment.OnFragmentInteractionListener,
         CalendarFragment.OnFragmentInteractionListener,
         ProjectsFragment.OnFragmentInteractionListener {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
     private NavigationDrawerFragment mNavigationDrawerFragment;
-    private Toolbar mToolbar;
-    private NavigationView mNavigationView;
-    private DrawerLayout mDrawerLayout;
     private FragmentManager mFragmentManager = getSupportFragmentManager();
+
+    @InjectView(R.id.tool_bar) Toolbar mToolbar;
+    @InjectView(R.id.navigation_view) NavigationView mNavigationView;
+    @InjectView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
 
     private NavigationView.OnNavigationItemSelectedListener mNavigationItemSelectedListener =
             new NavigationView.OnNavigationItemSelectedListener() {
@@ -84,61 +87,72 @@ public class HomeActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        ButterKnife.inject(this);
+        setSupportActionBar(mToolbar);
 
 //        mNavigationDrawerFragment = (NavigationDrawerFragment)
 //                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-        mTitle = "Twitter";
+//        mTitle = "Twitter";
 
         // Set up the drawer.
 //        mNavigationDrawerFragment.setUp(
 //                R.id.navigation_drawer,
 //                (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
         mNavigationView.setNavigationItemSelectedListener(mNavigationItemSelectedListener);
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close);
+                R.string.navigation_drawer_close) {
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+        };
 
         mDrawerLayout.setDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
     }
 
-    @Override
-    public void onNavigationDrawerItemSelected(int position) {
-        // update the main content by replacing fragments
-        // Fragment fragment = new CalendarFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        switch (position) {
-            case 0:
-                mTitle = "Twitter";
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, HomeFragment.newInstance(position + 1))
-                        .commit();
-                break;
-            case 1:
-                mTitle = "Calendar";
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, CalendarFragment.newInstance(position + 1))
-                        .commit();
-                break;
-            case 2:
-                mTitle = "Projects";
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, ProjectsFragment.newInstance(position + 1))
-                        .commit();
-                break;
-            default:
-                mTitle = "Twitter";
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, HomeFragment.newInstance(position + 1))
-                        .commit();
-                break;
-        }
-    }
+//    @Override
+//    public void onNavigationDrawerItemSelected(int position) {
+//        // update the main content by replacing fragments
+//        // Fragment fragment = new CalendarFragment();
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        switch (position) {
+//            case 0:
+//                mTitle = "Twitter";
+//                fragmentManager.beginTransaction()
+//                        .replace(R.id.container, HomeFragment.newInstance(position + 1))
+//                        .commit();
+//                break;
+//            case 1:
+//                mTitle = "Calendar";
+//                fragmentManager.beginTransaction()
+//                        .replace(R.id.container, CalendarFragment.newInstance(position + 1))
+//                        .commit();
+//                break;
+//            case 2:
+//                mTitle = "Projects";
+//                fragmentManager.beginTransaction()
+//                        .replace(R.id.container, ProjectsFragment.newInstance(position + 1))
+//                        .commit();
+//                break;
+//            default:
+//                mTitle = "Twitter";
+//                fragmentManager.beginTransaction()
+//                        .replace(R.id.container, HomeFragment.newInstance(position + 1))
+//                        .commit();
+//                break;
+//        }
+//    }
 
 
     public void onSectionAttached(int number) {
