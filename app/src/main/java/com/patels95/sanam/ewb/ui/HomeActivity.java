@@ -67,6 +67,9 @@ public class HomeActivity extends AppCompatActivity
                             .replace(R.id.container, ProjectsFragment.newInstance(2))
                             .commit();
                     return true;
+                case R.id.nav_logout:
+                    ParseUser.logOut();
+                    navigateToMain();
                 default:
                     mTitle = "Twitter";
                     mFragmentManager.beginTransaction()
@@ -119,6 +122,15 @@ public class HomeActivity extends AppCompatActivity
         mDrawerLayout.setDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
+        setTwitterAsDefault();
+    }
+
+    private void setTwitterAsDefault() {
+        mFragmentManager.beginTransaction()
+                .replace(R.id.container, HomeFragment.newInstance(0))
+                .commit();
+        // TODO - fix this
+        mNavigationView.setCheckedItem(0);
     }
 
 //    @Override
