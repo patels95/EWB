@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="Theme.Ewb" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="actionBarItemBackground">@drawable/selectable_background_ewb</item>
+        <item name="popupMenuStyle">@style/PopupMenu.Ewb</item>
+        <item name="dropDownListViewStyle">@style/DropDownListView.Ewb</item>
+        <item name="actionBarTabStyle">@style/ActionBarTabStyle.Ewb</item>
+        <item name="actionDropDownStyle">@style/DropDownNav.Ewb</item>
+        <item name="actionBarStyle">@style/ActionBar.Solid.Ewb</item>
+        <item name="actionModeBackground">@drawable/cab_background_top_ewb</item>
+        <item name="actionModeSplitBackground">@drawable/cab_background_bottom_ewb</item>
+        <item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Ewb</item>
+        <item name="android:colorPrimary">@color/primary</item>
+        <item name="android:colorPrimaryDark">@color/primary_dark</item>
+
+        <!-- Light.DarkActionBar specific -->
+        <item name="actionBarWidgetTheme">@style/Theme.Ewb.Widget</item>
+
+    </style>
+
     <style name="TextAppearance.App.TextInputLayout" parent="@android:style/TextAppearance">
         <item name="android:colorPrimary">@color/primary</item>
         <item name="android:colorPrimaryDark">@color/primary_dark</item>

@@ -62,8 +62,6 @@
     
     <style name="TextAppearance.App.TextInputLayout" parent="@android:style/TextAppearance">
         <item name="android:textColor">@color/primary</item>
-        <!--<item name="android:colorAccent">@color/primary</item>-->
-        <!--<item name="android:colorControlNormal">@color/primary</item>-->
     </style>
 
 </resources>
