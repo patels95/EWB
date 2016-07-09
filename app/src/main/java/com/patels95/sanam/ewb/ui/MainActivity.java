@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,7 +25,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     public static final String IS_MEMBER = "IS_MEMBER";
     private boolean mIsMember = false;
@@ -35,13 +37,14 @@ public class MainActivity extends ActionBarActivity {
     @InjectView(R.id.inputPassword) EditText mPassword;
     @InjectView(R.id.forgotPassword) TextView mForgotPassword;
     @InjectView(R.id.submitLogin) Button mSubmitLogin;
-
+    @InjectView(R.id.tool_bar) Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
+        setSupportActionBar(mToolbar);
 
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {

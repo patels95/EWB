@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:id="@+id/nav_menu"
+           android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/twitter"
+            android:icon="@drawable/twitter"
+            android:title="@string/drawer_twitter"
+            />
+
+        <item
+            android:id="@+id/calendar"
+            android:icon="@drawable/ic_date_range_black_48dp"
+            android:title="@string/drawer_calendar"
+            />
+
+        <item
+            android:id="@+id/projects"
+            android:icon="@drawable/ic_work_black_48dp"
+            android:title="@string/drawer_projects"
+            />
+    </group>
+
+    <group android:id="@+id/nav_footer">
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_exit_to_app_black_48dp"
+            android:title="@string/action_logout"
+            />
+    </group>
+
+</menu>

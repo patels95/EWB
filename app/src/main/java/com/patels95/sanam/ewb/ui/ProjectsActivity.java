@@ -3,11 +3,13 @@ package com.patels95.sanam.ewb.ui;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -16,8 +18,12 @@ import com.parse.ParseUser;
 import com.patels95.sanam.ewb.R;
 import com.patels95.sanam.ewb.adapters.ProjectAdapter;
 import com.patels95.sanam.ewb.adapters.SectionsPagerAdapter;
+import com.patels95.sanam.ewb.adapters.ViewPagerAdapter;
 import com.patels95.sanam.ewb.model.ParseConstants;
 import com.patels95.sanam.ewb.model.Project;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 public class ProjectsActivity extends ActionBarActivity implements ActionBar.TabListener,
     TaskFragment.OnFragmentInteractionListener {
@@ -27,6 +33,11 @@ public class ProjectsActivity extends ActionBarActivity implements ActionBar.Tab
 
     private static String mProjectTitle;
     private static String mParseId;
+    private ViewPagerAdapter mProjectPagerAdapter;
+
+    @InjectView(R.id.tool_bar) Toolbar mToolbar;
+    @InjectView(R.id.projectTabs) TabLayout mProjectTabs;
+    @InjectView(R.id.projectPager) ViewPager mProjectPager;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -47,41 +58,75 @@ public class ProjectsActivity extends ActionBarActivity implements ActionBar.Tab
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_projects);
+        ButterKnife.inject(this);
 
         // Set up the action bar.
-        final ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        actionBar.setStackedBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.accent)));
+//        final ActionBar actionBar = getSupportActionBar();
+        //actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        //actionBar.setStackedBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.accent)));
+
+        mProjectPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        mProjectPager.setAdapter(mProjectPagerAdapter);
+        setSupportActionBar(mToolbar);
+
+        TabLayout.Tab tasks = mProjectTabs.newTab();
+        TabLayout.Tab resources = mProjectTabs.newTab();
+
+        tasks.setText("Tasks");
+        resources.setText("Resources");
+
+        mProjectTabs.addTab(tasks, 0);
+        mProjectTabs.addTab(resources, 1);
+
+        mProjectTabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                mProjectPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        mProjectPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mProjectTabs));
+
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
-
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.pager);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+//        mSectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
+//
+//        // Set up the ViewPager with the sections adapter.
+//        mViewPager = (ViewPager) findViewById(R.id.pager);
+//        mViewPager.setAdapter(mSectionsPagerAdapter);
 
         // When swiping between different sections, select the corresponding
         // tab. We can also use ActionBar.Tab#select() to do this if we have
         // a reference to the Tab.
-        mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                actionBar.setSelectedNavigationItem(position);
-            }
-        });
+//        mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+//            @Override
+//            public void onPageSelected(int position) {
+//                actionBar.setSelectedNavigationItem(position);
+//            }
+//        });
 
         // For each of the sections in the app, add a tab to the action bar.
-        for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-            // Create a tab with text corresponding to the page title defined by
-            // the adapter. Also specify this Activity object, which implements
-            // the TabListener interface, as the callback (listener) for when
-            // this tab is selected.
-            actionBar.addTab(
-                    actionBar.newTab()
-                            .setText(mSectionsPagerAdapter.getPageTitle(i))
-                            .setTabListener(this));
-        }
+//        for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
+//            // Create a tab with text corresponding to the page title defined by
+//            // the adapter. Also specify this Activity object, which implements
+//            // the TabListener interface, as the callback (listener) for when
+//            // this tab is selected.
+//            actionBar.addTab(
+//                    actionBar.newTab()
+//                            .setText(mSectionsPagerAdapter.getPageTitle(i))
+//                            .setTabListener(this));
+//        }
 
         // Get the project's title from intent and set the action bar title
         Intent cardIntent = getIntent();

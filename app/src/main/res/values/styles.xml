@@ -1,6 +1,6 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="Theme.Ewb" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.Ewb" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="actionBarItemBackground">@drawable/selectable_background_ewb</item>
         <item name="popupMenuStyle">@style/PopupMenu.Ewb</item>
         <item name="dropDownListViewStyle">@style/DropDownListView.Ewb</item>
@@ -62,8 +62,16 @@
     
     <style name="TextAppearance.App.TextInputLayout" parent="@android:style/TextAppearance">
         <item name="android:textColor">@color/primary</item>
-        <!--<item name="android:colorAccent">@color/primary</item>-->
-        <!--<item name="android:colorControlNormal">@color/primary</item>-->
+    </style>
+    
+    <style name="CustomTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabTextAppearance">@style/CustomTabText</item>
+        <item name="tabSelectedTextColor">@android:color/white</item>
+        <item name="tabIndicatorColor">@android:color/white</item>
+    </style>
+
+    <style name="CustomTabText" parent="TextAppearance.AppCompat.Button">
+        <item name="android:textColor">@color/tab_text</item>
     </style>
 
 </resources>
