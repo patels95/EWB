@@ -63,5 +63,15 @@
     <style name="TextAppearance.App.TextInputLayout" parent="@android:style/TextAppearance">
         <item name="android:textColor">@color/primary</item>
     </style>
+    
+    <style name="CustomTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabTextAppearance">@style/CustomTabText</item>
+        <item name="tabSelectedTextColor">@android:color/white</item>
+        <item name="tabIndicatorColor">@android:color/white</item>
+    </style>
+
+    <style name="CustomTabText" parent="TextAppearance.AppCompat.Button">
+        <item name="android:textColor">@color/tab_text</item>
+    </style>
 
 </resources>
