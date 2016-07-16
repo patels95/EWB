@@ -1,19 +1,37 @@
 package com.patels95.sanam.ewb.ui;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.patels95.sanam.ewb.R;
 import com.patels95.sanam.ewb.adapters.ProjectAdapter;
+import com.patels95.sanam.ewb.model.ParseConstants;
 import com.patels95.sanam.ewb.model.Project;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.io.IOUtils;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -55,7 +73,7 @@ public class ProjectsFragment extends Fragment {
         if (getArguments() != null) {
             mSectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
         }
-        mProjectCards = setProjectsArray();
+        getParseProjects();
     }
 
 
@@ -75,29 +93,149 @@ public class ProjectsFragment extends Fragment {
         return view;
     }
 
-    private Project[] setProjectsArray() {
-        Project filtration = new Project();
-        filtration.setTitle(getString(R.string.filtration_title));
-        filtration.setDescription(getString(R.string.filtration_description));
-        filtration.setImageUri(getString(R.string.filtration_image_uri));
 
-        Project storage = new Project();
-        storage.setTitle(getString(R.string.storage_title));
-        storage.setDescription(getString(R.string.storage_description));
-        storage.setImageUri(getString(R.string.storage_image_uri));
+    private void setProjectsArray(ArrayList<String> projectStrings) {
 
-        Project hygiene = new Project();
-        hygiene.setTitle(getString(R.string.hygiene_title));
-        hygiene.setDescription(getString(R.string.hygiene_description));
-        hygiene.setImageUri(getString(R.string.hygiene_image_uri));
+        Project filter = new Project();
+        filter.setTitle(projectStrings.get(0));
+        filter.setDescription(projectStrings.get(1));
+        filter.setImageUri(projectStrings.get(2));
+        filter.setParseId(projectStrings.get(3));
 
-        Project borehole = new Project();
-        borehole.setTitle(getString(R.string.borehole_title));
-        borehole.setDescription(getString(R.string.borehole_description));
-        borehole.setImageUri("@drawable/borehole");
+        Project collection = new Project();
+        collection.setTitle(projectStrings.get(4));
+        collection.setDescription(projectStrings.get(5));
+        collection.setImageUri(projectStrings.get(6));
+        collection.setParseId(projectStrings.get(7));
 
-        Project[] projectCards = {filtration, storage, hygiene, borehole};
-        return projectCards;
+        Project sanitation = new Project();
+        sanitation.setTitle(projectStrings.get(8));
+        sanitation.setDescription(projectStrings.get(9));
+        sanitation.setImageUri(projectStrings.get(10));
+        sanitation.setParseId(projectStrings.get(11));
+
+        Project solar = new Project();
+        solar.setTitle(projectStrings.get(12));
+        solar.setDescription(projectStrings.get(13));
+        solar.setImageUri(projectStrings.get(14));
+        solar.setParseId(projectStrings.get(15));
+
+        mProjectCards = new Project[]{filter, collection, sanitation, solar};
+    }
+
+    private void updateParseProjects() throws IOException {
+
+        // get file from assets folder and convert to byte array
+//        AssetManager am = getResources().getAssets();
+//        InputStream inputStream = am.open("SPSpring2016.pdf");
+//        byte[] data = IOUtils.toByteArray(inputStream);
+
+//        ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.PROJECT_CLASS);
+
+        // Biosand Filter
+//        query.getInBackground(ParseConstants.FILTER_ID, new GetCallback<ParseObject>() {
+//            @Override
+//            public void done(ParseObject filter, ParseException e) {
+//                if (e == null) {
+//                    filter.saveInBackground();
+//                }
+//            }
+//        });
+
+        // Water Transportation & Collection
+//        query.getInBackground(ParseConstants.COLLECTION_ID, new GetCallback<ParseObject>() {
+//            @Override
+//            public void done(ParseObject collection, ParseException e) {
+//                if (e == null) {
+//                    collection.saveInBackground();
+//                }
+//            }
+//        });
+
+        // Sanitation Systems
+//        query.getInBackground(ParseConstants.SANITATION_ID, new GetCallback<ParseObject>() {
+//            @Override
+//            public void done(ParseObject sanitation, ParseException e) {
+//                if (e == null) {
+//                    sanitation.saveInBackground();
+//                }
+//            }
+//        });
+
+        // Solar Pump
+//        query.getInBackground(ParseConstants.SOLAR_ID, new GetCallback<ParseObject>() {
+//            @Override
+//            public void done(ParseObject solar, ParseException e) {
+//                if (e == null) {
+//                    solar.saveInBackground();
+//                }
+//            }
+//        });
+    }
+
+    private File createFileFromInputStream(InputStream inputStream) {
+        try {
+            File file = new File("BSFSpring2016.pdf");
+            OutputStream outputStream = new FileOutputStream(file);
+            byte buffer[] = new byte[1024];
+            int length = 0;
+
+            while ((length = inputStream.read(buffer)) > 0) {
+                outputStream.write(buffer, 0, length);
+            }
+
+            outputStream.close();
+            inputStream.close();
+
+            return file;
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private void getParseProjects() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.PROJECT_CLASS);
+        try {
+            List<ParseObject> list = query.find();
+            ArrayList<String> projectStrings = new ArrayList<String>();
+            for (int i = 0; i < list.size(); i++){
+                projectStrings.add(list.get(i).getString(ParseConstants.PROJECT_TITLE));
+                projectStrings.add(list.get(i).getString(ParseConstants.PROJECT_DESCRIPTION));
+                projectStrings.add(list.get(i).getString(ParseConstants.PROJECT_IMAGEURI));
+                projectStrings.add(list.get(i).getObjectId());
+            }
+            setProjectsArray(projectStrings);
+        }
+        catch (ParseException e) {
+            e.printStackTrace();
+            setProjectsArrayLocal();
+        }
+    }
+
+    private void setProjectsArrayLocal() {
+        Project filter = new Project();
+        filter.setTitle(getString(R.string.filter_title));
+        filter.setDescription(getString(R.string.filter_description));
+        filter.setImageUri(getString(R.string.filter_image_uri));
+
+        Project collection = new Project();
+        collection.setTitle(getString(R.string.collection_title));
+        collection.setDescription(getString(R.string.collection_description));
+        collection.setImageUri(getString(R.string.collection_image_uri));
+
+        Project sanitation = new Project();
+        sanitation.setTitle(getString(R.string.sanitation_title));
+        sanitation.setDescription(getString(R.string.sanitation_description));
+        sanitation.setImageUri(getString(R.string.sanitation_image_uri));
+
+        Project solar = new Project();
+        solar.setTitle(getString(R.string.solar_title));
+        solar.setDescription(getString(R.string.solar_description));
+        solar.setImageUri(getString(R.string.solar_image_uri));
+
+        mProjectCards = new Project[]{filter, collection, sanitation, solar};
     }
 
     public void onButtonPressed(Uri uri) {

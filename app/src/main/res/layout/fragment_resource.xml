@@ -1,0 +1,54 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             xmlns:card_view="http://schemas.android.com/apk/res-auto"
+             tools:context="com.patels95.sanam.ewb.ui.ResourceFragment"
+             android:background="@android:color/white">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/resourceCardView"
+        card_view:cardElevation="3dp"
+        card_view:cardUseCompatPadding="true"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/resource_padding"
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/pdfImage"
+                android:tint="@color/collection"
+                android:src="@drawable/ic_picture_as_pdf_black_48dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/fileName"
+                android:text="@string/file_name"
+                android:textSize="20sp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/pdfImage"
+                android:layout_toEndOf="@+id/pdfImage"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/fileDownload"
+                android:src="@drawable/ic_file_download_black_48dp"
+                android:tint="@color/grey"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"/>
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+</FrameLayout>

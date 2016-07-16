@@ -20,8 +20,8 @@
     <string name="ewb_url">http://www.ewbbu.com/</string>
     <string name="title_activity_projects">Projects</string>
     <string name="announcements_title">Announcements</string>
+    <string name="ewb_admin">EWB Admin</string>
     <string name="ewb_member">EWB Member</string>
-    <string name="guest">Guest</string>
     <string name="main_sign_up">Don\'t have an account? Sign Up</string>
     <string name="projects">Projects</string>
     <string name="right_arrow">right arrow</string>
@@ -29,11 +29,12 @@
     <string name="action_edit">Edit</string>
     <string name="title_page_list">Pages</string>
     <string name="title_page_detail">Page Detail</string>
+    <string name="back_label">Not an admin? Go back</string>
 
     <!-- ACTION BAR TITLES -->
-    <string name="title_section1">Home</string>
-    <string name="title_section2">Calendar</string>
-    <string name="title_section3">Projects</string>
+    <string name="drawer_twitter">Twitter</string>
+    <string name="drawer_calendar">Calendar</string>
+    <string name="drawer_projects">Projects</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -41,21 +42,78 @@
     <string name="action_example">Example action</string>
     <string name="googlePublicKey">AIzaSyAy-iwqjyFruP9Px31TTRYSVpSpuJKAnts</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="timeline_empty">Timeline is empty</string>
+    <string name="timeline_empty">Swipe down to refresh</string>
 
     <!-- PROJECT STRINGS -->
-    <string name="filtration_title">Water Filtration</string>
-    <string name="filtration_description">Our Water Filtration Team piloted a biosand filtration device that will utilize locally found resources to naturally sanitize contaminated water.</string>
-    <string name="filtration_image_uri">\@drawable/filtration</string>
-    <string name="storage_title">Transportation and Storage</string>
-    <string name="storage_description">In order to address the need for improved water transportation and storage, we are working on designing bulk devices that will also reduce the physical stress and the time spent transporting water.</string>
-    <string name="storage_image_uri">\@drawable/storage</string>
-    <string name="hygiene_title">Hygiene and Sanitation</string>
-    <string name="hygiene_description">Using existing prototypes, we hope to implement hand washing stations that can be build and maintained with local and affordable resources.</string>
-    <string name="hygiene_image_uri">\@drawable/hygiene</string>
-    <string name="borehole_title">Borehole and Well</string>
-    <string name="borehole_description">A borehole is a narrow shaft bored in the ground, either vertically or horizontally. Typically, a borehole used as a water well is completed by installing a vertical pipe (casing) and well screen to keep the borehole from caving.</string>
+    <string name="filter_title">Biosand Filter</string>
+    <string name="filter_description">Since August 2014, EWB-BU has developed and monitored biosandfiltration
+        devices in Naluja, designed to be locally affordable and resourced,  as well as efficient in naturally
+        sanitizing contaminated water.</string>
+    <string name="filter_image_uri">\@drawable/filtration</string>
+    <string name="collection_title">Water Transportation &amp; Collection</string>
+    <string name="collection_description">Given that safe-drinking water sources are few and far apart,
+        community members journey several kilometers daily to acquire water. EWB-BU is searching for a more
+        efficient means of transporting water, by make portable an increased bulk, by reducing the time of transport,
+        and by alleviating the physical stress.</string>
+    <string name="collection_image_uri">\@drawable/storage</string>
+    <string name="sanitation_title">Sanitation Systems</string>
+    <string name="sanitation_description">By promoting healthy hygiene and sanitation practices, EWB-BU hopes to
+        prevent the recontamination of potable water and decrease risk of disease related to fecal bacteria. From
+        an engineering standpoint, this will be accomplished through more efficient latrine design, tippy-tap hand
+        washing stations, and educational workshops.</string>
+    <string name="sanitation_image_uri">\@drawable/hygiene</string>
+    <string name="solar_title">Solar Pump</string>
+    <string name="solar_description">EWB-BU is working to provide improved water accessibility to the
+        Nalujan community - even during the dry season - by repairing a solar-powered pump system near the
+        clinic and by further investigating drilling a well.</string>
+    <string name="solar_image_uri">\@drawable/borehole</string>
+    <string name="action_logout">Logout</string>
+
+    <string name="project_section1">Tasks</string>
+    <string name="project_section2">Resources</string>
+    <string-array name="edit_projects_dialog">
+        <item>Biosand Filter</item>
+        <item>Water Transportation &amp; Collection</item>
+        <item>Sanitation Systems</item>
+        <item>Solar Pump</item>
+    </string-array>
+    <string name="edit_project_dialog_title">Choose a Project to Edit</string>
+
+    <!-- PARSE OBJECT IDS -->
+    <string name="filter_id">cUryqF7MGf</string>
+    <string name="collection_id">eD2ehQr0YF</string>
+    <string name="sanitation_id">e6KauliqDC</string>
+    <string name="solar_id">coLup3vAUH</string>
+
+    <string name="refresh_failed">Refresh Failed. Please Try Again.</string>
+    <string name="refresh">Refresh</string>
+
+    <string name="title_activity_edit_projects">Edit Project</string>
+
+    <!-- ERROR MESSAGES -->
+    <string name="edit_info_admin_error">You must be an admin to edit app info.</string>
 
 
+    <string name="title_activity_task">TaskActivity</string>
+    <string name="add_task">Add Task</string>
+    <string name="title_activity_new_task">Create New Task</string>
+    <string name="action_delete_task">Delete Task</string>
+    <string name="hint_new_task_title">Task Title</string>
+    <string name="new_task_description">Task Description</string>
+    <string name="save">Save</string>
+    <string name="choose_due_date">Choose Due Date</string>
+    <string name="file_name">File Name</string>
+
+    <!-- PDF FILE NAMES -->
+    <string name="filter_file">BSFSpring2016.pdf</string>
+    <string name="collection_file">WTCSpring2016.pdf</string>
+    <string name="sanitation_file">SSSpring2016.pdf</string>
+    <string name="solar_file">SPSpring2016.pdf</string>
+    <string name="task_title">Task Title</string>
+    <string name="task_due_date">Due Date</string>
+    <string name="task_description">Task Description</string>
+    <string name="delete_task">Delete Task</string>
+    <string name="complete_task">Complete Task</string>
+    <string name="full_name">Name</string>
 
 </resources>

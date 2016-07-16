@@ -2,11 +2,13 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                tools:context=".MainActivity"
+                tools:context=".ui.MainActivity"
                 android:background="#FFFFFF">
+
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/tool_bar">
+    </include>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -15,39 +17,43 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:src="@drawable/ewb_logo"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="100dp"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ewb_admin"
+        android:id="@+id/memberButton"
+        android:layout_below="@+id/ewbLogo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:textSize="17sp"
+        android:background="@color/primary"
+        android:textColor="@android:color/white"
+        />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/ewb_member"
-        android:id="@+id/memberButton"
-        android:layout_below="@+id/ewbLogo"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:textSize="17sp"
-        android:background="#27588F"
-        android:textColor="#FEFEFE"
-        />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/guest"
         android:id="@+id/guestButton"
         android:layout_below="@+id/memberButton"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
         android:textSize="17sp"
-        android:background="#27588F"
-        android:textColor="#FEFEFE"
+        android:background="@color/primary"
+        android:textColor="@android:color/white"
         />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/main_sign_up"
-        android:id="@+id/registerLabel"
+        android:text="@string/back_label"
+        android:id="@+id/backLabel"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
@@ -57,7 +63,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/registerLabel"
+        android:layout_below="@+id/backLabel"
         android:layout_centerHorizontal="true"
         android:gravity="center"
         android:layout_marginTop="20dp"
@@ -110,7 +116,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="5dp"
         android:layout_marginEnd="5dp"
-        android:background="#27588F"
+        android:background="@color/primary"
         android:textColor="@android:color/white"
         />
 

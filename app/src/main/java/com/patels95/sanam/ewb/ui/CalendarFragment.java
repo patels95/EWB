@@ -28,10 +28,12 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -66,18 +68,20 @@ public class CalendarFragment extends Fragment{
     private static final String TAG = CalendarFragment.class.getSimpleName();
 
     // This email will be used for the calendar.
-    private String USETHISEMAIL = "metlifeyet@gmail.com";
+    private String USETHISEMAIL = "ewbbu.webmaster@gmail.com";
 
     // Fragment interface variables.
     private LinearLayout mFragmentLayout;
     private ProgressBar mProgressBar;
     private TextView mLoadingText;
+    private Button mRefreshButton;
 
     //AsyncTask tools / interface.
     private CalendarAsyncInterface mInterface = new CalendarAsyncInterface() {
         @Override
         public void onTaskComplete(List<Event> result) {
             //this you will received result fired from async class of onPostExecute(result) method.
+            System.out.println("CalendarFragment - mInterface onTaskComplete complete.");
             if (result != null){
                 mEventList = result;
                 extractEventListData();
@@ -94,9 +98,7 @@ public class CalendarFragment extends Fragment{
     // Recycler View.
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
-    private RecyclerView.Adapter mRecyclerAdapter;
     private CalendarAdapter mCalendarAdapter;
-    private List<Event> mDatasetEvent;
 
     // Task related variables.
     private List<Event> mEventList;
@@ -110,8 +112,6 @@ public class CalendarFragment extends Fragment{
     com.google.api.services.calendar.Calendar mService;
 
     GoogleAccountCredential credential;
-    private TextView mStatusText;
-    private TextView mResultsText;
     final HttpTransport transport = AndroidHttp.newCompatibleTransport();
     final JsonFactory jsonFactory = GsonFactory.getDefaultInstance();
 
@@ -152,24 +152,25 @@ public class CalendarFragment extends Fragment{
                 getActivity().getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff())
                 .setSelectedAccountName(settings.getString(PREF_ACCOUNT_NAME, null));
-////                Uncomment if you need to change accounts.
-//                .setSelectedAccountName(null);
 
         mService = new com.google.api.services.calendar.Calendar.Builder(
                 transport, jsonFactory, credential)
                 .setApplicationName("Engineers Without Borders BU")
                 .build();
         refreshResults();
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Callever every time the fragment is utilized.
         // Adapter functions.
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
         mFragmentLayout = (LinearLayout) view.findViewById(R.id.fragmentLayout);
         mProgressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-        mLoadingText = (TextView) view.findViewById(R.id.textLoading);
+        mLoadingText = (TextView) view.findViewById(R.id.textFragment);
+        mRefreshButton = (Button) view.findViewById(R.id.refreshButton);
         // If app successfully retrieves data from API
         mProgressBar.setVisibility(View.GONE);
         mFragmentLayout.setBackgroundColor(Color.WHITE);
@@ -183,6 +184,16 @@ public class CalendarFragment extends Fragment{
         mRecyclerView.setHasFixedSize(true); // Experimental. Remove if recyclerView is not fixed.
         mCalendarAdapter = new CalendarAdapter(getActivity(), mEventList);
         mRecyclerView.setAdapter(mCalendarAdapter);
+        // Set up refresh button. Refresh button visible if no events are found via
+
+        mRefreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshResults();
+            }
+        });
+
+
         return view;
     }
 
@@ -238,6 +249,32 @@ public class CalendarFragment extends Fragment{
     }
 
     /**
+ * Once the asynctask is complete, then mEventList should be initiated with an EventList.
+ * This method successfully extracts the required data and loads it into the CalendarAdapter.
+ * If the EventList is null, then the method will return a toast message warning the user.
+ */
+    private void extractEventListData() {
+        mCalendarAdapter.clearList(); // Reset list.
+        if (mEventList.size() != 0){
+            for (Event event : mEventList) {
+                System.out.println("extractEventListData() - event extracted.");
+                mCalendarAdapter.addItemToDataset(event);
+            }
+            mLoadingText.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.VISIBLE);
+            mCalendarAdapter.notifyDataSetChanged();
+        }
+        else {
+            System.out.println("extractEventListData() - mEventList was null.");
+            mLoadingText.setText("No events were found.");
+            mLoadingText.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.GONE);
+            Toast toast = Toast.makeText(getActivity().getApplicationContext(), "No events found! Please refresh this page.", Toast.LENGTH_LONG);
+            toast.show();
+        }
+    }
+
+    /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
@@ -279,6 +316,7 @@ public class CalendarFragment extends Fragment{
                         data.getExtras() != null) {
                     String accountName =
                             data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+                    System.out.println("This is accountName: " + accountName);
                     if (accountName != null) {
                         credential.setSelectedAccountName(accountName);
                         SharedPreferences settings =
@@ -287,8 +325,10 @@ public class CalendarFragment extends Fragment{
                         editor.putString(PREF_ACCOUNT_NAME, accountName);
                         editor.commit();
                     }
-                } else if (resultCode == getActivity().RESULT_CANCELED) {
-                    mStatusText.setText("Account unspecified.");
+                    startAsyncCalendar();
+                } else if (resultCode == getActivity().RESULT_CANCELED) { // 0
+//                    mStatusText.setText("Account unspecified.");
+                    Toast.makeText(getActivity(), "Account unspecified.", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case REQUEST_AUTHORIZATION:
@@ -313,78 +353,12 @@ public class CalendarFragment extends Fragment{
             if (isDeviceOnline() && credential.getSelectedAccountName() != null) {
                 startAsyncCalendar();
             } else if (isDeviceOnline() == false){
-                mStatusText.setText("No network connection available.");
+                Toast.makeText(getActivity(), "No network connection is available.", Toast.LENGTH_SHORT).show();
             }
             else{
-                mStatusText.setText("Credential account is null.");
+                Toast.makeText(getActivity(), "Credential account is null.", Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-    private void extractEventListData() {
-        if (mEventList != null){
-//            System.out.println("extractEventListData() - mEventList valid, now extracting...");
-            for (Event event : mEventList) {
-                System.out.println("extractEventListData() - event extracted.");
-                mCalendarAdapter.addItemToDataset(event);
-            }
-            mCalendarAdapter.notifyDataSetChanged();
-        }
-        else {
-            System.out.println("extractEventListData() - mEventList was null.");
-        }
-    }
-
-    /**
-     * Clear any existing Google Calendar API data from the TextView and update
-     * the header message; called from background threads and async tasks
-     * that need to update the UI (in the UI thread).
-     */
-    public void clearResultsText() {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mStatusText.setText("Retrieving data…");
-                mResultsText.setText("");
-            }
-        });
-    }
-
-    /**
-     * Fill the data TextView with the given List of Strings; called from
-     * background threads and async tasks that need to update the UI (in the
-     * UI thread).
-     * @param dataStrings a List of Strings to populate the main TextView with.
-     */
-    public void updateResultsText(final List<String> dataStrings) {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (dataStrings == null) {
-                    mStatusText.setText("Error retrieving data!");
-                } else if (dataStrings.size() == 0) {
-                    mStatusText.setText("No data found.");
-                } else {
-                    mStatusText.setText("Data retrieved using" +
-                            " the Google Calendar API:");
-                    mResultsText.setText(TextUtils.join("\n\n", dataStrings));
-                }
-            }
-        });
-    }
-
-    /**
-     * Show a status message in the list header TextView; called from background
-     * threads and async tasks that need to update the UI (in the UI thread).
-     * @param message a String to display in the UI header TextView.
-     */
-    public void updateStatus(final String message) {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mStatusText.setText(message);
-            }
-        });
     }
 
     /**
@@ -394,6 +368,7 @@ public class CalendarFragment extends Fragment{
     private void chooseAccount() {
         startActivityForResult(
                 credential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
+
     }
 
     /**

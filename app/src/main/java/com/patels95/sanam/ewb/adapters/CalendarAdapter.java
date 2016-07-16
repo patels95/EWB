@@ -1,14 +1,7 @@
 package com.patels95.sanam.ewb.adapters;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
-import android.media.MediaRecorder;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,17 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.api.client.util.DateTime;
-import com.google.api.services.calendar.model.Calendar;
 import com.google.api.services.calendar.model.Event;
-
+import com.google.api.services.calendar.model.EventAttachment;
 import com.patels95.sanam.ewb.R;
 import com.patels95.sanam.ewb.ui.CalendarDialog;
+import com.patels95.sanam.ewb.ui.CalendarSerializable;
 
-import java.io.FileDescriptor;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,6 +26,13 @@ import java.util.List;
  * Created by Daniel on 7/22/2015.
  */
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder> {
+    /*
+    / This file controls the actual list that displays the events in Calendar.
+    / The adapter itself is a RecyclerView
+    / Each event uses the xml file "cardview_calendarevent.xml"
+    / Use thie file to change the display of events, or the adapter list itself.
+     */
+
     // Constructor variable
     private Context mContext;
     private List<Event> mDataset = new ArrayList<>();
@@ -46,7 +43,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
     }
 
     public class CalendarViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        // Event variables
+        // Event variables.
         CardView mCardView;
         ImageView mEventIcon;
         TextView mEventTitle;
@@ -56,6 +53,8 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
         TextView mEventTimeEnd;
         TextView mEventTimeEndSubtext; // "Ends: "
         String mEventDescriptionString;
+        String mEventNoTagTitle; // Title without Tag at beginning
+        List<EventAttachment> mEventAttachments = new ArrayList<>();
 
         public CalendarViewHolder(View v){
             super(v);
@@ -74,9 +73,13 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
 
         @Override
         public void onClick(View v) {
+            CalendarSerializable cs = new CalendarSerializable();
+            cs.setEventAttachments(mEventAttachments);
+            // Dialog is created here.
             CalendarDialog eventDialog = new CalendarDialog();
             eventDialog = eventDialog.newInstance(mEventTitle.getText().toString(),
-                                    mEventDescriptionString);
+                                    mEventDescriptionString,
+                                    cs);
             eventDialog.show(((Activity) mContext).getFragmentManager(), "null");
         }
     }
@@ -93,20 +96,42 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
     public void onBindViewHolder(CalendarViewHolder holder, int position) {
         if (mDataset != null) {
             Event ev = mDataset.get(position);
+            holder.mEventAttachments = ev.getAttachments();
+            setupIconImage(holder,ev);
             setupTitle(holder, ev);
             setupLocation(holder, ev);
             setupTimeStart(holder, ev);
             setupTimeEnd(holder, ev);
             setupDescription(holder, ev);
         }
+    }
+
+    private void setupIconImage(CalendarViewHolder holder, Event ev) {
+        // Will change icon according to tags put in the event title.
+        // Icons themselves stored in drawables.
+        // The tags will be removed from the title through regex.
+        // mEventNoTagTitle will be used for title if a tag was removed.
+        String title = ev.getSummary().toString();
+        if (title.startsWith("[ALERT]")){
+//            holder.mEventIcon.setImageResource(R.drawable.icon_emergency);
         }
+        if (title.startsWith("[CAT]")){
+//            holder.mEventIcon.setImageResource(R.drawable.cat);
+        }
+        else{
+            // Just use the default EWB icon.
+        }
+    }
 
     private void setupDescription(CalendarViewHolder holder, Event ev) {
         holder.mEventDescriptionString = ev.getDescription();
     }
 
     private void setupTitle(CalendarViewHolder holder, Event ev) {
-        holder.mEventTitle.setText(ev.getSummary());
+        String title = ev.getSummary().toString();
+        title = title.replaceAll("\\[.*?\\]", ""); // Remove tags.
+        holder.mEventTitle.setText(title);
+        holder.mEventTitle.setSelected(true);
     }
 
     private void setupLocation(CalendarViewHolder holder, Event ev) {
@@ -119,14 +144,14 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
 
     private void setupTimeStart(CalendarViewHolder holder, Event ev) {
         if (ev.getStart().getDateTime() != null) {
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy, hh:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd, h:mm a");
             DateTime dt = ev.getStart().getDateTime();
             Date date = new Date(dt.getValue());
             String formattedDateTime = sdf.format(date);
             holder.mEventTimeStart.setText(formattedDateTime);
         } else if (ev.getStart().getDate() != null){ // This will assume the event is all day.
 //            holder.mEventTimeStart.setVisibility(View.INVISIBLE);
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd");
             com.google.api.client.util.DateTime dt = ev.getStart().getDate();
             Date date = new Date(dt.getValue());
             String formattedDate = sdf.format(date);
@@ -137,7 +162,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
 
     private void setupTimeEnd(CalendarViewHolder holder, Event ev) {
         if (ev.getEnd().getDateTime() != null) {
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy, hh:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd, h:mm a");
             DateTime dt = ev.getEnd().getDateTime();
             Date date = new Date(dt.getValue());
             String formattedDateTime = sdf.format(date);
@@ -146,6 +171,14 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
             holder.mEventTimeEnd.setVisibility(View.INVISIBLE);
             holder.mEventTimeEndSubtext.setVisibility(View.INVISIBLE);
         }
+    }
+
+    public void clearList(){
+
+    }
+
+    public void addAll(){
+
     }
 
     @Override

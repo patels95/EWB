@@ -1,6 +1,7 @@
 package com.patels95.sanam.ewb.ui;
 
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
@@ -32,7 +33,8 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
     private Calendar mService;
     private String displayThisAccount; // ACCOUNT WHOSE CALENDAR YOU WANT TO DISPLAY
     private List<Event> mEventList = new ArrayList<>();
-    private Integer mCounter = 0;
+    private Boolean errorDetected = false;
+    private Boolean isAccountSet = false;
 
     CalendarAsyncTask(CalendarFragment frag, CalendarAsyncInterface listener, String pageToken, Calendar calendar, String account){
         mFragment = frag;
@@ -43,8 +45,13 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
     }
     CalendarAsyncTask(){ // Default Constructor.
     }
+
+
     @Override
     protected List<Event> doInBackground(Void... params) {
+        // From Google Developer documentation.
+        // Pulls events from Calendar.Events.List (Not EventsList)
+
         do {
             Events events = null;
             try {
@@ -58,21 +65,39 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
                         .setOrderBy("startTime")
                         .setSingleEvents(true)
                         .execute();
+
             } catch (final GooglePlayServicesAvailabilityIOException availabilityException) {
+                System.out.println("Error: GooglePlayServicesAvailabilityIOException");
+                errorDetected = true;
                 mFragment.showGooglePlayServicesAvailabilityErrorDialog(
                         availabilityException.getConnectionStatusCode());
+
             } catch (UserRecoverableAuthIOException userRecoverableException) {
-                mFragment.startActivityForResult(
-                        userRecoverableException.getIntent(),
-                        CalendarFragment.REQUEST_AUTHORIZATION);
+                System.out.println("Error: UserRecoverableAuthIOException");
+                errorDetected = true;
+                if (mFragment.isAdded()) {
+                    mFragment.startActivityForResult(
+                            userRecoverableException.getIntent(),
+                            CalendarFragment.REQUEST_AUTHORIZATION);
+                }
             } catch (IOException e) {
-                e.printStackTrace();
+                errorDetected = true;
+                System.out.println("Error: IOException");
+//                e.printStackTrace();
             }
-            if (mCounter == 0 && events != null){
+            // If no errors are met, then account must have been set or was just set.
+            isAccountSet = true;
+            if (events != null) {
                 mEventList = events.getItems();
+                if (events.getNextPageToken() != null) {
+                    // Theoretically, you should only have one page token. It should not ask for another one.
+                    mPageToken = events.getNextPageToken();
+//                    System.out.println("from AsyncTask " + mPageToken);
+                }
             }
-            mPageToken = events.getNextPageToken();
-            mCounter += 1;
+            else {
+                System.out.println("CalendarAsyncTask.java - Account set. Please refresh the page.");
+            }
         } while (mPageToken != null);
         mFragment.setEventList(mEventList);
         return mEventList;
@@ -82,7 +107,8 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
     protected void onPostExecute(List<Event> resultEventList){
         // Take result from doInBackground and perform something with it.
         // In this case, return a valid mEventList.
-        if (mEventList != null && response != null) {
+        if (mEventList != null && response != null && errorDetected == false && mFragment.isAdded()) {
+            System.out.println("CalendarAsyncTask.java - now on onPostExecute.");
             response.onTaskComplete(mEventList);
         }
     }

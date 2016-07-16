@@ -3,14 +3,15 @@ package com.patels95.sanam.ewb.ui;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,25 +25,31 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     public static final String IS_MEMBER = "IS_MEMBER";
     private boolean mIsMember = false;
 
     @InjectView(R.id.memberButton) Button mMember;
     @InjectView(R.id.guestButton) Button mGuest;
-    @InjectView(R.id.registerLabel) TextView mRegister;
+    @InjectView(R.id.backLabel) TextView mBack;
     @InjectView(R.id.inputEmail) EditText mEmail;
     @InjectView(R.id.inputPassword) EditText mPassword;
     @InjectView(R.id.forgotPassword) TextView mForgotPassword;
     @InjectView(R.id.submitLogin) Button mSubmitLogin;
-
+    @InjectView(R.id.tool_bar) Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
+        setSupportActionBar(mToolbar);
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null) {
+            memberStartHome();
+        }
 
         //login is invisible by default
         toggleLogin();
@@ -61,10 +68,10 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-        mRegister.setOnClickListener(new View.OnClickListener(){
+        mBack.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
-                startRegister();
+            public void onClick(View v) {
+                toggleLogin();
             }
         });
 
@@ -146,7 +153,8 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_register) {
+            startRegister();
             return true;
         }
 
@@ -194,6 +202,7 @@ public class MainActivity extends ActionBarActivity {
             mPassword.setVisibility(View.INVISIBLE);
             mForgotPassword.setVisibility(View.INVISIBLE);
             mSubmitLogin.setVisibility(View.INVISIBLE);
+            mBack.setVisibility(View.INVISIBLE);
             mMember.setVisibility(View.VISIBLE);
             mGuest.setVisibility(View.VISIBLE);
         }
@@ -202,6 +211,7 @@ public class MainActivity extends ActionBarActivity {
             mPassword.setVisibility(View.VISIBLE);
             mForgotPassword.setVisibility(View.VISIBLE);
             mSubmitLogin.setVisibility(View.VISIBLE);
+            mBack.setVisibility(View.VISIBLE);
             mMember.setVisibility(View.INVISIBLE);
             mGuest.setVisibility(View.INVISIBLE);
         }
