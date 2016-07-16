@@ -2,11 +2,13 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                tools:context=".MainActivity"
+                tools:context=".ui.MainActivity"
                 android:background="#FFFFFF">
+
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/tool_bar">
+    </include>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -15,7 +17,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:src="@drawable/ewb_logo"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="100dp"/>
 
     <Button
         android:layout_width="match_parent"
@@ -24,7 +26,9 @@
         android:id="@+id/memberButton"
         android:layout_below="@+id/ewbLogo"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
         android:textSize="17sp"
         android:background="@color/primary"
         android:textColor="@android:color/white"
@@ -38,6 +42,8 @@
         android:layout_below="@+id/memberButton"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
         android:textSize="17sp"
         android:background="@color/primary"
         android:textColor="@android:color/white"

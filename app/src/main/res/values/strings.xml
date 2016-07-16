@@ -32,9 +32,9 @@
     <string name="back_label">Not an admin? Go back</string>
 
     <!-- ACTION BAR TITLES -->
-    <string name="title_section1">Twitter</string>
-    <string name="title_section2">Calendar</string>
-    <string name="title_section3">Projects</string>
+    <string name="drawer_twitter">Twitter</string>
+    <string name="drawer_calendar">Calendar</string>
+    <string name="drawer_projects">Projects</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -114,5 +114,6 @@
     <string name="task_description">Task Description</string>
     <string name="delete_task">Delete Task</string>
     <string name="complete_task">Complete Task</string>
+    <string name="full_name">Name</string>
 
 </resources>
