@@ -28,7 +28,6 @@ public class HomeActivity extends AppCompatActivity
         ProjectsFragment.OnFragmentInteractionListener {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
-    private NavigationDrawerFragment mNavigationDrawerFragment;
     private FragmentManager mFragmentManager = getSupportFragmentManager();
 
     @InjectView(R.id.tool_bar) Toolbar mToolbar;
@@ -93,15 +92,6 @@ public class HomeActivity extends AppCompatActivity
         ButterKnife.inject(this);
         setSupportActionBar(mToolbar);
 
-//        mNavigationDrawerFragment = (NavigationDrawerFragment)
-//                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-//        mTitle = "Twitter";
-
-        // Set up the drawer.
-//        mNavigationDrawerFragment.setUp(
-//                R.id.navigation_drawer,
-//                (DrawerLayout) findViewById(R.id.drawer_layout));
-
         mNavigationView.setNavigationItemSelectedListener(mNavigationItemSelectedListener);
 
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
@@ -132,40 +122,6 @@ public class HomeActivity extends AppCompatActivity
         // TODO - fix this
         mNavigationView.setCheckedItem(0);
     }
-
-//    @Override
-//    public void onNavigationDrawerItemSelected(int position) {
-//        // update the main content by replacing fragments
-//        // Fragment fragment = new CalendarFragment();
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        switch (position) {
-//            case 0:
-//                mTitle = "Twitter";
-//                fragmentManager.beginTransaction()
-//                        .replace(R.id.container, HomeFragment.newInstance(position + 1))
-//                        .commit();
-//                break;
-//            case 1:
-//                mTitle = "Calendar";
-//                fragmentManager.beginTransaction()
-//                        .replace(R.id.container, CalendarFragment.newInstance(position + 1))
-//                        .commit();
-//                break;
-//            case 2:
-//                mTitle = "Projects";
-//                fragmentManager.beginTransaction()
-//                        .replace(R.id.container, ProjectsFragment.newInstance(position + 1))
-//                        .commit();
-//                break;
-//            default:
-//                mTitle = "Twitter";
-//                fragmentManager.beginTransaction()
-//                        .replace(R.id.container, HomeFragment.newInstance(position + 1))
-//                        .commit();
-//                break;
-//        }
-//    }
-
 
     public void onSectionAttached(int number) {
         switch (number) {
