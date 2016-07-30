@@ -1,6 +1,7 @@
 package com.patels95.sanam.ewb.ui;
 
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
@@ -28,7 +29,7 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
     // FRAGMENT variable
     private CalendarFragment mFragment;
     // Member variables
-    private static final String TAG = CalendarFragment.class.getSimpleName();
+    private static final String TAG = CalendarAsyncTask.class.getSimpleName();
     private String mPageToken;
     private Calendar mService;
     private String displayThisAccount; // ACCOUNT WHOSE CALENDAR YOU WANT TO DISPLAY
@@ -55,6 +56,7 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
         do {
             Events events = null;
             try {
+                Log.d(TAG, "account: " + displayThisAccount);
                 Calendar.Events.List eventList = mService.events().list(displayThisAccount);
                 Date date = new Date();
                 com.google.api.client.util.DateTime dt = new DateTime(date);
@@ -85,9 +87,11 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
                 System.out.println("Error: IOException");
 //                e.printStackTrace();
             }
+            Log.d(TAG, "reached here");
             // If no errors are met, then account must have been set or was just set.
             isAccountSet = true;
             if (events != null) {
+                Log.d(TAG, "events size: " + events.size());
                 mEventList = events.getItems();
                 if (events.getNextPageToken() != null) {
                     // Theoretically, you should only have one page token. It should not ask for another one.
@@ -99,6 +103,7 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
                 System.out.println("CalendarAsyncTask.java - Account set. Please refresh the page.");
             }
         } while (mPageToken != null);
+        Log.d(TAG, "eventList Size: " + mEventList.size());
         mFragment.setEventList(mEventList);
         return mEventList;
     }
