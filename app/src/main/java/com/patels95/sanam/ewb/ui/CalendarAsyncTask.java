@@ -60,11 +60,12 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
                 Calendar.Events.List eventList = mService.events().list(displayThisAccount);
                 Date date = new Date();
                 com.google.api.client.util.DateTime dt = new DateTime(date);
-                eventList.setTimeMin(dt);
+                Log.d(TAG, date.toString());
                 events = eventList
                         .setPageToken(mPageToken)
                         .setMaxResults(10)
                         .setOrderBy("startTime")
+                        .setTimeMin(dt)
                         .setSingleEvents(true)
                         .execute();
 
@@ -84,14 +85,12 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
                 }
             } catch (IOException e) {
                 errorDetected = true;
-                System.out.println("Error: IOException");
-//                e.printStackTrace();
+                Log.d(TAG, "Error: IOException");
+                Log.d(TAG, e.getLocalizedMessage());
             }
-            Log.d(TAG, "reached here");
             // If no errors are met, then account must have been set or was just set.
             isAccountSet = true;
             if (events != null) {
-                Log.d(TAG, "events size: " + events.size());
                 mEventList = events.getItems();
                 if (events.getNextPageToken() != null) {
                     // Theoretically, you should only have one page token. It should not ask for another one.
@@ -103,7 +102,6 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
                 System.out.println("CalendarAsyncTask.java - Account set. Please refresh the page.");
             }
         } while (mPageToken != null);
-        Log.d(TAG, "eventList Size: " + mEventList.size());
         mFragment.setEventList(mEventList);
         return mEventList;
     }
