@@ -59,7 +59,6 @@
         <activity
             android:name=".ui.ProjectsActivity"
             android:label="@string/title_activity_projects"
-            android:parentActivityName=".ui.HomeActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTop">
             <meta-data
@@ -78,6 +77,7 @@
         <activity
             android:name=".ui.TaskActivity"
             android:label="@string/title_activity_task"
+            android:screenOrientation="portrait"
             android:parentActivityName=".ui.ProjectsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
