@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,6 +31,7 @@ public class TaskActivity extends AppCompatActivity {
 
     private static final String TAG = TaskActivity.class.getSimpleName();
 
+    @InjectView(R.id.tool_bar) Toolbar mToolbar;
     @InjectView(R.id.taskTitle) TextView mTaskTitle;
     @InjectView(R.id.taskDescription) TextView mTaskDescription;
 
@@ -63,6 +65,10 @@ public class TaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
         ButterKnife.inject(this);
+        setSupportActionBar(mToolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         Intent intent = getIntent();
         mProjectTitle = intent.getStringExtra(ParseConstants.PROJECT_TITLE);

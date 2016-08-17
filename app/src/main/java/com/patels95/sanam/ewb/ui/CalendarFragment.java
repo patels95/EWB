@@ -1,5 +1,6 @@
 package com.patels95.sanam.ewb.ui;
 
+import android.Manifest;
 import android.accounts.AccountManager;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -8,6 +9,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -18,7 +20,10 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.CalendarContract;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -118,6 +123,7 @@ public class CalendarFragment extends Fragment{
     static final int REQUEST_ACCOUNT_PICKER = 1000;
     static final int REQUEST_AUTHORIZATION = 1001;
     static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
+    static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1;
     private static final String PREF_ACCOUNT_NAME = "accountName";
     private static final String[] SCOPES = { CalendarScopes.CALENDAR_READONLY };
 
@@ -148,17 +154,20 @@ public class CalendarFragment extends Fragment{
         }
 //        // Initialize credentials and service object.
         SharedPreferences settings = getActivity().getPreferences(Context.MODE_PRIVATE);
+        String accountName = settings.getString(PREF_ACCOUNT_NAME, "");
+        Log.d(TAG, "user email: " + accountName);
+
         credential = GoogleAccountCredential.usingOAuth2(
                 getActivity().getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff())
-                .setSelectedAccountName(settings.getString(PREF_ACCOUNT_NAME, null));
+                .setSelectedAccountName(accountName);
 
         mService = new com.google.api.services.calendar.Calendar.Builder(
                 transport, jsonFactory, credential)
                 .setApplicationName("Engineers Without Borders BU")
                 .build();
-        refreshResults();
 
+        refreshResults();
     }
 
     @Override
@@ -323,9 +332,9 @@ public class CalendarFragment extends Fragment{
                                 getActivity().getPreferences(Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = settings.edit();
                         editor.putString(PREF_ACCOUNT_NAME, accountName);
-                        editor.commit();
+                        editor.apply();
+                        startAsyncCalendar();
                     }
-                    startAsyncCalendar();
                 } else if (resultCode == getActivity().RESULT_CANCELED) { // 0
 //                    mStatusText.setText("Account unspecified.");
                     Toast.makeText(getActivity(), "Account unspecified.", Toast.LENGTH_SHORT).show();
@@ -341,12 +350,27 @@ public class CalendarFragment extends Fragment{
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_PERMISSION_GET_ACCOUNTS:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    chooseAccount();
+                }
+                else {
+                    Toast.makeText(getActivity(), "Permission must be granted to view EWB calendar.", Toast.LENGTH_LONG).show();
+                }
+                break;
+        }
+    }
+
     /**
      * Attempt to get a set of data from the Google Calendar API to display. If the
      * email address isn't known yet, then call chooseAccount() method so the
      * user can pick an account.
      */
     private void refreshResults() {
+        Log.d(TAG, "credential: " + credential.toString());
         if (credential.getSelectedAccountName() == null) {
             chooseAccount();
         } else {
@@ -366,9 +390,13 @@ public class CalendarFragment extends Fragment{
      * account.
      */
     private void chooseAccount() {
-        startActivityForResult(
-                credential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
-
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.GET_ACCOUNTS}, REQUEST_PERMISSION_GET_ACCOUNTS);
+        }
+        else {
+            startActivityForResult(
+                    credential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
+        }
     }
 
     /**

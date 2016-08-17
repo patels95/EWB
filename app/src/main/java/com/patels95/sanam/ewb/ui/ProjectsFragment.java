@@ -73,7 +73,6 @@ public class ProjectsFragment extends Fragment {
         if (getArguments() != null) {
             mSectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
         }
-        getParseProjects();
     }
 
 
@@ -87,8 +86,8 @@ public class ProjectsFragment extends Fragment {
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mProjectRecyclerView.setLayoutManager(layoutManager);
-        ProjectAdapter adapter = new ProjectAdapter(getActivity(), mProjectCards);
-        mProjectRecyclerView.setAdapter(adapter);
+
+        getParseProjects();
 
         return view;
     }
@@ -121,6 +120,8 @@ public class ProjectsFragment extends Fragment {
         solar.setParseId(projectStrings.get(15));
 
         mProjectCards = new Project[]{filter, collection, sanitation, solar};
+        ProjectAdapter adapter = new ProjectAdapter(getActivity(), mProjectCards);
+        mProjectRecyclerView.setAdapter(adapter);
     }
 
     private void updateParseProjects() throws IOException {

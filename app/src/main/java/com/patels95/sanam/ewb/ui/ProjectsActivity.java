@@ -59,6 +59,10 @@ public class ProjectsActivity extends ActionBarActivity implements ActionBar.Tab
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_projects);
         ButterKnife.inject(this);
+        setSupportActionBar(mToolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         // Set up the action bar.
 //        final ActionBar actionBar = getSupportActionBar();
@@ -67,7 +71,7 @@ public class ProjectsActivity extends ActionBarActivity implements ActionBar.Tab
 
         mProjectPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         mProjectPager.setAdapter(mProjectPagerAdapter);
-        setSupportActionBar(mToolbar);
+
 
         TabLayout.Tab tasks = mProjectTabs.newTab();
         TabLayout.Tab resources = mProjectTabs.newTab();
@@ -169,6 +173,9 @@ public class ProjectsActivity extends ActionBarActivity implements ActionBar.Tab
                 Intent newTaskIntent = new Intent(ProjectsActivity.this, NewTaskActivity.class);
                 newTaskIntent.putExtra(PROJECT_PARSE_ID, mParseId);
                 startActivity(newTaskIntent);
+                break;
+            case android.R.id.home:
+                onBackPressed();
                 break;
         }
         return super.onOptionsItemSelected(item);
