@@ -1,6 +1,7 @@
 package com.patels95.sanam.ewb.ui;
 
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
@@ -28,7 +29,7 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
     // FRAGMENT variable
     private CalendarFragment mFragment;
     // Member variables
-    private static final String TAG = CalendarFragment.class.getSimpleName();
+    private static final String TAG = CalendarAsyncTask.class.getSimpleName();
     private String mPageToken;
     private Calendar mService;
     private String displayThisAccount; // ACCOUNT WHOSE CALENDAR YOU WANT TO DISPLAY
@@ -55,14 +56,16 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
         do {
             Events events = null;
             try {
+                Log.d(TAG, "account: " + displayThisAccount);
                 Calendar.Events.List eventList = mService.events().list(displayThisAccount);
                 Date date = new Date();
                 com.google.api.client.util.DateTime dt = new DateTime(date);
-                eventList.setTimeMin(dt);
+                Log.d(TAG, date.toString());
                 events = eventList
                         .setPageToken(mPageToken)
                         .setMaxResults(10)
                         .setOrderBy("startTime")
+                        .setTimeMin(dt)
                         .setSingleEvents(true)
                         .execute();
 
@@ -82,8 +85,8 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
                 }
             } catch (IOException e) {
                 errorDetected = true;
-                System.out.println("Error: IOException");
-//                e.printStackTrace();
+                Log.d(TAG, "Error: IOException");
+                Log.d(TAG, e.getLocalizedMessage());
             }
             // If no errors are met, then account must have been set or was just set.
             isAccountSet = true;
