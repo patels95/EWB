@@ -49,19 +49,19 @@ public class HomeActivity extends AppCompatActivity
 
             switch (item.getItemId()) {
                 case R.id.twitter:
-                    mTitle = "Twitter";
+                    changeToolbarTitle("Twitter");
                     mFragmentManager.beginTransaction()
                             .replace(R.id.container, HomeFragment.newInstance(0))
                             .commit();
                     return true;
                 case R.id.calendar:
-                    mTitle = "Calendar";
+                    changeToolbarTitle("Calendar");
                     mFragmentManager.beginTransaction()
                             .replace(R.id.container, CalendarFragment.newInstance(1))
                             .commit();
                     return true;
                 case R.id.projects:
-                    mTitle = "Projects";
+                    changeToolbarTitle("Projects");
                     mFragmentManager.beginTransaction()
                             .replace(R.id.container, ProjectsFragment.newInstance(2))
                             .commit();
@@ -70,7 +70,7 @@ public class HomeActivity extends AppCompatActivity
                     ParseUser.logOut();
                     navigateToMain();
                 default:
-                    mTitle = "Twitter";
+                    changeToolbarTitle("Twitter");
                     mFragmentManager.beginTransaction()
                             .replace(R.id.container, HomeFragment.newInstance(3))
                             .commit();
@@ -91,6 +91,7 @@ public class HomeActivity extends AppCompatActivity
         setContentView(R.layout.activity_home);
         ButterKnife.inject(this);
         setSupportActionBar(mToolbar);
+        changeToolbarTitle("Twitter");
 
         mNavigationView.setNavigationItemSelectedListener(mNavigationItemSelectedListener);
 
@@ -148,12 +149,16 @@ public class HomeActivity extends AppCompatActivity
 
     }
 
+    private void changeToolbarTitle(String title) {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(title);
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (ParseUser.getCurrentUser() != null) {
             getMenuInflater().inflate(R.menu.menu_home, menu);
-            restoreActionBar();
             return true;
         }
         return super.onCreateOptionsMenu(menu);
