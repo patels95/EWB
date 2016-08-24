@@ -113,6 +113,12 @@ public class HomeActivity extends AppCompatActivity
         mDrawerLayout.setDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
+        if (ParseUser.getCurrentUser() == null) {
+            Menu menu = mNavigationView.getMenu();
+            MenuItem login = menu.findItem(R.id.nav_logout);
+            login.setTitle("Login");
+        }
+
         setTwitterAsDefault();
     }
 
@@ -186,7 +192,6 @@ public class HomeActivity extends AppCompatActivity
     private void navigateToMain() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
-        Toast.makeText(this, "You have been logged out.", Toast.LENGTH_LONG).show();
     }
 
     @Override

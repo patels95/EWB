@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -27,6 +28,8 @@ public class NewTaskActivity extends ActionBarActivity {
     private static final String TAG = NewTaskActivity.class.getSimpleName();
 
     private static final java.lang.String DATE_PICKER_TAG = "DATE_PICKER";
+
+    @InjectView(R.id.tool_bar) Toolbar mToolbar;
     @InjectView(R.id.new_task_title) EditText mTaskTitle;
     @InjectView(R.id.new_task_description) EditText mTaskDescription;
     @InjectView(R.id.saveTask) Button mSaveTaskButton;
@@ -35,12 +38,15 @@ public class NewTaskActivity extends ActionBarActivity {
 
     private String mProjectParseId;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_task);
         ButterKnife.inject(this);
+        setSupportActionBar(mToolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         Intent newTaskIntent = getIntent();
         mProjectParseId = newTaskIntent.getStringExtra(ProjectsActivity.PROJECT_PARSE_ID);

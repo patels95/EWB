@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                     //Set up a progress dialog
                     final ProgressDialog dlg = new ProgressDialog(MainActivity.this);
                     dlg.setTitle("Please wait.");
-                    dlg.setMessage("Signing Up. Please wait.");
+                    dlg.setMessage("Logging In...");
                     dlg.show();
 
                     //call the Parse login method

@@ -3,6 +3,7 @@ package com.patels95.sanam.ewb.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +23,7 @@ public class EditProjectsActivity extends ActionBarActivity {
 
     private String mParseId;
 
+    @InjectView(R.id.tool_bar) Toolbar mToolbar;
     @InjectView(R.id.editName) EditText mEditName;
     @InjectView(R.id.editDescription) EditText mEditDescription;
     @InjectView(R.id.editButton) Button mEditButton;
@@ -31,7 +33,10 @@ public class EditProjectsActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_projects);
         ButterKnife.inject(this);
-        //getActionBar().setDisplayHomeAsUpEnabled(true);
+        setSupportActionBar(mToolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         // get parse objectid from projects activity
         Intent projectIntent = getIntent();
