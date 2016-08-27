@@ -174,7 +174,9 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
     }
 
     public void clearList(){
-
+        if (mDataset != null) {
+            mDataset.clear();
+        }
     }
 
     public void addAll(){
