@@ -18,14 +18,21 @@
         android:visibility="visible"
         android:background="@android:drawable/ic_menu_add"/>
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/calendarRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/calendarRecyclerView"
-        android:scrollbars="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_weight="1"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/calendarRecyclerView"
+            android:scrollbars="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 
     <TextView
         android:layout_width="match_parent"

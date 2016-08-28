@@ -47,9 +47,13 @@ public class TaskFragment extends ListFragment {
 
         mParseProjectId = ProjectsActivity.getParseProjectId();
         mProjectTitle = ProjectsActivity.getProjectTitle();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
 
         mTasks = getParseTasks();
-
         TaskAdapter taskAdapter = new TaskAdapter(getActivity(), mTasks);
         setListAdapter(taskAdapter);
     }

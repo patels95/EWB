@@ -24,6 +24,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -58,6 +59,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 /**
@@ -79,7 +81,8 @@ public class CalendarFragment extends Fragment{
     private LinearLayout mFragmentLayout;
     private ProgressBar mProgressBar;
     private TextView mLoadingText;
-    private Button mRefreshButton;
+
+    @InjectView(R.id.calendarRefreshLayout) SwipeRefreshLayout mCalendarRefresh;
 
     //AsyncTask tools / interface.
     private CalendarAsyncInterface mInterface = new CalendarAsyncInterface() {
@@ -176,10 +179,10 @@ public class CalendarFragment extends Fragment{
         // Callever every time the fragment is utilized.
         // Adapter functions.
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
+        ButterKnife.inject(this, view);
         mFragmentLayout = (LinearLayout) view.findViewById(R.id.fragmentLayout);
         mProgressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         mLoadingText = (TextView) view.findViewById(R.id.textFragment);
-        mRefreshButton = (Button) view.findViewById(R.id.refreshButton);
         // If app successfully retrieves data from API
         mProgressBar.setVisibility(View.GONE);
         mFragmentLayout.setBackgroundColor(Color.WHITE);
@@ -193,12 +196,13 @@ public class CalendarFragment extends Fragment{
         mRecyclerView.setHasFixedSize(true); // Experimental. Remove if recyclerView is not fixed.
         mCalendarAdapter = new CalendarAdapter(getActivity(), mEventList);
         mRecyclerView.setAdapter(mCalendarAdapter);
-        // Set up refresh button. Refresh button visible if no events are found via
 
-        mRefreshButton.setOnClickListener(new View.OnClickListener() {
+        // swipe refresh listener
+        mCalendarRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onClick(View v) {
+            public void onRefresh() {
                 refreshResults();
+                mCalendarRefresh.setRefreshing(false);
             }
         });
 
@@ -370,13 +374,12 @@ public class CalendarFragment extends Fragment{
      * user can pick an account.
      */
     private void refreshResults() {
-        Log.d(TAG, "credential: " + credential.toString());
         if (credential.getSelectedAccountName() == null) {
             chooseAccount();
         } else {
             if (isDeviceOnline() && credential.getSelectedAccountName() != null) {
                 startAsyncCalendar();
-            } else if (isDeviceOnline() == false){
+            } else if (!isDeviceOnline()){
                 Toast.makeText(getActivity(), "No network connection is available.", Toast.LENGTH_SHORT).show();
             }
             else{
