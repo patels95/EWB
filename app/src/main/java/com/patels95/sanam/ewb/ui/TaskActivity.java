@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,11 +35,13 @@ public class TaskActivity extends AppCompatActivity {
     @InjectView(R.id.tool_bar) Toolbar mToolbar;
     @InjectView(R.id.taskTitle) TextView mTaskTitle;
     @InjectView(R.id.taskDescription) TextView mTaskDescription;
+    @InjectView(R.id.completeTask) Button mCompleteTask;
 
     private String mTaskId;
     private Task mTask;
     private static String mProjectTitle;
     private static String mProjectParseId;
+
 
     private DialogInterface.OnClickListener mDialogListener = new DialogInterface.OnClickListener() {
         @Override
@@ -75,6 +78,10 @@ public class TaskActivity extends AppCompatActivity {
         mProjectParseId = intent.getStringExtra(ParseConstants.PARSE_ID);
         mTaskId = intent.getStringExtra(ParseConstants.TASK_ID);
         setTitle(mProjectTitle);
+
+        if (ParseUser.getCurrentUser() == null) {
+            mCompleteTask.setVisibility(View.GONE);
+        }
 
         mTask = getTaskFromParse(mTaskId);
         setTaskInfo();
