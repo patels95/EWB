@@ -1,16 +1,22 @@
 package com.patels95.sanam.ewb.ui;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.ListFragment;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.patels95.sanam.ewb.R;
 import com.patels95.sanam.ewb.adapters.TaskAdapter;
 import com.patels95.sanam.ewb.model.ParseConstants;
 import com.patels95.sanam.ewb.model.Task;
@@ -33,6 +39,7 @@ public class TaskFragment extends ListFragment {
     private String mParseProjectId;
     private String mProjectTitle;
     private Task[] mTasks;
+    private String mFilter = ParseConstants.ALL_TASKS;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -44,6 +51,7 @@ public class TaskFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
         mParseProjectId = ProjectsActivity.getParseProjectId();
         mProjectTitle = ProjectsActivity.getProjectTitle();
@@ -82,6 +90,21 @@ public class TaskFragment extends ListFragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_filters:
+                showFilterAlertDialog();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
 
@@ -97,8 +120,29 @@ public class TaskFragment extends ListFragment {
         }
     }
 
+    // return list of tasks from parse
     private Task[] getParseTasks() {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.TASK_CLASS).whereEqualTo(ParseConstants.TASK_PROJECT_ID, mParseProjectId);
+        ParseQuery<ParseObject> query;
+        switch (mFilter) {
+            case ParseConstants.ALL_TASKS:
+                query = ParseQuery.getQuery(ParseConstants.TASK_CLASS)
+                        .whereEqualTo(ParseConstants.TASK_PROJECT_ID, mParseProjectId);
+                break;
+            case ParseConstants.COMPLETE_TASKS:
+                query = ParseQuery.getQuery(ParseConstants.TASK_CLASS)
+                        .whereEqualTo(ParseConstants.TASK_PROJECT_ID, mParseProjectId)
+                        .whereEqualTo(ParseConstants.TASK_COMPLETE, true);
+                break;
+            case ParseConstants.INCOMPLETE_TASKS:
+                query = ParseQuery.getQuery(ParseConstants.TASK_CLASS)
+                        .whereEqualTo(ParseConstants.TASK_PROJECT_ID, mParseProjectId)
+                        .whereEqualTo(ParseConstants.TASK_COMPLETE, false);
+                break;
+            default:
+                query = ParseQuery.getQuery(ParseConstants.TASK_CLASS)
+                        .whereEqualTo(ParseConstants.TASK_PROJECT_ID, mParseProjectId);
+        }
+
         Task[] tasks = null;
         try {
             List<ParseObject> list = query.find();
@@ -121,16 +165,32 @@ public class TaskFragment extends ListFragment {
         return tasks;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+
+    private void showFilterAlertDialog() {
+        final String[] filters = {"All Tasks", "Complete Tasks", "Incomplete Tasks"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setSingleChoiceItems(filters, 0, null)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        int position = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                        mFilter = filters[position];
+                        mTasks = getParseTasks();
+                        TaskAdapter taskAdapter = new TaskAdapter(getActivity(), mTasks);
+                        setListAdapter(taskAdapter);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
     public interface OnFragmentInteractionListener {
         public void onFragmentInteraction(String id);
     }

@@ -28,5 +28,9 @@ public class ParseConstants {
     public static final String TASK_COMPLETE = "complete";
     public static final String TASK_DUE_DATE = "dueDate";
     public static final String TASK_ID = "taskId";
+    public static final String ALL_TASKS = "All Tasks";
+    public static final String COMPLETE_TASKS = "Complete Tasks";
+    public static final String INCOMPLETE_TASKS = "Incomplete Tasks";
+
 
 }
