@@ -11,7 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.patels95.sanam.ewb.R;
+import com.patels95.sanam.ewb.model.ParseConstants;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
@@ -19,6 +24,8 @@ import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.tweetui.TimelineResult;
 import com.twitter.sdk.android.tweetui.TweetTimelineListAdapter;
 import com.twitter.sdk.android.tweetui.UserTimeline;
+
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -68,6 +75,8 @@ public class HomeFragment extends ListFragment {
         if (getArguments() != null) {
             mSectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
         }
+
+        wakeUpParseServer();
     }
 
     @Override
@@ -81,9 +90,7 @@ public class HomeFragment extends ListFragment {
     @Override
     public void onResume() {
         super.onResume();
-        /* Debug twitter fabric timeline
-        ERROR -> adapter.isEmpty() == true
-        * */
+
         String adminTwitterUsername = "ewbbu"; // Twitter username for timeline display.
         final UserTimeline userTimeline = new UserTimeline.Builder().screenName(adminTwitterUsername).build();
         final TweetTimelineListAdapter adapter = new TweetTimelineListAdapter(getListView().getContext(), userTimeline);
@@ -108,12 +115,16 @@ public class HomeFragment extends ListFragment {
         });
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-//    public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//            mListener.onFragmentInteraction(uri);
-//        }
-//    }
+    // wake up parse server. heroku dyno will sleep if there is no activity
+    private void wakeUpParseServer() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.PROJECT_CLASS);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                // do nothing
+            }
+        });
+    }
 
     @Override
     public void onAttach(Activity activity) {
