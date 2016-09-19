@@ -33,8 +33,8 @@ import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,7 +50,7 @@ public class ProjectsFragment extends Fragment {
     private static final String TAG = ProjectsFragment.class.getSimpleName();
     private int mSectionNumber;
 
-    @InjectView(R.id.projectRecyclerView) RecyclerView mProjectRecyclerView;
+    @BindView(R.id.projectRecyclerView) RecyclerView mProjectRecyclerView;
 
     private OnFragmentInteractionListener mListener;
     private Project[] mProjectCards;
@@ -82,7 +82,7 @@ public class ProjectsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_projects, container, false);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mProjectRecyclerView.setLayoutManager(layoutManager);

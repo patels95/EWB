@@ -59,8 +59,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -82,7 +82,7 @@ public class CalendarFragment extends Fragment{
     private ProgressBar mProgressBar;
     private TextView mLoadingText;
 
-    @InjectView(R.id.calendarRefreshLayout) SwipeRefreshLayout mCalendarRefresh;
+    @BindView(R.id.calendarRefreshLayout) SwipeRefreshLayout mCalendarRefresh;
 
     //AsyncTask tools / interface.
     private CalendarAsyncInterface mInterface = new CalendarAsyncInterface() {
@@ -179,7 +179,7 @@ public class CalendarFragment extends Fragment{
         // Callever every time the fragment is utilized.
         // Adapter functions.
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
         mFragmentLayout = (LinearLayout) view.findViewById(R.id.fragmentLayout);
         mProgressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         mLoadingText = (TextView) view.findViewById(R.id.textFragment);

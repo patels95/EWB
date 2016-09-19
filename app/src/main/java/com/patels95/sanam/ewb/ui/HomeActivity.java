@@ -19,8 +19,8 @@ import android.widget.Toast;
 import com.parse.ParseUser;
 import com.patels95.sanam.ewb.R;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class HomeActivity extends AppCompatActivity
         implements HomeFragment.OnFragmentInteractionListener,
@@ -30,9 +30,9 @@ public class HomeActivity extends AppCompatActivity
     private static final String TAG = HomeActivity.class.getSimpleName();
     private FragmentManager mFragmentManager = getSupportFragmentManager();
 
-    @InjectView(R.id.tool_bar) Toolbar mToolbar;
-    @InjectView(R.id.navigation_view) NavigationView mNavigationView;
-    @InjectView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
+    @BindView(R.id.tool_bar) Toolbar mToolbar;
+    @BindView(R.id.navigation_view) NavigationView mNavigationView;
+    @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
 
     private NavigationView.OnNavigationItemSelectedListener mNavigationItemSelectedListener =
             new NavigationView.OnNavigationItemSelectedListener() {
@@ -89,7 +89,7 @@ public class HomeActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
         changeToolbarTitle("Twitter");
 

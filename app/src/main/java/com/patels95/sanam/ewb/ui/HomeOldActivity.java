@@ -11,22 +11,22 @@ import android.widget.ImageView;
 
 import com.patels95.sanam.ewb.R;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 
 public class HomeOldActivity extends ActionBarActivity {
 
     private boolean mIsMember;
 
-    @InjectView(R.id.projectsImageView) ImageView mProjectsImage;
-    @InjectView(R.id.announcementList) RecyclerView mAnnouncementList;
+    @BindView(R.id.projectsImageView) ImageView mProjectsImage;
+    @BindView(R.id.announcementList) RecyclerView mAnnouncementList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_old);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         setUserType();
 
         mProjectsImage.setOnClickListener(new View.OnClickListener() {

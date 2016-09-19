@@ -17,24 +17,24 @@ import com.parse.SignUpCallback;
 import com.patels95.sanam.ewb.R;
 import com.patels95.sanam.ewb.model.ParseConstants;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class SignUpActivity extends ActionBarActivity {
 
-    @InjectView(R.id.firstName) EditText mFirstName;
-    @InjectView(R.id.lastName) EditText mLastName;
-    @InjectView(R.id.registerEmail) EditText mEmail;
-    @InjectView(R.id.registerPassword) EditText mPassword;
-    @InjectView(R.id.registerPassword2) EditText mPasswordAgain;
-    @InjectView(R.id.submitRegister) Button mSubmitRegister;
+    @BindView(R.id.firstName) EditText mFirstName;
+    @BindView(R.id.lastName) EditText mLastName;
+    @BindView(R.id.registerEmail) EditText mEmail;
+    @BindView(R.id.registerPassword) EditText mPassword;
+    @BindView(R.id.registerPassword2) EditText mPasswordAgain;
+    @BindView(R.id.submitRegister) Button mSubmitRegister;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
 
         mSubmitRegister.setOnClickListener(new View.OnClickListener() {

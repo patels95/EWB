@@ -24,8 +24,8 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,9 +38,9 @@ public class ResourceFragment extends Fragment {
     private Map<String, String> mFileNameMap = new HashMap<>();
     private Map<String, Integer> mColorMap = new HashMap<>();
 
-    @InjectView(R.id.resourceCardView) CardView mResourceCard;
-    @InjectView(R.id.pdfImage) ImageView mPDFImage;
-    @InjectView(R.id.fileName) TextView mFileName;
+    @BindView(R.id.resourceCardView) CardView mResourceCard;
+    @BindView(R.id.pdfImage) ImageView mPDFImage;
+    @BindView(R.id.fileName) TextView mFileName;
 
     public ResourceFragment() {
         // Required empty public constructor
@@ -51,7 +51,7 @@ public class ResourceFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_resource, container, false);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         // Inflate the layout for this fragment
         mProjectTitle = ProjectsActivity.getProjectTitle();

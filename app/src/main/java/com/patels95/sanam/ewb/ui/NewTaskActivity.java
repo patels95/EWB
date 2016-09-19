@@ -20,8 +20,8 @@ import com.patels95.sanam.ewb.model.ParseConstants;
 
 import java.util.Calendar;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class NewTaskActivity extends ActionBarActivity {
 
@@ -29,10 +29,10 @@ public class NewTaskActivity extends ActionBarActivity {
 
     private static final java.lang.String DATE_PICKER_TAG = "DATE_PICKER";
 
-    @InjectView(R.id.tool_bar) Toolbar mToolbar;
-    @InjectView(R.id.new_task_title) EditText mTaskTitle;
-    @InjectView(R.id.new_task_description) EditText mTaskDescription;
-    @InjectView(R.id.saveTask) Button mSaveTaskButton;
+    @BindView(R.id.tool_bar) Toolbar mToolbar;
+    @BindView(R.id.new_task_title) EditText mTaskTitle;
+    @BindView(R.id.new_task_description) EditText mTaskDescription;
+    @BindView(R.id.saveTask) Button mSaveTaskButton;
 
     private static Calendar mDueDate = Calendar.getInstance();
 
@@ -42,7 +42,7 @@ public class NewTaskActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_task);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

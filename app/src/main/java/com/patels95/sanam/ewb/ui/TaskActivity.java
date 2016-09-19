@@ -25,17 +25,17 @@ import com.patels95.sanam.ewb.model.Task;
 
 import java.util.Calendar;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class TaskActivity extends AppCompatActivity {
 
     private static final String TAG = TaskActivity.class.getSimpleName();
 
-    @InjectView(R.id.tool_bar) Toolbar mToolbar;
-    @InjectView(R.id.taskTitle) TextView mTaskTitle;
-    @InjectView(R.id.taskDescription) TextView mTaskDescription;
-    @InjectView(R.id.completeTask) Button mCompleteTask;
+    @BindView(R.id.tool_bar) Toolbar mToolbar;
+    @BindView(R.id.taskTitle) TextView mTaskTitle;
+    @BindView(R.id.taskDescription) TextView mTaskDescription;
+    @BindView(R.id.completeTask) Button mCompleteTask;
 
     private String mTaskId;
     private Task mTask;
@@ -67,7 +67,7 @@ public class TaskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

@@ -27,8 +27,8 @@ import com.twitter.sdk.android.tweetui.UserTimeline;
 
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,7 +44,7 @@ public class HomeFragment extends ListFragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
     private static final String TAG = HomeFragment.class.getSimpleName();
 
-    @InjectView(R.id.swipeRefreshLayout) SwipeRefreshLayout mTwitterRefresh;
+    @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout mTwitterRefresh;
 
     private int mSectionNumber;
 
@@ -83,7 +83,7 @@ public class HomeFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-        ButterKnife.inject(this, rootView);
+        ButterKnife.bind(this, rootView);
         return rootView;
     }
 

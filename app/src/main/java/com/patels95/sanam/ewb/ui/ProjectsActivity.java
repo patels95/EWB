@@ -22,8 +22,8 @@ import com.patels95.sanam.ewb.adapters.ViewPagerAdapter;
 import com.patels95.sanam.ewb.model.ParseConstants;
 import com.patels95.sanam.ewb.model.Project;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class ProjectsActivity extends ActionBarActivity implements ActionBar.TabListener,
     TaskFragment.OnFragmentInteractionListener {
@@ -35,9 +35,9 @@ public class ProjectsActivity extends ActionBarActivity implements ActionBar.Tab
     private static String mParseId;
     private ViewPagerAdapter mProjectPagerAdapter;
 
-    @InjectView(R.id.tool_bar) Toolbar mToolbar;
-    @InjectView(R.id.projectTabs) TabLayout mProjectTabs;
-    @InjectView(R.id.projectPager) ViewPager mProjectPager;
+    @BindView(R.id.tool_bar) Toolbar mToolbar;
+    @BindView(R.id.projectTabs) TabLayout mProjectTabs;
+    @BindView(R.id.projectPager) ViewPager mProjectPager;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -58,7 +58,7 @@ public class ProjectsActivity extends ActionBarActivity implements ActionBar.Tab
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_projects);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

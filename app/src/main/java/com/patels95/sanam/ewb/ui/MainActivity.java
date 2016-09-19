@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,29 +22,34 @@ import com.parse.ParseUser;
 import com.parse.RequestPasswordResetCallback;
 import com.patels95.sanam.ewb.R;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String TAG = MainActivity.class.getSimpleName();
+
     public static final String IS_MEMBER = "IS_MEMBER";
     private boolean mIsMember = false;
 
-    @InjectView(R.id.memberButton) Button mMember;
-    @InjectView(R.id.guestButton) Button mGuest;
-    @InjectView(R.id.backLabel) TextView mBack;
-    @InjectView(R.id.inputEmail) EditText mEmail;
-    @InjectView(R.id.inputPassword) EditText mPassword;
-    @InjectView(R.id.forgotPassword) TextView mForgotPassword;
-    @InjectView(R.id.submitLogin) Button mSubmitLogin;
-    @InjectView(R.id.tool_bar) Toolbar mToolbar;
+    @BindView(R.id.tool_bar) Toolbar mToolbar;
+    @BindView(R.id.memberButton) Button mMember;
+    @BindView(R.id.guestButton) Button mGuest;
+    @BindView(R.id.backLabel) TextView mBack;
+    @BindView(R.id.inputEmail) EditText mEmail;
+    @BindView(R.id.inputPassword) EditText mPassword;
+    @BindView(R.id.forgotPassword) TextView mForgotPassword;
+    @BindView(R.id.submitLogin) Button mSubmitLogin;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
+        Log.d(TAG, "toolbar: " + mToolbar);
+        Log.d(TAG, "member: " + mMember);
         setSupportActionBar(mToolbar);
 
         ParseUser currentUser = ParseUser.getCurrentUser();

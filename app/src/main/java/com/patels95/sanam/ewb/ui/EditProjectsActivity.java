@@ -16,23 +16,23 @@ import com.parse.ParseQuery;
 import com.patels95.sanam.ewb.R;
 import com.patels95.sanam.ewb.model.ParseConstants;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class EditProjectsActivity extends ActionBarActivity {
 
     private String mParseId;
 
-    @InjectView(R.id.tool_bar) Toolbar mToolbar;
-    @InjectView(R.id.editName) EditText mEditName;
-    @InjectView(R.id.editDescription) EditText mEditDescription;
-    @InjectView(R.id.editButton) Button mEditButton;
+    @BindView(R.id.tool_bar) Toolbar mToolbar;
+    @BindView(R.id.editName) EditText mEditName;
+    @BindView(R.id.editDescription) EditText mEditDescription;
+    @BindView(R.id.editButton) Button mEditButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_projects);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

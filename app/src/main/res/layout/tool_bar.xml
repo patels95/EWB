@@ -7,5 +7,4 @@
                                    android:elevation="4dp"
                                    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     >
-
 </android.support.v7.widget.Toolbar>
