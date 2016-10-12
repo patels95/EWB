@@ -3,7 +3,7 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              android:padding="8dp"
-             tools:context="com.patels95.sanam.ewb.ui.ProjectsFragment">
+             tools:context="com.gai.ewbbu.ewb.ui.ProjectsFragment">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   xmlns:tools="http://schemas.android.com/tools"

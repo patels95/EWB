@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.patels95.sanam.ewb"
+<manifest package="com.gai.ewbbu.ewb"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -12,13 +12,13 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
-        android:name=".MyApplication"
+        android:name="com.gai.ewbbu.ewb.MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.Ewb">
         <activity
-            android:name=".ui.MainActivity"
+            android:name="com.gai.ewbbu.ewb.ui.MainActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
@@ -29,13 +29,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.HomeOldActivity"
+            android:name="com.gai.ewbbu.ewb.ui.HomeOldActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_home"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".ui.SignUpActivity"
+            android:name="com.gai.ewbbu.ewb.ui.SignUpActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_signUp"
             android:screenOrientation="portrait">
@@ -46,50 +46,50 @@
             android:value="426ec53741e6f6124da2975dff63c12881e3df35"/>
 
         <activity
-            android:name=".ui.HomeActivity"
+            android:name="com.gai.ewbbu.ewb.ui.HomeActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_home"
-            android:parentActivityName=".ui.MainActivity"
+            android:parentActivityName="com.gai.ewbbu.ewb.ui.MainActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.patels95.sanam.ewb.ui.MainActivity"/>
+                android:value="com.gai.ewbbu.ewb.ui.MainActivity"/>
         </activity>
         <activity
-            android:name=".ui.ProjectsActivity"
+            android:name="com.gai.ewbbu.ewb.ui.ProjectsActivity"
             android:label="@string/title_activity_projects"
             android:screenOrientation="portrait"
             android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.patels95.sanam.ewb.ui.HomeActivity"/>
+                android:value="com.gai.ewbbu.ewb.ui.HomeActivity"/>
         </activity>
         <activity
-            android:name=".ui.EditProjectsActivity"
+            android:name="com.gai.ewbbu.ewb.ui.EditProjectsActivity"
             android:label="@string/title_activity_edit_projects"
-            android:parentActivityName=".ui.ProjectsActivity"
+            android:parentActivityName="com.gai.ewbbu.ewb.ui.ProjectsActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.patels95.sanam.ewb.ui.HomeActivity"/>
+                android:value="com.gai.ewbbu.ewb.ui.HomeActivity"/>
         </activity>
         <activity
-            android:name=".ui.TaskActivity"
+            android:name="com.gai.ewbbu.ewb.ui.TaskActivity"
             android:label="@string/title_activity_task"
             android:screenOrientation="portrait"
-            android:parentActivityName=".ui.ProjectsActivity">
+            android:parentActivityName="com.gai.ewbbu.ewb.ui.ProjectsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.patels95.sanam.ewb.ui.ProjectsActivity"/>
+                android:value="com.gai.ewbbu.ewb.ui.ProjectsActivity"/>
         </activity>
         <activity
-            android:name=".ui.NewTaskActivity"
+            android:name="com.gai.ewbbu.ewb.ui.NewTaskActivity"
             android:label="@string/title_activity_new_task"
-            android:parentActivityName=".ui.ProjectsActivity">
+            android:parentActivityName="com.gai.ewbbu.ewb.ui.ProjectsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.patels95.sanam.ewb.ui.ProjectsActivity"/>
+                android:value="com.gai.ewbbu.ewb.ui.ProjectsActivity"/>
         </activity>
     </application>
 

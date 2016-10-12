@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context="com.patels95.sanam.ewb.ui.TaskActivity">
+    tools:context="com.gai.ewbbu.ewb.ui.TaskActivity">
 
     <include
         android:id="@+id/tool_bar"

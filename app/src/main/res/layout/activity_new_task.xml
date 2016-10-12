@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/white"
-    tools:context="com.patels95.sanam.ewb.ui.NewTaskActivity">
+    tools:context="com.gai.ewbbu.ewb.ui.NewTaskActivity">
 
     <include
         android:id="@+id/tool_bar"
