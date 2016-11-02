@@ -29,6 +29,8 @@ public class HomeActivity extends AppCompatActivity
     private static final String TAG = HomeActivity.class.getSimpleName();
     private FragmentManager mFragmentManager = getSupportFragmentManager();
 
+
+
     @BindView(R.id.tool_bar) Toolbar mToolbar;
     @BindView(R.id.navigation_view) NavigationView mNavigationView;
     @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;

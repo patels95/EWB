@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "234337511753",
+    "firebase_url": "https://ewbbu-1469981905806.firebaseio.com",
+    "project_id": "ewbbu-1469981905806",
+    "storage_bucket": "ewbbu-1469981905806.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:234337511753:android:fef063c8a0121b8a",
+        "android_client_info": {
+          "package_name": "com.gai.ewbbu.ewb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "234337511753-5bcrekfvk24t9221fjlqquul6fv4lgnk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGNJJr-yPsDRtmBJuv7ju0luacXpuVuSI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
