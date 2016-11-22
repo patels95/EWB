@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -15,6 +16,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -31,10 +36,11 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String IS_MEMBER = "IS_MEMBER";
     private boolean mIsMember = false;
+    private FirebaseAuth mFirebaseAuth;
 
     @BindView(R.id.tool_bar) Toolbar mToolbar;
-    @BindView(R.id.memberButton) Button mMember;
-    @BindView(R.id.guestButton) Button mGuest;
+    @BindView(R.id.memberButton) Button mAdmin;
+    @BindView(R.id.guestButton) Button mMember;
     @BindView(R.id.backLabel) TextView mBack;
     @BindView(R.id.inputEmail) EditText mEmail;
     @BindView(R.id.inputPassword) EditText mPassword;
@@ -48,8 +54,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         Log.d(TAG, "toolbar: " + mToolbar);
-        Log.d(TAG, "member: " + mMember);
+        Log.d(TAG, "member: " + mAdmin);
         setSupportActionBar(mToolbar);
+
+        mFirebaseAuth = FirebaseAuth.getInstance();
 
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
@@ -59,14 +67,14 @@ public class MainActivity extends AppCompatActivity {
         //login is invisible by default
         toggleLogin();
 
-        mGuest.setOnClickListener(new View.OnClickListener(){
+        mMember.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 guestStartHome();
             }
         });
 
-        mMember.setOnClickListener(new View.OnClickListener(){
+        mAdmin.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 toggleLogin();
@@ -119,23 +127,20 @@ public class MainActivity extends AppCompatActivity {
                     dlg.setMessage("Logging In...");
                     dlg.show();
 
-                    //call the Parse login method
-                    ParseUser.logInInBackground(mEmail.getText().toString(), mPassword.getText().toString(), new LogInCallback() {
-                        @Override
-                        public void done(ParseUser parseUser, ParseException e) {
-                            dlg.dismiss();
-                            if(e != null){
-                                //display error message
-                                Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                            }
-
-                            else{
-                                //start the home activity as an ewb member
-                                memberStartHome();
-                            }
-                        }
-                    });
-
+                    // firebase login
+                    mFirebaseAuth.signInWithEmailAndPassword(mEmail.getText().toString(), mPassword.getText().toString())
+                            .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    dlg.dismiss();
+                                    if (task.isSuccessful()) {
+                                        memberStartHome();
+                                    }
+                                    else {
+                                        Log.e(TAG, task.getException().toString());
+                                    }
+                                }
+                            });
                 }
 
             }
@@ -169,8 +174,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void memberStartHome() {
         Intent intent = new Intent(this, HomeActivity.class);
-        mIsMember = true;
-        intent.putExtra(IS_MEMBER, mIsMember);
+        intent.putExtra(IS_MEMBER, true);
         startActivity(intent);
     }
 
@@ -208,8 +212,8 @@ public class MainActivity extends AppCompatActivity {
             mForgotPassword.setVisibility(View.INVISIBLE);
             mSubmitLogin.setVisibility(View.INVISIBLE);
             mBack.setVisibility(View.INVISIBLE);
+            mAdmin.setVisibility(View.VISIBLE);
             mMember.setVisibility(View.VISIBLE);
-            mGuest.setVisibility(View.VISIBLE);
         }
         else{
             mEmail.setVisibility(View.VISIBLE);
@@ -217,8 +221,8 @@ public class MainActivity extends AppCompatActivity {
             mForgotPassword.setVisibility(View.VISIBLE);
             mSubmitLogin.setVisibility(View.VISIBLE);
             mBack.setVisibility(View.VISIBLE);
+            mAdmin.setVisibility(View.INVISIBLE);
             mMember.setVisibility(View.INVISIBLE);
-            mGuest.setVisibility(View.INVISIBLE);
         }
     }
 
