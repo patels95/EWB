@@ -154,7 +154,7 @@ public class CalendarFragment extends Fragment{
 
         mService = new com.google.api.services.calendar.Calendar.Builder(
                 transport, jsonFactory, credential)
-                .setApplicationName("Engineers Without Borders BU")
+                .setApplicationName("EWBBU")
                 .build();
 
         refreshResults();
