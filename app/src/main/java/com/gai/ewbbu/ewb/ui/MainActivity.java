@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String IS_MEMBER = "IS_MEMBER";
     private boolean mIsMember = false;
     private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mCurrentUser;
 
     @BindView(R.id.tool_bar) Toolbar mToolbar;
     @BindView(R.id.memberButton) Button mAdmin;
@@ -58,9 +60,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
-
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        if (currentUser != null) {
+        mCurrentUser = mFirebaseAuth.getCurrentUser();
+        if (mCurrentUser != null) {
             memberStartHome();
         }
 
@@ -137,7 +138,8 @@ public class MainActivity extends AppCompatActivity {
                                         memberStartHome();
                                     }
                                     else {
-                                        Log.e(TAG, task.getException().toString());
+                                        Toast.makeText(MainActivity.this, "Login Failed. Please Try Again.", Toast.LENGTH_LONG).show();
+                                        Log.d(TAG, task.getException().toString());
                                     }
                                 }
                             });
@@ -228,8 +230,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void guestStartHome() {
         Intent intent = new Intent(this, HomeActivity.class);
-        mIsMember = false;
-        intent.putExtra(IS_MEMBER, mIsMember);
+        intent.putExtra(IS_MEMBER, false);
         startActivity(intent);
     }
 

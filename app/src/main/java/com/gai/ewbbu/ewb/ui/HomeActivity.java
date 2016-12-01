@@ -10,11 +10,14 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.parse.ParseUser;
 import com.gai.ewbbu.ewb.R;
 
@@ -30,6 +33,8 @@ public class HomeActivity extends AppCompatActivity
     private FragmentManager mFragmentManager = getSupportFragmentManager();
 
 
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mCurrentUser;
 
     @BindView(R.id.tool_bar) Toolbar mToolbar;
     @BindView(R.id.navigation_view) NavigationView mNavigationView;
@@ -68,7 +73,7 @@ public class HomeActivity extends AppCompatActivity
                             .commit();
                     return true;
                 case R.id.nav_logout:
-                    ParseUser.logOut();
+                    mFirebaseAuth.signOut();
                     navigateToMain();
                 default:
                     changeToolbarTitle("Twitter");
@@ -114,7 +119,9 @@ public class HomeActivity extends AppCompatActivity
         mDrawerLayout.setDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
-        if (ParseUser.getCurrentUser() == null) {
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mCurrentUser = mFirebaseAuth.getCurrentUser();
+        if (mCurrentUser == null) {
             Menu menu = mNavigationView.getMenu();
             MenuItem login = menu.findItem(R.id.nav_logout);
             login.setTitle("Login");
@@ -183,6 +190,7 @@ public class HomeActivity extends AppCompatActivity
                 return true;
             case R.id.action_logout:
                 ParseUser.logOut();
+                mFirebaseAuth.signOut();
                 navigateToMain();
         }
 

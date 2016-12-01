@@ -15,13 +15,17 @@
       },
       "oauth_client": [
         {
-          "client_id": "234337511753-5bcrekfvk24t9221fjlqquul6fv4lgnk.apps.googleusercontent.com",
-          "client_type": 3
+          "client_id": "234337511753-djvaec2tnapqanmjo09ls5jp8q1ca1ti.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gai.ewbbu.ewb",
+            "certificate_hash": "F9A170C108794B3F991B819AF14E118860A14999"
+          }
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDGNJJr-yPsDRtmBJuv7ju0luacXpuVuSI"
+          "current_key": "AIzaSyBlmo-CLPxTk_7a03Nae0fFvGHGm36jYj4"
         }
       ],
       "services": {
@@ -29,7 +33,7 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
+          "status": 2,
           "other_platform_oauth_client": []
         },
         "ads_service": {
