@@ -12,13 +12,13 @@
 
         <item
             android:id="@+id/calendar"
-            android:icon="@drawable/ic_date_range_black_48dp"
+            android:icon="@drawable/ic_date_range_black_24dp"
             android:title="@string/drawer_calendar"
             />
 
         <item
             android:id="@+id/projects"
-            android:icon="@drawable/ic_work_black_48dp"
+            android:icon="@drawable/ic_work_black_24dp"
             android:title="@string/drawer_projects"
             />
     </group>
@@ -26,7 +26,7 @@
     <group android:id="@+id/nav_footer">
         <item
             android:id="@+id/nav_logout"
-            android:icon="@drawable/ic_exit_to_app_black_48dp"
+            android:icon="@drawable/ic_exit_to_app_black_24dp"
             android:title="@string/action_logout"
             />
     </group>

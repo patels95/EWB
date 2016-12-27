@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -40,6 +41,7 @@ public class TaskActivity extends AppCompatActivity {
     private Task mTask;
     private static String mProjectTitle;
     private static String mProjectParseId;
+    private FirebaseAuth mFirebaseAuth;
 
 
     private DialogInterface.OnClickListener mDialogListener = new DialogInterface.OnClickListener() {
@@ -72,13 +74,15 @@ public class TaskActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        mFirebaseAuth = FirebaseAuth.getInstance();
+
         Intent intent = getIntent();
         mProjectTitle = intent.getStringExtra(ParseConstants.PROJECT_TITLE);
         mProjectParseId = intent.getStringExtra(ParseConstants.PARSE_ID);
         mTaskId = intent.getStringExtra(ParseConstants.TASK_ID);
         setTitle(mProjectTitle);
 
-        if (ParseUser.getCurrentUser() == null) {
+        if (mFirebaseAuth.getCurrentUser() == null) {
             mCompleteTask.setVisibility(View.GONE);
         }
 
@@ -89,7 +93,7 @@ public class TaskActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        if (ParseUser.getCurrentUser() != null) {
+        if (mFirebaseAuth.getCurrentUser() != null) {
             getMenuInflater().inflate(R.menu.menu_task, menu);
             return true;
         }

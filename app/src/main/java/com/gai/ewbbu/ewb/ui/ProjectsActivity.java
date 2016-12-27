@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.parse.ParseUser;
 import com.gai.ewbbu.ewb.R;
 import com.gai.ewbbu.ewb.adapters.SectionsPagerAdapter;
@@ -31,6 +32,7 @@ public class ProjectsActivity extends ActionBarActivity implements ActionBar.Tab
     private static String mProjectTitle;
     private static String mParseId;
     private ViewPagerAdapter mProjectPagerAdapter;
+    private FirebaseAuth mFirebaseAuth;
 
     @BindView(R.id.tool_bar) Toolbar mToolbar;
     @BindView(R.id.projectTabs) TabLayout mProjectTabs;
@@ -60,6 +62,8 @@ public class ProjectsActivity extends ActionBarActivity implements ActionBar.Tab
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        mFirebaseAuth = FirebaseAuth.getInstance();
 
         // Set up the action bar.
 //        final ActionBar actionBar = getSupportActionBar();
@@ -140,7 +144,7 @@ public class ProjectsActivity extends ActionBarActivity implements ActionBar.Tab
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        if (ParseUser.getCurrentUser() != null) {
+        if (mFirebaseAuth.getCurrentUser() != null) {
             getMenuInflater().inflate(R.menu.menu_projects, menu);
             return true;
         }

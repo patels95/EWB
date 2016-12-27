@@ -100,6 +100,7 @@ public class HomeActivity extends AppCompatActivity
         changeToolbarTitle("Twitter");
 
         mNavigationView.setNavigationItemSelectedListener(mNavigationItemSelectedListener);
+        mNavigationView.setItemIconTintList(null);
 
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open,
@@ -171,7 +172,7 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (ParseUser.getCurrentUser() != null) {
+        if (mFirebaseAuth.getCurrentUser() != null) {
             getMenuInflater().inflate(R.menu.menu_home, menu);
             return true;
         }
