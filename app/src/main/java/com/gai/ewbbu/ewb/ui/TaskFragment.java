@@ -2,11 +2,10 @@ package com.gai.ewbbu.ewb.ui;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,13 +16,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.gai.ewbbu.ewb.R;
 import com.gai.ewbbu.ewb.adapters.TaskAdapter;
 import com.gai.ewbbu.ewb.model.ParseConstants;
 import com.gai.ewbbu.ewb.model.Task;
+import com.gai.ewbbu.ewb.util.DividerItemDecoration;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import java.util.Calendar;
 import java.util.List;
@@ -38,7 +38,7 @@ import butterknife.ButterKnife;
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
-public class TaskFragment extends Fragment {
+public class TaskFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = TaskFragment.class.getSimpleName();
     private OnFragmentInteractionListener mListener;
@@ -76,6 +76,9 @@ public class TaskFragment extends Fragment {
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mTaskRecyclerView.setLayoutManager(layoutManager);
+        mTaskRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
+
+        mNewTaskButton.setOnClickListener(this);
 
         return view;
     }
@@ -125,6 +128,15 @@ public class TaskFragment extends Fragment {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.newTaskButton:
+                // intent to NewTaskActivity
+                break;
+        }
     }
 
 //    @Override

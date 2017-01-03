@@ -17,6 +17,7 @@
         android:id="@+id/newTaskButton"
         android:src="@drawable/ic_add_white_24dp"
         app:fabSize="normal"
+        app:backgroundTint="@color/accent"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"

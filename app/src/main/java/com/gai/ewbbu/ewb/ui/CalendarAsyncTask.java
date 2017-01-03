@@ -82,7 +82,7 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
             } catch (IOException e) {
                 errorDetected = true;
                 Log.d(TAG, "Error: IOException");
-                Log.d(TAG, e.getLocalizedMessage());
+                Log.d(TAG, "error: " + e.getLocalizedMessage());
             }
             // If no errors are met, then account must have been set or was just set.
             isAccountSet = true;
