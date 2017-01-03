@@ -1,6 +1,7 @@
 package com.gai.ewbbu.ewb.adapters;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,62 +13,61 @@ import com.gai.ewbbu.ewb.model.Task;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
-public class TaskAdapter extends BaseAdapter {
+public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
     private Context mContext;
     private Task[] mTasks;
-
     public TaskAdapter(Context context, Task[] tasks) {
         mContext = context;
         mTasks = tasks;
     }
 
     @Override
-    public int getCount() {
+    public TaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.task_list_item, parent, false);
+        return new TaskViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(TaskViewHolder holder, int position) {
+        holder.bindTask(mTasks[position]);
+    }
+
+    @Override
+    public int getItemCount() {
         return mTasks.length;
     }
 
-    @Override
-    public Object getItem(int position) {
-        return mTasks[position];
-    }
+    static class TaskViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
+        TextView mTitle;
+        TextView mDueDate;
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
 
-        if (convertView == null) {
-            // new view
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.task_list_item, null);
-            holder = new ViewHolder();
-            holder.taskTitle = (TextView) convertView.findViewById(R.id.taskListTitle);
-            holder.taskDueDate = (TextView) convertView.findViewById(R.id.taskListDueDate);
+        public TaskViewHolder(View itemView) {
+            super(itemView);
 
-            convertView.setTag(holder);
-        }
-        else {
-            holder = (ViewHolder) convertView.getTag();
+            mTitle = (TextView) itemView.findViewById(R.id.taskListTitle);
+            mDueDate = (TextView) itemView.findViewById(R.id.taskListDueDate);
+
+            itemView.setOnClickListener(this);
         }
 
-        Task task = mTasks[position];
-        holder.taskTitle.setText(task.getTitle());
-        Calendar calendar = task.getDueDate();
-        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy");
-        String dueDate = format.format(calendar.getTime());
-        holder.taskDueDate.setText(dueDate);
+        public void bindTask(Task task) {
+            mTitle.setText(task.getTitle());
+            Calendar calendar = task.getDueDate();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yy", Locale.US);
+            mDueDate.setText(dateFormat.format(calendar.getTime()));
 
-        return convertView;
-    }
+        }
 
-    private static class ViewHolder {
-        public TextView taskTitle;
-        public TextView taskDueDate;
+        @Override
+        public void onClick(View v) {
+            // start task activity
+        }
     }
 }
 

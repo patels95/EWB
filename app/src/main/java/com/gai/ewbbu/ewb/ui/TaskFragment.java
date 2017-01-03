@@ -2,26 +2,34 @@ package com.gai.ewbbu.ewb.ui;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.support.v4.app.ListFragment;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
+import android.view.ViewGroup;
 
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.gai.ewbbu.ewb.R;
 import com.gai.ewbbu.ewb.adapters.TaskAdapter;
 import com.gai.ewbbu.ewb.model.ParseConstants;
 import com.gai.ewbbu.ewb.model.Task;
+import com.gai.ewbbu.ewb.util.DividerItemDecoration;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import java.util.Calendar;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * A fragment representing a list of Items.
@@ -30,7 +38,7 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
-public class TaskFragment extends ListFragment {
+public class TaskFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = TaskFragment.class.getSimpleName();
     private OnFragmentInteractionListener mListener;
@@ -39,6 +47,10 @@ public class TaskFragment extends ListFragment {
     private String mProjectTitle;
     private Task[] mTasks;
     private String mFilter = ParseConstants.ALL_TASKS;
+
+    @BindView(R.id.taskRecyclerView) RecyclerView mTaskRecyclerView;
+    @BindView(R.id.newTaskButton) FloatingActionButton mNewTaskButton;
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -56,19 +68,34 @@ public class TaskFragment extends ListFragment {
         mProjectTitle = ProjectsActivity.getProjectTitle();
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_task, container, false);
+        ButterKnife.bind(this, view);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        mTaskRecyclerView.setLayoutManager(layoutManager);
+        mTaskRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
+
+        mNewTaskButton.setOnClickListener(this);
+
+        return view;
+    }
+
     @Override
     public void onStart() {
         super.onStart();
 
         mTasks = getParseTasks();
         TaskAdapter taskAdapter = new TaskAdapter(getActivity(), mTasks);
-        setListAdapter(taskAdapter);
+        mTaskRecyclerView.setAdapter(taskAdapter);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setEmptyText("There are no tasks for this project");
+//        setEmptyText("There are no tasks for this project");
     }
 
     @Override
@@ -104,20 +131,29 @@ public class TaskFragment extends ListFragment {
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-
-        if (null != mListener) {
-            // Notify the active callbacks interface (the activity, if the
-            // fragment is attached to one) that an item has been selected.
-//            mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
-            Intent intent = new Intent(getActivity(), TaskActivity.class);
-            intent.putExtra(ParseConstants.PROJECT_TITLE, mProjectTitle);
-            intent.putExtra(ParseConstants.PARSE_ID, mParseProjectId);
-            intent.putExtra(ParseConstants.TASK_ID, mTasks[position].getTaskId());
-            startActivity(intent);
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.newTaskButton:
+                // intent to NewTaskActivity
+                break;
         }
     }
+
+//    @Override
+//    public void onListItemClick(ListView l, View v, int position, long id) {
+//        //super.onListItemClick(l, v, position, id);
+//
+//        if (null != mListener) {
+//            // Notify the active callbacks interface (the activity, if the
+//            // fragment is attached to one) that an item has been selected.
+////            mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
+//            Intent intent = new Intent(getActivity(), TaskActivity.class);
+//            intent.putExtra(ParseConstants.PROJECT_TITLE, mProjectTitle);
+//            intent.putExtra(ParseConstants.PARSE_ID, mParseProjectId);
+//            intent.putExtra(ParseConstants.TASK_ID, mTasks[position].getTaskId());
+//            startActivity(intent);
+//        }
+//    }
 
     // return list of tasks from parse
     private Task[] getParseTasks() {
@@ -177,7 +213,7 @@ public class TaskFragment extends ListFragment {
                         mFilter = filters[position];
                         mTasks = getParseTasks();
                         TaskAdapter taskAdapter = new TaskAdapter(getActivity(), mTasks);
-                        setListAdapter(taskAdapter);
+                        mTaskRecyclerView.setAdapter(taskAdapter);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
