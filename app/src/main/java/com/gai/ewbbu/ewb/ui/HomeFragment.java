@@ -15,7 +15,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.gai.ewbbu.ewb.R;
-import com.gai.ewbbu.ewb.model.ParseConstants;
+import com.gai.ewbbu.ewb.model.Constants;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
@@ -116,7 +116,7 @@ public class HomeFragment extends ListFragment {
 
     // wake up parse server. heroku dyno will sleep if there is no activity
     private void wakeUpParseServer() {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.PROJECT_CLASS);
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.PROJECT_CLASS);
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {

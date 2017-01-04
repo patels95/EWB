@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gai.ewbbu.ewb.R;
-import com.gai.ewbbu.ewb.model.ParseConstants;
+import com.gai.ewbbu.ewb.model.Constants;
 import com.gai.ewbbu.ewb.model.Project;
 import com.gai.ewbbu.ewb.ui.ProjectsActivity;
 
@@ -80,8 +80,8 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
             TextView title = (TextView) v.findViewById(R.id.projectTitle);
             TextView parseId = (TextView) v.findViewById(R.id.parseId);
             Intent intent = new Intent(mContext, ProjectsActivity.class);
-            intent.putExtra(ParseConstants.PROJECT_TITLE, title.getText().toString());
-            intent.putExtra(ParseConstants.PARSE_ID, parseId.getText().toString());
+            intent.putExtra(Constants.PROJECT_TITLE, title.getText().toString());
+            intent.putExtra(Constants.PARSE_ID, parseId.getText().toString());
             mContext.startActivity(intent);
         }
     }

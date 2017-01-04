@@ -1,22 +1,27 @@
 package com.gai.ewbbu.ewb.ui;
 
-import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.gai.ewbbu.ewb.R;
+import com.gai.ewbbu.ewb.adapters.ProjectAdapter;
+import com.gai.ewbbu.ewb.model.Constants;
+import com.gai.ewbbu.ewb.model.Project;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.gai.ewbbu.ewb.R;
-import com.gai.ewbbu.ewb.adapters.ProjectAdapter;
-import com.gai.ewbbu.ewb.model.ParseConstants;
-import com.gai.ewbbu.ewb.model.Project;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -42,11 +47,11 @@ public class ProjectsFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
     private static final String TAG = ProjectsFragment.class.getSimpleName();
     private int mSectionNumber;
-
-    @BindView(R.id.projectRecyclerView) RecyclerView mProjectRecyclerView;
-
     private OnFragmentInteractionListener mListener;
     private Project[] mProjectCards;
+    private DatabaseReference mDatabase;
+
+    @BindView(R.id.projectRecyclerView) RecyclerView mProjectRecyclerView;
 
     public static ProjectsFragment newInstance(int sectionNumber) {
         ProjectsFragment fragment = new ProjectsFragment();
@@ -66,6 +71,8 @@ public class ProjectsFragment extends Fragment {
         if (getArguments() != null) {
             mSectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
         }
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
 
@@ -80,8 +87,8 @@ public class ProjectsFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mProjectRecyclerView.setLayoutManager(layoutManager);
 
-        getParseProjects();
-
+        //getParseProjects();
+        getFirebaseProjects();
         return view;
     }
 
@@ -115,6 +122,59 @@ public class ProjectsFragment extends Fragment {
         mProjectCards = new Project[]{filter, collection, sanitation, solar};
         ProjectAdapter adapter = new ProjectAdapter(getActivity(), mProjectCards);
         mProjectRecyclerView.setAdapter(adapter);
+    }
+
+    // get projects list from firebase database
+    private void getFirebaseProjects() {
+
+        DatabaseReference firebaseProjects = mDatabase.child(Constants.PROJECTS_KEY);
+        firebaseProjects.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Project[] projects = new Project[4];
+                int index = 0;
+                for (DataSnapshot projectSnapshot : dataSnapshot.getChildren()) {
+                    projects[index] = projectSnapshot.getValue(Project.class);
+                    Log.d(TAG, projects[index].getTitle());
+                    index++;
+                }
+                ProjectAdapter adapter = new ProjectAdapter(getActivity(), projects);
+                mProjectRecyclerView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "get projects:onCancelled", databaseError.toException());
+            }
+        });
+    }
+
+    // add project info to firebase database
+    private void setFirebaseProjects() {
+        Project filter = new Project();
+        filter.setTitle(getString(R.string.filter_title));
+        filter.setDescription(getString(R.string.filter_description));
+        filter.setImageUri(getString(R.string.filter_image_uri));
+
+        Project collection = new Project();
+        collection.setTitle(getString(R.string.collection_title));
+        collection.setDescription(getString(R.string.collection_description));
+        collection.setImageUri(getString(R.string.collection_image_uri));
+
+        Project sanitation = new Project();
+        sanitation.setTitle(getString(R.string.sanitation_title));
+        sanitation.setDescription(getString(R.string.sanitation_description));
+        sanitation.setImageUri(getString(R.string.sanitation_image_uri));
+
+        Project solar = new Project();
+        solar.setTitle(getString(R.string.solar_title));
+        solar.setDescription(getString(R.string.solar_description));
+        solar.setImageUri(getString(R.string.solar_image_uri));
+
+        mDatabase.child(Constants.PROJECTS_KEY).push().setValue(filter);
+        mDatabase.child(Constants.PROJECTS_KEY).push().setValue(collection);
+        mDatabase.child(Constants.PROJECTS_KEY).push().setValue(sanitation);
+        mDatabase.child(Constants.PROJECTS_KEY).push().setValue(solar);
     }
 
     private void updateParseProjects() throws IOException {
@@ -190,14 +250,14 @@ public class ProjectsFragment extends Fragment {
     }
 
     private void getParseProjects() {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.PROJECT_CLASS);
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.PROJECT_CLASS);
         try {
             List<ParseObject> list = query.find();
             ArrayList<String> projectStrings = new ArrayList<String>();
             for (int i = 0; i < list.size(); i++){
-                projectStrings.add(list.get(i).getString(ParseConstants.PROJECT_TITLE));
-                projectStrings.add(list.get(i).getString(ParseConstants.PROJECT_DESCRIPTION));
-                projectStrings.add(list.get(i).getString(ParseConstants.PROJECT_IMAGEURI));
+                projectStrings.add(list.get(i).getString(Constants.PROJECT_TITLE));
+                projectStrings.add(list.get(i).getString(Constants.PROJECT_DESCRIPTION));
+                projectStrings.add(list.get(i).getString(Constants.PROJECT_IMAGEURI));
                 projectStrings.add(list.get(i).getObjectId());
             }
             setProjectsArray(projectStrings);
@@ -235,17 +295,6 @@ public class ProjectsFragment extends Fragment {
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
         }
     }
 

@@ -14,7 +14,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.gai.ewbbu.ewb.R;
-import com.gai.ewbbu.ewb.model.ParseConstants;
+import com.gai.ewbbu.ewb.model.Constants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,7 +40,7 @@ public class EditProjectsActivity extends ActionBarActivity {
 
         // get parse objectid from projects activity
         Intent projectIntent = getIntent();
-        mParseId = projectIntent.getStringExtra(ParseConstants.PARSE_ID);
+        mParseId = projectIntent.getStringExtra(Constants.PARSE_ID);
 
         mEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,10 +65,10 @@ public class EditProjectsActivity extends ActionBarActivity {
 
                     // update project details if field is not empty
                     if (!title.isEmpty()) {
-                        project.put(ParseConstants.PROJECT_TITLE, mEditName.getText().toString());
+                        project.put(Constants.PROJECT_TITLE, mEditName.getText().toString());
                     }
                     if (!description.isEmpty()) {
-                        project.put(ParseConstants.PROJECT_DESCRIPTION, mEditDescription.getText().toString());
+                        project.put(Constants.PROJECT_DESCRIPTION, mEditDescription.getText().toString());
                     }
                     project.saveInBackground();
                     Toast.makeText(EditProjectsActivity.this, "Changes have been saved.", Toast.LENGTH_LONG).show();

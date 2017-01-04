@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 
 import com.gai.ewbbu.ewb.R;
 import com.gai.ewbbu.ewb.adapters.TaskAdapter;
-import com.gai.ewbbu.ewb.model.ParseConstants;
+import com.gai.ewbbu.ewb.model.Constants;
 import com.gai.ewbbu.ewb.model.Task;
 import com.gai.ewbbu.ewb.util.DividerItemDecoration;
 import com.parse.ParseException;
@@ -46,7 +46,7 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
     private String mParseProjectId;
     private String mProjectTitle;
     private Task[] mTasks;
-    private String mFilter = ParseConstants.ALL_TASKS;
+    private String mFilter = Constants.ALL_TASKS;
 
     @BindView(R.id.taskRecyclerView) RecyclerView mTaskRecyclerView;
     @BindView(R.id.newTaskButton) FloatingActionButton mNewTaskButton;
@@ -159,23 +159,23 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
     private Task[] getParseTasks() {
         ParseQuery<ParseObject> query;
         switch (mFilter) {
-            case ParseConstants.ALL_TASKS:
-                query = ParseQuery.getQuery(ParseConstants.TASK_CLASS)
-                        .whereEqualTo(ParseConstants.TASK_PROJECT_ID, mParseProjectId);
+            case Constants.ALL_TASKS:
+                query = ParseQuery.getQuery(Constants.TASK_CLASS)
+                        .whereEqualTo(Constants.TASK_PROJECT_ID, mParseProjectId);
                 break;
-            case ParseConstants.COMPLETE_TASKS:
-                query = ParseQuery.getQuery(ParseConstants.TASK_CLASS)
-                        .whereEqualTo(ParseConstants.TASK_PROJECT_ID, mParseProjectId)
-                        .whereEqualTo(ParseConstants.TASK_COMPLETE, true);
+            case Constants.COMPLETE_TASKS:
+                query = ParseQuery.getQuery(Constants.TASK_CLASS)
+                        .whereEqualTo(Constants.TASK_PROJECT_ID, mParseProjectId)
+                        .whereEqualTo(Constants.TASK_COMPLETE, true);
                 break;
-            case ParseConstants.INCOMPLETE_TASKS:
-                query = ParseQuery.getQuery(ParseConstants.TASK_CLASS)
-                        .whereEqualTo(ParseConstants.TASK_PROJECT_ID, mParseProjectId)
-                        .whereEqualTo(ParseConstants.TASK_COMPLETE, false);
+            case Constants.INCOMPLETE_TASKS:
+                query = ParseQuery.getQuery(Constants.TASK_CLASS)
+                        .whereEqualTo(Constants.TASK_PROJECT_ID, mParseProjectId)
+                        .whereEqualTo(Constants.TASK_COMPLETE, false);
                 break;
             default:
-                query = ParseQuery.getQuery(ParseConstants.TASK_CLASS)
-                        .whereEqualTo(ParseConstants.TASK_PROJECT_ID, mParseProjectId);
+                query = ParseQuery.getQuery(Constants.TASK_CLASS)
+                        .whereEqualTo(Constants.TASK_PROJECT_ID, mParseProjectId);
         }
 
         Task[] tasks = null;
@@ -184,13 +184,13 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
             tasks = new Task[list.size()];
             for (int i = 0; i < list.size(); i++) {
                 Task task = new Task();
-                task.setTitle(list.get(i).getString(ParseConstants.TASK_TITLE));
-                task.setDescription(list.get(i).getString(ParseConstants.TASK_DESCRIPTION));
+                task.setTitle(list.get(i).getString(Constants.TASK_TITLE));
+                task.setDescription(list.get(i).getString(Constants.TASK_DESCRIPTION));
                 task.setTaskId(list.get(i).getObjectId());
-                task.setProjectId(list.get(i).getString(ParseConstants.TASK_PROJECT_ID));
-                task.setComplete(list.get(i).getBoolean(ParseConstants.TASK_COMPLETE));
+                task.setProjectId(list.get(i).getString(Constants.TASK_PROJECT_ID));
+                task.setComplete(list.get(i).getBoolean(Constants.TASK_COMPLETE));
                 Calendar calendar = Calendar.getInstance();
-                calendar.setTime(list.get(i).getDate(ParseConstants.TASK_DUE_DATE));
+                calendar.setTime(list.get(i).getDate(Constants.TASK_DUE_DATE));
                 task.setDueDate(calendar);
                 tasks[i] = task;
             }

@@ -1,6 +1,6 @@
 package com.gai.ewbbu.ewb.model;
 
-public class ParseConstants {
+public class Constants {
     // ParseUser
     public static final String FIRST_NAME = "firstName";
     public static final String LAST_NAME = "lastName";
@@ -13,6 +13,7 @@ public class ParseConstants {
     public static final String PROJECT_IMAGEURI = "imageUri";
     public static final String PROJECT_RESOURCE = "resource";
     public static final String PARSE_ID = "PARSE_ID";
+    public static final String PROJECTS_KEY = "projects";
 
     // Project IDs
     public static final String FILTER_ID = "cUryqF7MGf";

@@ -16,7 +16,7 @@ import android.widget.EditText;
 
 import com.parse.ParseObject;
 import com.gai.ewbbu.ewb.R;
-import com.gai.ewbbu.ewb.model.ParseConstants;
+import com.gai.ewbbu.ewb.model.Constants;
 
 import java.util.Calendar;
 
@@ -68,12 +68,12 @@ public class NewTaskActivity extends ActionBarActivity {
 
     // called when save button is clicked
     public void saveTask() {
-        ParseObject task = new ParseObject(ParseConstants.TASK_CLASS);
-        task.put(ParseConstants.TASK_TITLE, mTaskTitle.getText().toString());
-        task.put(ParseConstants.TASK_DESCRIPTION, mTaskDescription.getText().toString());
-        task.put(ParseConstants.TASK_COMPLETE, false);
-        task.put(ParseConstants.TASK_DUE_DATE, mDueDate.getTime());
-        task.put(ParseConstants.TASK_PROJECT_ID, mProjectParseId);
+        ParseObject task = new ParseObject(Constants.TASK_CLASS);
+        task.put(Constants.TASK_TITLE, mTaskTitle.getText().toString());
+        task.put(Constants.TASK_DESCRIPTION, mTaskDescription.getText().toString());
+        task.put(Constants.TASK_COMPLETE, false);
+        task.put(Constants.TASK_DUE_DATE, mDueDate.getTime());
+        task.put(Constants.TASK_PROJECT_ID, mProjectParseId);
         task.saveInBackground();
         finish();
     }

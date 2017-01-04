@@ -20,7 +20,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.gai.ewbbu.ewb.R;
-import com.gai.ewbbu.ewb.model.ParseConstants;
+import com.gai.ewbbu.ewb.model.Constants;
 import com.gai.ewbbu.ewb.model.Task;
 
 import java.util.Calendar;
@@ -52,8 +52,8 @@ public class TaskActivity extends AppCompatActivity {
                     // delete the task
                     deleteTask();
                     Intent intent = new Intent(TaskActivity.this, ProjectsActivity.class);
-                    intent.putExtra(ParseConstants.PROJECT_TITLE, mProjectTitle);
-                    intent.putExtra(ParseConstants.PARSE_ID, mProjectParseId);
+                    intent.putExtra(Constants.PROJECT_TITLE, mProjectTitle);
+                    intent.putExtra(Constants.PARSE_ID, mProjectParseId);
                     startActivity(intent);
                     break;
                 case DialogInterface.BUTTON_NEGATIVE:
@@ -77,9 +77,9 @@ public class TaskActivity extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
 
         Intent intent = getIntent();
-        mProjectTitle = intent.getStringExtra(ParseConstants.PROJECT_TITLE);
-        mProjectParseId = intent.getStringExtra(ParseConstants.PARSE_ID);
-        mTaskId = intent.getStringExtra(ParseConstants.TASK_ID);
+        mProjectTitle = intent.getStringExtra(Constants.PROJECT_TITLE);
+        mProjectParseId = intent.getStringExtra(Constants.PARSE_ID);
+        mTaskId = intent.getStringExtra(Constants.TASK_ID);
         setTitle(mProjectTitle);
 
         if (mFirebaseAuth.getCurrentUser() == null) {
@@ -136,16 +136,16 @@ public class TaskActivity extends AppCompatActivity {
     // get Task from parse using task id
     private Task getTaskFromParse(String taskId) {
         final Task task = new Task();
-        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(ParseConstants.TASK_CLASS);
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(Constants.TASK_CLASS);
         try {
             ParseObject object = query.get(taskId);
-            task.setTitle(object.getString(ParseConstants.TASK_TITLE));
-            task.setDescription(object.getString(ParseConstants.TASK_DESCRIPTION));
-            task.setTaskId(object.getString(ParseConstants.TASK_ID));
-            task.setProjectId(object.getString(ParseConstants.TASK_PROJECT_ID));
-            task.setComplete(object.getBoolean(ParseConstants.TASK_COMPLETE));
+            task.setTitle(object.getString(Constants.TASK_TITLE));
+            task.setDescription(object.getString(Constants.TASK_DESCRIPTION));
+            task.setTaskId(object.getString(Constants.TASK_ID));
+            task.setProjectId(object.getString(Constants.TASK_PROJECT_ID));
+            task.setComplete(object.getBoolean(Constants.TASK_COMPLETE));
             Calendar calendar = Calendar.getInstance();
-            calendar.setTime(object.getDate(ParseConstants.TASK_DUE_DATE));
+            calendar.setTime(object.getDate(Constants.TASK_DUE_DATE));
             task.setDueDate(calendar);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -160,11 +160,11 @@ public class TaskActivity extends AppCompatActivity {
     }
 
     public void completeTask(View view) {
-        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(ParseConstants.TASK_CLASS);
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(Constants.TASK_CLASS);
         query.getInBackground(mTaskId, new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject task, ParseException e) {
-                task.put(ParseConstants.TASK_COMPLETE, true);
+                task.put(Constants.TASK_COMPLETE, true);
                 task.saveInBackground();
                 Toast.makeText(TaskActivity.this, "This task has been marked as complete", Toast.LENGTH_LONG).show();
             }
@@ -172,7 +172,7 @@ public class TaskActivity extends AppCompatActivity {
     }
 
     private void deleteTask() {
-        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(ParseConstants.TASK_CLASS);
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(Constants.TASK_CLASS);
         query.getInBackground(mTaskId, new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject task, ParseException e) {

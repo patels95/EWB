@@ -18,7 +18,7 @@ import com.parse.ParseUser;
 import com.gai.ewbbu.ewb.R;
 import com.gai.ewbbu.ewb.adapters.SectionsPagerAdapter;
 import com.gai.ewbbu.ewb.adapters.ViewPagerAdapter;
-import com.gai.ewbbu.ewb.model.ParseConstants;
+import com.gai.ewbbu.ewb.model.Constants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -135,8 +135,8 @@ public class ProjectsActivity extends ActionBarActivity implements ActionBar.Tab
 
         // Get the project's title from intent and set the action bar title
         Intent cardIntent = getIntent();
-        mProjectTitle = cardIntent.getStringExtra(ParseConstants.PROJECT_TITLE);
-        mParseId = cardIntent.getStringExtra(ParseConstants.PARSE_ID);
+        mProjectTitle = cardIntent.getStringExtra(Constants.PROJECT_TITLE);
+        mParseId = cardIntent.getStringExtra(Constants.PARSE_ID);
         setTitle(mProjectTitle);
     }
 
@@ -165,7 +165,7 @@ public class ProjectsActivity extends ActionBarActivity implements ActionBar.Tab
                 break;
             case R.id.action_edit:
                 Intent intent = new Intent(ProjectsActivity.this, EditProjectsActivity.class);
-                intent.putExtra(ParseConstants.PARSE_ID, mParseId);
+                intent.putExtra(Constants.PARSE_ID, mParseId);
                 startActivity(intent);
                 break;
             case R.id.action_new:
