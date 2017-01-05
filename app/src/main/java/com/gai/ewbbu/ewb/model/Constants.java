@@ -33,5 +33,7 @@ public class Constants {
     public static final String COMPLETE_TASKS = "Complete Tasks";
     public static final String INCOMPLETE_TASKS = "Incomplete Tasks";
 
+    // Firebase
+    public static final String FIREBASE_KEY = "firebaseKey";
 
 }

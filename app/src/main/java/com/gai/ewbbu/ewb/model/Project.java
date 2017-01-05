@@ -9,7 +9,7 @@ public class Project {
     private String mDescription;
     private String mImageUri;
     private Task[] mTasks;
-    private String parseId;
+    private String firebaseKey;
     private File[] mResources;
 
     public Project() {
@@ -48,12 +48,12 @@ public class Project {
         mTasks = tasks;
     }
 
-    public String getParseId() {
-        return parseId;
+    public String getFirebaseKey() {
+        return firebaseKey;
     }
 
-    public void setParseId(String parseId) {
-        this.parseId = parseId;
+    public void setFirebaseKey(String firebaseKey) {
+        this.firebaseKey = firebaseKey;
     }
 
     public File[] getResources() {

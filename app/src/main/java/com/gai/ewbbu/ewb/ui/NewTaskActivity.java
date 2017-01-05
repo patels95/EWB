@@ -36,7 +36,7 @@ public class NewTaskActivity extends ActionBarActivity {
 
     private static Calendar mDueDate = Calendar.getInstance();
 
-    private String mProjectParseId;
+    private String mFirebaseProjectKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +49,8 @@ public class NewTaskActivity extends ActionBarActivity {
         }
 
         Intent newTaskIntent = getIntent();
-        mProjectParseId = newTaskIntent.getStringExtra(ProjectsActivity.PROJECT_PARSE_ID);
+        mFirebaseProjectKey = newTaskIntent.getStringExtra(Constants.FIREBASE_KEY);
+        Log.d(TAG, mFirebaseProjectKey);
 
         mSaveTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +74,7 @@ public class NewTaskActivity extends ActionBarActivity {
         task.put(Constants.TASK_DESCRIPTION, mTaskDescription.getText().toString());
         task.put(Constants.TASK_COMPLETE, false);
         task.put(Constants.TASK_DUE_DATE, mDueDate.getTime());
-        task.put(Constants.TASK_PROJECT_ID, mProjectParseId);
+        task.put(Constants.TASK_PROJECT_ID, mFirebaseProjectKey);
         task.saveInBackground();
         finish();
     }

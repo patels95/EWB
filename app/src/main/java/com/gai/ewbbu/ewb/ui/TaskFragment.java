@@ -2,6 +2,7 @@ package com.gai.ewbbu.ewb.ui;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -43,7 +44,7 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = TaskFragment.class.getSimpleName();
     private OnFragmentInteractionListener mListener;
 
-    private String mParseProjectId;
+    private String mFirebaseProjectKey;
     private String mProjectTitle;
     private Task[] mTasks;
     private String mFilter = Constants.ALL_TASKS;
@@ -64,7 +65,7 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        mParseProjectId = ProjectsActivity.getParseProjectId();
+        mFirebaseProjectKey = ProjectsActivity.getFirebaseKey();
         mProjectTitle = ProjectsActivity.getProjectTitle();
     }
 
@@ -135,6 +136,9 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.newTaskButton:
                 // intent to NewTaskActivity
+                Intent intent = new Intent(getActivity(), NewTaskActivity.class);
+                intent.putExtra(Constants.FIREBASE_KEY, mFirebaseProjectKey);
+                startActivity(intent);
                 break;
         }
     }
@@ -149,7 +153,7 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
 ////            mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
 //            Intent intent = new Intent(getActivity(), TaskActivity.class);
 //            intent.putExtra(ParseConstants.PROJECT_TITLE, mProjectTitle);
-//            intent.putExtra(ParseConstants.PARSE_ID, mParseProjectId);
+//            intent.putExtra(ParseConstants.PARSE_ID, mFirebaseProjectKey);
 //            intent.putExtra(ParseConstants.TASK_ID, mTasks[position].getTaskId());
 //            startActivity(intent);
 //        }
@@ -161,21 +165,21 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
         switch (mFilter) {
             case Constants.ALL_TASKS:
                 query = ParseQuery.getQuery(Constants.TASK_CLASS)
-                        .whereEqualTo(Constants.TASK_PROJECT_ID, mParseProjectId);
+                        .whereEqualTo(Constants.TASK_PROJECT_ID, mFirebaseProjectKey);
                 break;
             case Constants.COMPLETE_TASKS:
                 query = ParseQuery.getQuery(Constants.TASK_CLASS)
-                        .whereEqualTo(Constants.TASK_PROJECT_ID, mParseProjectId)
+                        .whereEqualTo(Constants.TASK_PROJECT_ID, mFirebaseProjectKey)
                         .whereEqualTo(Constants.TASK_COMPLETE, true);
                 break;
             case Constants.INCOMPLETE_TASKS:
                 query = ParseQuery.getQuery(Constants.TASK_CLASS)
-                        .whereEqualTo(Constants.TASK_PROJECT_ID, mParseProjectId)
+                        .whereEqualTo(Constants.TASK_PROJECT_ID, mFirebaseProjectKey)
                         .whereEqualTo(Constants.TASK_COMPLETE, false);
                 break;
             default:
                 query = ParseQuery.getQuery(Constants.TASK_CLASS)
-                        .whereEqualTo(Constants.TASK_PROJECT_ID, mParseProjectId);
+                        .whereEqualTo(Constants.TASK_PROJECT_ID, mFirebaseProjectKey);
         }
 
         Task[] tasks = null;
