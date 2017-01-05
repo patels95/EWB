@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.gai.ewbbu.ewb.R;
 import com.gai.ewbbu.ewb.adapters.ProjectAdapter;
-import com.gai.ewbbu.ewb.model.Constants;
+import com.gai.ewbbu.ewb.util.Constants;
 import com.gai.ewbbu.ewb.model.Project;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

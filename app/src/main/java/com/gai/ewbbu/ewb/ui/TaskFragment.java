@@ -19,7 +19,7 @@ import android.view.ViewGroup;
 
 import com.gai.ewbbu.ewb.R;
 import com.gai.ewbbu.ewb.adapters.TaskAdapter;
-import com.gai.ewbbu.ewb.model.Constants;
+import com.gai.ewbbu.ewb.util.Constants;
 import com.gai.ewbbu.ewb.model.Task;
 import com.gai.ewbbu.ewb.util.DividerItemDecoration;
 import com.parse.ParseException;
@@ -191,7 +191,7 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
                 task.setTitle(list.get(i).getString(Constants.TASK_TITLE));
                 task.setDescription(list.get(i).getString(Constants.TASK_DESCRIPTION));
                 task.setTaskId(list.get(i).getObjectId());
-                task.setProjectId(list.get(i).getString(Constants.TASK_PROJECT_ID));
+                task.setFirebaseProjectKey(list.get(i).getString(Constants.TASK_PROJECT_ID));
                 task.setComplete(list.get(i).getBoolean(Constants.TASK_COMPLETE));
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(list.get(i).getDate(Constants.TASK_DUE_DATE));

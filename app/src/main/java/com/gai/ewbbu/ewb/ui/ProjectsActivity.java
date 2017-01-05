@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.gai.ewbbu.ewb.R;
 import com.gai.ewbbu.ewb.adapters.ViewPagerAdapter;
-import com.gai.ewbbu.ewb.model.Constants;
+import com.gai.ewbbu.ewb.util.Constants;
 import com.google.firebase.auth.FirebaseAuth;
 import com.parse.ParseUser;
 
@@ -119,11 +119,6 @@ public class ProjectsActivity extends ActionBarActivity implements ActionBar.Tab
                 Intent intent = new Intent(ProjectsActivity.this, EditProjectsActivity.class);
                 intent.putExtra(Constants.PARSE_ID, mFirebaseKey);
                 startActivity(intent);
-                break;
-            case R.id.action_new:
-                Intent newTaskIntent = new Intent(ProjectsActivity.this, NewTaskActivity.class);
-                newTaskIntent.putExtra(PROJECT_PARSE_ID, mFirebaseKey);
-                startActivity(newTaskIntent);
                 break;
             case android.R.id.home:
                 onBackPressed();

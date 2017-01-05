@@ -1,4 +1,4 @@
-package com.gai.ewbbu.ewb.model;
+package com.gai.ewbbu.ewb.util;
 
 public class Constants {
     // ParseUser
@@ -13,7 +13,6 @@ public class Constants {
     public static final String PROJECT_IMAGEURI = "imageUri";
     public static final String PROJECT_RESOURCE = "resource";
     public static final String PARSE_ID = "PARSE_ID";
-    public static final String PROJECTS_KEY = "projects";
 
     // Project IDs
     public static final String FILTER_ID = "cUryqF7MGf";
@@ -35,5 +34,7 @@ public class Constants {
 
     // Firebase
     public static final String FIREBASE_KEY = "firebaseKey";
+    public static final String PROJECTS_KEY = "projects";
+    public static final String TASKS_KEY = "tasks";
 
 }

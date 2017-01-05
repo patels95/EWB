@@ -7,9 +7,21 @@ public class Task {
     private String mTitle;
     private String mDescription;
     private String mTaskId;
-    private String mProjectId;
+    private String mFirebaseProjectKey;
     private boolean mComplete;
     private Calendar mDueDate;
+
+    public Task() {
+        // default constructor
+    }
+
+    public Task(String title, String description, String firebaseProjectKey, boolean complete, Calendar dueDate) {
+        mTitle = title;
+        mDescription = description;
+        mFirebaseProjectKey = firebaseProjectKey;
+        mComplete = complete;
+        mDueDate = dueDate;
+    }
 
     public String getTitle() {
         return mTitle;
@@ -35,12 +47,12 @@ public class Task {
         mTaskId = taskId;
     }
 
-    public String getProjectId() {
-        return mProjectId;
+    public String getFirebaseProjectKey() {
+        return mFirebaseProjectKey;
     }
 
-    public void setProjectId(String projectId) {
-        mProjectId = projectId;
+    public void setFirebaseProjectKey(String firebaseProjectKey) {
+        mFirebaseProjectKey = firebaseProjectKey;
     }
 
     public boolean isComplete() {

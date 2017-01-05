@@ -15,7 +15,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.gai.ewbbu.ewb.R;
-import com.gai.ewbbu.ewb.model.Constants;
+import com.gai.ewbbu.ewb.util.Constants;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;

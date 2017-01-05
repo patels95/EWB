@@ -20,7 +20,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.gai.ewbbu.ewb.R;
-import com.gai.ewbbu.ewb.model.Constants;
+import com.gai.ewbbu.ewb.util.Constants;
 import com.gai.ewbbu.ewb.model.Task;
 
 import java.util.Calendar;
@@ -142,7 +142,7 @@ public class TaskActivity extends AppCompatActivity {
             task.setTitle(object.getString(Constants.TASK_TITLE));
             task.setDescription(object.getString(Constants.TASK_DESCRIPTION));
             task.setTaskId(object.getString(Constants.TASK_ID));
-            task.setProjectId(object.getString(Constants.TASK_PROJECT_ID));
+            task.setFirebaseProjectKey(object.getString(Constants.TASK_PROJECT_ID));
             task.setComplete(object.getBoolean(Constants.TASK_COMPLETE));
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(object.getDate(Constants.TASK_DUE_DATE));

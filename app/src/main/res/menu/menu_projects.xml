@@ -7,17 +7,12 @@
         android:icon="@drawable/ic_edit_white_48dp"
         app:showAsAction="ifRoom"
         />
-    <item android:id="@+id/action_new"
-          android:title="@string/add_task"
-          android:icon="@drawable/ic_note_add_white_48dp"
-          app:showAsAction="ifRoom"
-        />
     <item android:id="@+id/action_logout"
         android:title="@string/action_logout"
         app:showAsAction="never"
         />
     <item android:id="@+id/action_filters"
           android:title="Filters"
-          app:showAsAction="ifRoom"
+          app:showAsAction="never"
         />
 </menu>

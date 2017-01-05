@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gai.ewbbu.ewb.R;
-import com.gai.ewbbu.ewb.model.Constants;
+import com.gai.ewbbu.ewb.util.Constants;
 import com.gai.ewbbu.ewb.model.Project;
 import com.gai.ewbbu.ewb.ui.ProjectsActivity;
 
