@@ -79,7 +79,7 @@ public class NewTaskActivity extends ActionBarActivity {
                 mFirebaseProjectKey, false, dateFormat.format(mDueDate.getTime()));
 
 
-        DatabaseReference firebaseTasks = mDatabase.child(Constants.TASKS_KEY).child(mFirebaseProjectKey);
+        DatabaseReference firebaseTasks = mDatabase.child(Constants.FIREBASE_TASKS_KEY).child(mFirebaseProjectKey);
         firebaseTasks.push().setValue(task);
         finish();
     }

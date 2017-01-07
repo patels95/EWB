@@ -13,6 +13,7 @@ public class Constants {
     public static final String PROJECT_IMAGEURI = "imageUri";
     public static final String PROJECT_RESOURCE = "resource";
     public static final String PARSE_ID = "PARSE_ID";
+    public static final String PROJECT_KEY = "projectKey";
 
     // Project IDs
     public static final String FILTER_ID = "cUryqF7MGf";
@@ -31,10 +32,11 @@ public class Constants {
     public static final String ALL_TASKS = "All Tasks";
     public static final String COMPLETE_TASKS = "Complete Tasks";
     public static final String INCOMPLETE_TASKS = "Incomplete Tasks";
+    public static final String TASK_KEY = "taskKey";
 
     // Firebase
     public static final String FIREBASE_KEY = "firebaseKey";
-    public static final String PROJECTS_KEY = "projects";
-    public static final String TASKS_KEY = "tasks";
+    public static final String FIREBASE_PROJECTS_KEY = "projects";
+    public static final String FIREBASE_TASKS_KEY = "tasks";
 
 }

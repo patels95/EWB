@@ -37,10 +37,10 @@ public class TaskActivity extends AppCompatActivity {
     @BindView(R.id.taskDescription) TextView mTaskDescription;
     @BindView(R.id.completeTask) Button mCompleteTask;
 
-    private String mTaskId;
     private Task mTask;
     private static String mProjectTitle;
-    private static String mProjectParseId;
+    private static String mFirebaseProjectKey;
+    private String mFirebaseTaskKey;
     private FirebaseAuth mFirebaseAuth;
 
 
@@ -53,7 +53,7 @@ public class TaskActivity extends AppCompatActivity {
                     deleteTask();
                     Intent intent = new Intent(TaskActivity.this, ProjectsActivity.class);
                     intent.putExtra(Constants.PROJECT_TITLE, mProjectTitle);
-                    intent.putExtra(Constants.PARSE_ID, mProjectParseId);
+                    intent.putExtra(Constants.PARSE_ID, mFirebaseProjectKey);
                     startActivity(intent);
                     break;
                 case DialogInterface.BUTTON_NEGATIVE:
@@ -78,15 +78,15 @@ public class TaskActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         mProjectTitle = intent.getStringExtra(Constants.PROJECT_TITLE);
-        mProjectParseId = intent.getStringExtra(Constants.PARSE_ID);
-        mTaskId = intent.getStringExtra(Constants.TASK_ID);
+        mFirebaseProjectKey = intent.getStringExtra(Constants.PROJECT_KEY);
+        mFirebaseTaskKey = intent.getStringExtra(Constants.TASK_KEY);
         setTitle(mProjectTitle);
 
         if (mFirebaseAuth.getCurrentUser() == null) {
             mCompleteTask.setVisibility(View.GONE);
         }
 
-        mTask = getTaskFromParse(mTaskId);
+        mTask = getTaskFromParse(mFirebaseTaskKey);
         setTaskInfo();
     }
 
@@ -141,7 +141,7 @@ public class TaskActivity extends AppCompatActivity {
             ParseObject object = query.get(taskId);
             task.setTitle(object.getString(Constants.TASK_TITLE));
             task.setDescription(object.getString(Constants.TASK_DESCRIPTION));
-            task.setTaskId(object.getString(Constants.TASK_ID));
+            task.setFirebaseKey(object.getString(Constants.TASK_ID));
             task.setFirebaseProjectKey(object.getString(Constants.TASK_PROJECT_ID));
             task.setComplete(object.getBoolean(Constants.TASK_COMPLETE));
             Calendar calendar = Calendar.getInstance();
@@ -161,7 +161,7 @@ public class TaskActivity extends AppCompatActivity {
 
     public void completeTask(View view) {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(Constants.TASK_CLASS);
-        query.getInBackground(mTaskId, new GetCallback<ParseObject>() {
+        query.getInBackground(mFirebaseTaskKey, new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject task, ParseException e) {
                 task.put(Constants.TASK_COMPLETE, true);
@@ -173,7 +173,7 @@ public class TaskActivity extends AppCompatActivity {
 
     private void deleteTask() {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(Constants.TASK_CLASS);
-        query.getInBackground(mTaskId, new GetCallback<ParseObject>() {
+        query.getInBackground(mFirebaseTaskKey, new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject task, ParseException e) {
                 task.deleteInBackground();

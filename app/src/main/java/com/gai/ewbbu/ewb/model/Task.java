@@ -4,7 +4,7 @@ public class Task {
 
     private String mTitle;
     private String mDescription;
-    private String mTaskId;
+    private String mFirebaseKey;
     private String mFirebaseProjectKey;
     private boolean mComplete;
     private String mDateString;
@@ -37,12 +37,12 @@ public class Task {
         mDescription = description;
     }
 
-    public String getTaskId() {
-        return mTaskId;
+    public String getFirebaseKey() {
+        return mFirebaseKey;
     }
 
-    public void setTaskId(String taskId) {
-        mTaskId = taskId;
+    public void setFirebaseKey(String firebaseKey) {
+        mFirebaseKey = firebaseKey;
     }
 
     public String getFirebaseProjectKey() {

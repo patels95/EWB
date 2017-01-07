@@ -89,8 +89,6 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
         super.onStart();
 
         getTasksFromFirebase();
-//        TaskAdapter taskAdapter = new TaskAdapter(getActivity(), mTasks);
-//        mTaskRecyclerView.setAdapter(taskAdapter);
     }
 
     @Override
@@ -155,14 +153,14 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
 //            Intent intent = new Intent(getActivity(), TaskActivity.class);
 //            intent.putExtra(ParseConstants.PROJECT_TITLE, mProjectTitle);
 //            intent.putExtra(ParseConstants.PARSE_ID, mFirebaseProjectKey);
-//            intent.putExtra(ParseConstants.TASK_ID, mTasks[position].getTaskId());
+//            intent.putExtra(ParseConstants.TASK_ID, mTasks[position].getFirebaseKey());
 //            startActivity(intent);
 //        }
 //    }
 
     // get task list from firebase database
     private void getTasksFromFirebase() {
-        DatabaseReference firebaseTasks = mDatabase.child(Constants.TASKS_KEY).child(mFirebaseProjectKey);
+        DatabaseReference firebaseTasks = mDatabase.child(Constants.FIREBASE_TASKS_KEY).child(mFirebaseProjectKey);
         firebaseTasks.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -170,9 +168,10 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
                 int index = 0;
                 for (DataSnapshot taskSnapshot : dataSnapshot.getChildren()) {
                     tasks[index] = taskSnapshot.getValue(Task.class);
+                    tasks[index].setFirebaseKey(taskSnapshot.getKey());
                     index++;
                 }
-                TaskAdapter adapter = new TaskAdapter(getActivity(), tasks);
+                TaskAdapter adapter = new TaskAdapter(getActivity(), tasks, mProjectTitle);
                 mTaskRecyclerView.setAdapter(adapter);
             }
 

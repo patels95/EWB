@@ -90,7 +90,7 @@ public class ProjectsFragment extends Fragment {
     // get project list from firebase database
     private void getProjectsFromFirebase() {
 
-        DatabaseReference firebaseProjects = mDatabase.child(Constants.PROJECTS_KEY);
+        DatabaseReference firebaseProjects = mDatabase.child(Constants.FIREBASE_PROJECTS_KEY);
         firebaseProjects.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -134,10 +134,10 @@ public class ProjectsFragment extends Fragment {
         solar.setDescription(getString(R.string.solar_description));
         solar.setImageUri(getString(R.string.solar_image_uri));
 
-        mDatabase.child(Constants.PROJECTS_KEY).push().setValue(filter);
-        mDatabase.child(Constants.PROJECTS_KEY).push().setValue(collection);
-        mDatabase.child(Constants.PROJECTS_KEY).push().setValue(sanitation);
-        mDatabase.child(Constants.PROJECTS_KEY).push().setValue(solar);
+        mDatabase.child(Constants.FIREBASE_PROJECTS_KEY).push().setValue(filter);
+        mDatabase.child(Constants.FIREBASE_PROJECTS_KEY).push().setValue(collection);
+        mDatabase.child(Constants.FIREBASE_PROJECTS_KEY).push().setValue(sanitation);
+        mDatabase.child(Constants.FIREBASE_PROJECTS_KEY).push().setValue(solar);
     }
 
     private void updateParseProjects() throws IOException {
