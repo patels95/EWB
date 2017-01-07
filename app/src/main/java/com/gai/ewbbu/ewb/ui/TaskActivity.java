@@ -146,7 +146,7 @@ public class TaskActivity extends AppCompatActivity {
             task.setComplete(object.getBoolean(Constants.TASK_COMPLETE));
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(object.getDate(Constants.TASK_DUE_DATE));
-            task.setDueDate(calendar);
+//            task.setDueDate(calendar);
         } catch (ParseException e) {
             e.printStackTrace();
         }

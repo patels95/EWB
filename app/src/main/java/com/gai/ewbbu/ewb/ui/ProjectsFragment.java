@@ -83,12 +83,12 @@ public class ProjectsFragment extends Fragment {
         mProjectRecyclerView.setLayoutManager(layoutManager);
 
         //getParseProjects();
-        getFirebaseProjects();
+        getProjectsFromFirebase();
         return view;
     }
 
-    // get projects list from firebase database
-    private void getFirebaseProjects() {
+    // get project list from firebase database
+    private void getProjectsFromFirebase() {
 
         DatabaseReference firebaseProjects = mDatabase.child(Constants.PROJECTS_KEY);
         firebaseProjects.addValueEventListener(new ValueEventListener() {

@@ -1,7 +1,5 @@
 package com.gai.ewbbu.ewb.model;
 
-import java.util.Calendar;
-
 public class Task {
 
     private String mTitle;
@@ -9,18 +7,18 @@ public class Task {
     private String mTaskId;
     private String mFirebaseProjectKey;
     private boolean mComplete;
-    private Calendar mDueDate;
+    private String mDateString;
 
     public Task() {
         // default constructor
     }
 
-    public Task(String title, String description, String firebaseProjectKey, boolean complete, Calendar dueDate) {
+    public Task(String title, String description, String firebaseProjectKey, boolean complete, String dateString) {
         mTitle = title;
         mDescription = description;
         mFirebaseProjectKey = firebaseProjectKey;
         mComplete = complete;
-        mDueDate = dueDate;
+        mDateString = dateString;
     }
 
     public String getTitle() {
@@ -63,11 +61,11 @@ public class Task {
         mComplete = complete;
     }
 
-    public Calendar getDueDate() {
-        return mDueDate;
+    public String getDateString() {
+        return mDateString;
     }
 
-    public void setDueDate(Calendar dueDate) {
-        mDueDate = dueDate;
+    public void setDateString(String dateString) {
+        mDateString = dateString;
     }
 }

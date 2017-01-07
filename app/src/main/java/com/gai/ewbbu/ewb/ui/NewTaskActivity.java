@@ -20,7 +20,9 @@ import com.gai.ewbbu.ewb.model.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,8 +74,10 @@ public class NewTaskActivity extends ActionBarActivity {
 
     // save new task to firebase database
     public void saveTask() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yy", Locale.US);
         Task task = new Task(mTaskTitle.getText().toString(), mTaskDescription.getText().toString(),
-                mFirebaseProjectKey, false, mDueDate);
+                mFirebaseProjectKey, false, dateFormat.format(mDueDate.getTime()));
+
 
         DatabaseReference firebaseTasks = mDatabase.child(Constants.TASKS_KEY).child(mFirebaseProjectKey);
         firebaseTasks.push().setValue(task);

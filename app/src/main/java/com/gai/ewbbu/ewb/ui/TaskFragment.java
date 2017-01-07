@@ -19,15 +19,14 @@ import android.view.ViewGroup;
 
 import com.gai.ewbbu.ewb.R;
 import com.gai.ewbbu.ewb.adapters.TaskAdapter;
-import com.gai.ewbbu.ewb.util.Constants;
 import com.gai.ewbbu.ewb.model.Task;
+import com.gai.ewbbu.ewb.util.Constants;
 import com.gai.ewbbu.ewb.util.DividerItemDecoration;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-
-import java.util.Calendar;
-import java.util.List;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,10 +47,10 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
     private String mProjectTitle;
     private Task[] mTasks;
     private String mFilter = Constants.ALL_TASKS;
+    private DatabaseReference mDatabase;
 
     @BindView(R.id.taskRecyclerView) RecyclerView mTaskRecyclerView;
     @BindView(R.id.newTaskButton) FloatingActionButton mNewTaskButton;
-
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -67,6 +66,7 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
 
         mFirebaseProjectKey = ProjectsActivity.getFirebaseKey();
         mProjectTitle = ProjectsActivity.getProjectTitle();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
     @Nullable
@@ -88,9 +88,9 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
     public void onStart() {
         super.onStart();
 
-        mTasks = getParseTasks();
-        TaskAdapter taskAdapter = new TaskAdapter(getActivity(), mTasks);
-        mTaskRecyclerView.setAdapter(taskAdapter);
+        getTasksFromFirebase();
+//        TaskAdapter taskAdapter = new TaskAdapter(getActivity(), mTasks);
+//        mTaskRecyclerView.setAdapter(taskAdapter);
     }
 
     @Override
@@ -99,6 +99,7 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
 //        setEmptyText("There are no tasks for this project");
     }
 
+    // change activity parameter to context
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -159,51 +160,28 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
 //        }
 //    }
 
-    // return list of tasks from parse
-    private Task[] getParseTasks() {
-        ParseQuery<ParseObject> query;
-        switch (mFilter) {
-            case Constants.ALL_TASKS:
-                query = ParseQuery.getQuery(Constants.TASK_CLASS)
-                        .whereEqualTo(Constants.TASK_PROJECT_ID, mFirebaseProjectKey);
-                break;
-            case Constants.COMPLETE_TASKS:
-                query = ParseQuery.getQuery(Constants.TASK_CLASS)
-                        .whereEqualTo(Constants.TASK_PROJECT_ID, mFirebaseProjectKey)
-                        .whereEqualTo(Constants.TASK_COMPLETE, true);
-                break;
-            case Constants.INCOMPLETE_TASKS:
-                query = ParseQuery.getQuery(Constants.TASK_CLASS)
-                        .whereEqualTo(Constants.TASK_PROJECT_ID, mFirebaseProjectKey)
-                        .whereEqualTo(Constants.TASK_COMPLETE, false);
-                break;
-            default:
-                query = ParseQuery.getQuery(Constants.TASK_CLASS)
-                        .whereEqualTo(Constants.TASK_PROJECT_ID, mFirebaseProjectKey);
-        }
-
-        Task[] tasks = null;
-        try {
-            List<ParseObject> list = query.find();
-            tasks = new Task[list.size()];
-            for (int i = 0; i < list.size(); i++) {
-                Task task = new Task();
-                task.setTitle(list.get(i).getString(Constants.TASK_TITLE));
-                task.setDescription(list.get(i).getString(Constants.TASK_DESCRIPTION));
-                task.setTaskId(list.get(i).getObjectId());
-                task.setFirebaseProjectKey(list.get(i).getString(Constants.TASK_PROJECT_ID));
-                task.setComplete(list.get(i).getBoolean(Constants.TASK_COMPLETE));
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(list.get(i).getDate(Constants.TASK_DUE_DATE));
-                task.setDueDate(calendar);
-                tasks[i] = task;
+    // get task list from firebase database
+    private void getTasksFromFirebase() {
+        DatabaseReference firebaseTasks = mDatabase.child(Constants.TASKS_KEY).child(mFirebaseProjectKey);
+        firebaseTasks.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Task[] tasks = new Task[(int) dataSnapshot.getChildrenCount()];
+                int index = 0;
+                for (DataSnapshot taskSnapshot : dataSnapshot.getChildren()) {
+                    tasks[index] = taskSnapshot.getValue(Task.class);
+                    index++;
+                }
+                TaskAdapter adapter = new TaskAdapter(getActivity(), tasks);
+                mTaskRecyclerView.setAdapter(adapter);
             }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return tasks;
-    }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     private void showFilterAlertDialog() {
         final String[] filters = {"All Tasks", "Complete Tasks", "Incomplete Tasks"};
@@ -215,9 +193,10 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
                     public void onClick(DialogInterface dialog, int which) {
                         int position = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
                         mFilter = filters[position];
-                        mTasks = getParseTasks();
-                        TaskAdapter taskAdapter = new TaskAdapter(getActivity(), mTasks);
-                        mTaskRecyclerView.setAdapter(taskAdapter);
+                        // TODO: refresh task list
+//                        mTasks = getParseTasks();
+//                        TaskAdapter taskAdapter = new TaskAdapter(getActivity(), mTasks);
+//                        mTaskRecyclerView.setAdapter(taskAdapter);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
