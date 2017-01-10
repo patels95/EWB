@@ -50,6 +50,8 @@ public class NewTaskActivity extends ActionBarActivity {
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            // use this to change up icon to check icon. use check to save new task
+            //getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_yourindicator);
         }
 
         Intent newTaskIntent = getIntent();

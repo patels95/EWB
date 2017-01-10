@@ -22,6 +22,7 @@ import com.gai.ewbbu.ewb.adapters.TaskAdapter;
 import com.gai.ewbbu.ewb.model.Task;
 import com.gai.ewbbu.ewb.util.Constants;
 import com.gai.ewbbu.ewb.util.DividerItemDecoration;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,6 +49,7 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
     private Task[] mTasks;
     private String mFilter = Constants.ALL_TASKS;
     private DatabaseReference mDatabase;
+    private FirebaseAuth mFirebaseAuth;
 
     @BindView(R.id.taskRecyclerView) RecyclerView mTaskRecyclerView;
     @BindView(R.id.newTaskButton) FloatingActionButton mNewTaskButton;
@@ -67,6 +69,7 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
         mFirebaseProjectKey = ProjectsActivity.getFirebaseKey();
         mProjectTitle = ProjectsActivity.getProjectTitle();
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        mFirebaseAuth = FirebaseAuth.getInstance();
     }
 
     @Nullable
@@ -79,7 +82,16 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
         mTaskRecyclerView.setLayoutManager(layoutManager);
         mTaskRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
 
-        mNewTaskButton.setOnClickListener(this);
+        if (mFirebaseAuth.getCurrentUser() == null) {
+            // hide new task button for members
+            mNewTaskButton.setVisibility(View.GONE);
+        }
+        else {
+            // admins can add new task
+            mNewTaskButton.setOnClickListener(this);
+        }
+
+
 
         return view;
     }
