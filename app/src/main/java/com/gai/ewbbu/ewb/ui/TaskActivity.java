@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +15,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -42,8 +48,9 @@ public class TaskActivity extends AppCompatActivity {
     private static String mFirebaseProjectKey;
     private String mFirebaseTaskKey;
     private FirebaseAuth mFirebaseAuth;
+    private DatabaseReference mDatabase;
 
-
+    // listener for confirming delete task
     private DialogInterface.OnClickListener mDialogListener = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
@@ -75,6 +82,7 @@ public class TaskActivity extends AppCompatActivity {
         }
 
         mFirebaseAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         Intent intent = getIntent();
         mProjectTitle = intent.getStringExtra(Constants.PROJECT_TITLE);
@@ -86,8 +94,8 @@ public class TaskActivity extends AppCompatActivity {
             mCompleteTask.setVisibility(View.GONE);
         }
 
-        mTask = getTaskFromParse(mFirebaseTaskKey);
-        setTaskInfo();
+        getTaskFromFirebase();
+//        setTaskInfo();
     }
 
     @Override
@@ -131,6 +139,30 @@ public class TaskActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         Toast.makeText(this, "You have been logged out.", Toast.LENGTH_LONG).show();
+    }
+
+    // get task info from firebase
+    private void getTaskFromFirebase() {
+        DatabaseReference taskReference = mDatabase.child(Constants.FIREBASE_TASKS_KEY)
+                .child(mFirebaseProjectKey).child(mFirebaseTaskKey);
+        taskReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mTask = dataSnapshot.getValue(Task.class);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // show task info
+                        setTaskInfo();
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "get task:onCancelled", databaseError.toException());
+            }
+        });
     }
 
     // get Task from parse using task id
