@@ -16,3 +16,8 @@
 #   public *;
 #}
 
+-keepattributes Signature
+
+-keepclassmembers class com.gai.ewb.model.** {
+    *;
+}

@@ -1,6 +1,6 @@
-package com.gai.ewbbu.ewb.model;
+package com.gai.ewbbu.ewb.util;
 
-public class ParseConstants {
+public class Constants {
     // ParseUser
     public static final String FIRST_NAME = "firstName";
     public static final String LAST_NAME = "lastName";
@@ -13,6 +13,7 @@ public class ParseConstants {
     public static final String PROJECT_IMAGEURI = "imageUri";
     public static final String PROJECT_RESOURCE = "resource";
     public static final String PARSE_ID = "PARSE_ID";
+    public static final String PROJECT_KEY = "projectKey";
 
     // Project IDs
     public static final String FILTER_ID = "cUryqF7MGf";
@@ -31,6 +32,11 @@ public class ParseConstants {
     public static final String ALL_TASKS = "All Tasks";
     public static final String COMPLETE_TASKS = "Complete Tasks";
     public static final String INCOMPLETE_TASKS = "Incomplete Tasks";
+    public static final String TASK_KEY = "taskKey";
 
+    // Firebase
+    public static final String FIREBASE_KEY = "firebaseKey";
+    public static final String FIREBASE_PROJECTS_KEY = "projects";
+    public static final String FIREBASE_TASKS_KEY = "tasks";
 
 }

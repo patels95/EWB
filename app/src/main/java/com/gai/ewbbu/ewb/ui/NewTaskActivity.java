@@ -3,9 +3,9 @@ package com.gai.ewbbu.ewb.ui;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -14,11 +14,15 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
-import com.parse.ParseObject;
 import com.gai.ewbbu.ewb.R;
-import com.gai.ewbbu.ewb.model.ParseConstants;
+import com.gai.ewbbu.ewb.util.Constants;
+import com.gai.ewbbu.ewb.model.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,14 +33,14 @@ public class NewTaskActivity extends ActionBarActivity {
 
     private static final java.lang.String DATE_PICKER_TAG = "DATE_PICKER";
 
+    private static Calendar mDueDate = Calendar.getInstance();
+    private String mFirebaseProjectKey;
+    private DatabaseReference mDatabase;
+
     @BindView(R.id.tool_bar) Toolbar mToolbar;
     @BindView(R.id.new_task_title) EditText mTaskTitle;
     @BindView(R.id.new_task_description) EditText mTaskDescription;
     @BindView(R.id.saveTask) Button mSaveTaskButton;
-
-    private static Calendar mDueDate = Calendar.getInstance();
-
-    private String mProjectParseId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +50,14 @@ public class NewTaskActivity extends ActionBarActivity {
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            // use this to change up icon to check icon. use check to save new task
+            //getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_yourindicator);
         }
 
         Intent newTaskIntent = getIntent();
-        mProjectParseId = newTaskIntent.getStringExtra(ProjectsActivity.PROJECT_PARSE_ID);
+        mFirebaseProjectKey = newTaskIntent.getStringExtra(Constants.FIREBASE_KEY);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         mSaveTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,15 +74,15 @@ public class NewTaskActivity extends ActionBarActivity {
     }
 
 
-    // called when save button is clicked
+    // save new task to firebase database
     public void saveTask() {
-        ParseObject task = new ParseObject(ParseConstants.TASK_CLASS);
-        task.put(ParseConstants.TASK_TITLE, mTaskTitle.getText().toString());
-        task.put(ParseConstants.TASK_DESCRIPTION, mTaskDescription.getText().toString());
-        task.put(ParseConstants.TASK_COMPLETE, false);
-        task.put(ParseConstants.TASK_DUE_DATE, mDueDate.getTime());
-        task.put(ParseConstants.TASK_PROJECT_ID, mProjectParseId);
-        task.saveInBackground();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yy", Locale.US);
+        Task task = new Task(mTaskTitle.getText().toString(), mTaskDescription.getText().toString(),
+                mFirebaseProjectKey, false, dateFormat.format(mDueDate.getTime()));
+
+
+        DatabaseReference firebaseTasks = mDatabase.child(Constants.FIREBASE_TASKS_KEY).child(mFirebaseProjectKey);
+        firebaseTasks.push().setValue(task);
         finish();
     }
 
