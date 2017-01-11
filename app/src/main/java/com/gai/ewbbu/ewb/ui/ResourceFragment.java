@@ -1,8 +1,13 @@
 package com.gai.ewbbu.ewb.ui;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
@@ -37,6 +42,7 @@ public class ResourceFragment extends Fragment {
     private String mProjectTitle;
     private Map<String, String> mFileNameMap = new HashMap<>();
     private Map<String, Integer> mColorMap = new HashMap<>();
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
 
     @BindView(R.id.resourceCardView) CardView mResourceCard;
     @BindView(R.id.pdfImage) ImageView mPDFImage;
@@ -44,6 +50,13 @@ public class ResourceFragment extends Fragment {
 
     public ResourceFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        externalStoragePermission();
     }
 
 
@@ -107,6 +120,28 @@ public class ResourceFragment extends Fragment {
         int read;
         while((read = in.read(buffer)) != -1) {
             out.write(buffer, 0, read);
+        }
+    }
+
+    // verify write external storage permission
+    private void externalStoragePermission() {
+        int permission = ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // ask user for permission
+            ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_EXTERNAL_STORAGE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQUEST_EXTERNAL_STORAGE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                    // permission denied
+                    Toast.makeText(getActivity(), "Permission must be granted to download pdf files.", Toast.LENGTH_LONG).show();
+                }
         }
     }
 }
