@@ -1,8 +1,11 @@
 package com.gai.ewbbu.ewb.ui;
 
 import android.Manifest;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -20,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gai.ewbbu.ewb.R;
+import com.gai.ewbbu.ewb.util.Constants;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -110,8 +114,19 @@ public class ResourceFragment extends Fragment {
             outputStream.flush();
             outputStream.close();
             Log.d(TAG, "write file complete");
-        } catch (IOException e) {
-            e.printStackTrace();
+
+            // target intent for opening pdf file
+            Intent target = new Intent(Intent.ACTION_VIEW);
+            target.setDataAndType(Uri.fromFile(outFile), Constants.FILE_TYPE_PDF);
+            target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+            // create chooser to open file
+            Intent intent = Intent.createChooser(target, Constants.CHOOSER_TITLE);
+            startActivity(intent);
+
+        }
+        catch (IOException | ActivityNotFoundException e) {
+            Log.e(TAG, e.getMessage());
         }
     }
 

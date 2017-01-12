@@ -15,7 +15,7 @@ public class Constants {
     public static final String PARSE_ID = "PARSE_ID";
     public static final String PROJECT_KEY = "projectKey";
 
-    // Project IDs
+    // Project Parse IDs
     public static final String FILTER_ID = "cUryqF7MGf";
     public static final String COLLECTION_ID = "eD2ehQr0YF";
     public static final String SANITATION_ID = "e6KauliqDC";
@@ -38,5 +38,9 @@ public class Constants {
     public static final String FIREBASE_KEY = "firebaseKey";
     public static final String FIREBASE_PROJECTS_KEY = "projects";
     public static final String FIREBASE_TASKS_KEY = "tasks";
+
+    // Resource
+    public static final String FILE_TYPE_PDF = "application/pdf";
+    public static final String CHOOSER_TITLE = "Open File";
 
 }
