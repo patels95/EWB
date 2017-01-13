@@ -24,6 +24,12 @@ import android.widget.Toast;
 
 import com.gai.ewbbu.ewb.R;
 import com.gai.ewbbu.ewb.util.Constants;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -47,6 +53,8 @@ public class ResourceFragment extends Fragment {
     private Map<String, String> mFileNameMap = new HashMap<>();
     private Map<String, Integer> mColorMap = new HashMap<>();
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private StorageReference mStorageRef;
+    private String mFileType;
 
     @BindView(R.id.resourceCardView) CardView mResourceCard;
     @BindView(R.id.pdfImage) ImageView mPDFImage;
@@ -60,6 +68,9 @@ public class ResourceFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mProjectTitle = ProjectsActivity.getProjectTitle();
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+
         externalStoragePermission();
     }
 
@@ -69,9 +80,6 @@ public class ResourceFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_resource, container, false);
         ButterKnife.bind(this, view);
-
-        // Inflate the layout for this fragment
-        mProjectTitle = ProjectsActivity.getProjectTitle();
 
         // set hashmap with (projectName, fileName) pairs
         mFileNameMap.put(getString(R.string.filter_title), getString(R.string.filter_file));
@@ -90,8 +98,9 @@ public class ResourceFragment extends Fragment {
         mResourceCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                copyAsset(mFileNameMap.get(mProjectTitle));
-                Toast.makeText(getActivity(), "File Download Complete", Toast.LENGTH_LONG).show();
+                //copyAsset(mFileNameMap.get(mProjectTitle));
+                //Toast.makeText(getActivity(), "File Download Complete", Toast.LENGTH_LONG).show();
+                getResourceFromFirebase();
             }
         });
 
@@ -101,6 +110,47 @@ public class ResourceFragment extends Fragment {
     private void setCardView(String fileName, int color) {
         mFileName.setText(fileName);
         mPDFImage.setColorFilter(color);
+    }
+
+    private void getResourceFromFirebase() {
+        final StorageReference fileRef = mStorageRef.child(mFileNameMap.get(mProjectTitle));
+        // get content type of file
+        fileRef.getMetadata().addOnSuccessListener(new OnSuccessListener<StorageMetadata>() {
+            @Override
+            public void onSuccess(StorageMetadata storageMetadata) {
+                mFileType = storageMetadata.getContentType();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                mFileType = Constants.FILE_TYPE_PDF;
+            }
+        });
+        // get file from firebase and save as resourceFile
+        final File resourceFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+                mFileNameMap.get(mProjectTitle));
+        fileRef.getFile(resourceFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                openFile(resourceFile);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e(TAG, "failed to download resource file");
+            }
+        });
+    }
+
+    private void openFile(File resourceFile) {
+        // target intent for opening pdf file
+        Intent target = new Intent(Intent.ACTION_VIEW);
+        target.setDataAndType(Uri.fromFile(resourceFile), mFileType);
+        target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+        // create chooser to open file
+        Intent intent = Intent.createChooser(target, Constants.CHOOSER_TITLE);
+        startActivity(intent);
     }
 
     private void copyAsset(String filename) {
