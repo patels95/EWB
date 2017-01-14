@@ -98,8 +98,6 @@ public class ResourceFragment extends Fragment {
         mResourceCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //copyAsset(mFileNameMap.get(mProjectTitle));
-                //Toast.makeText(getActivity(), "File Download Complete", Toast.LENGTH_LONG).show();
                 getResourceFromFirebase();
             }
         });
@@ -114,6 +112,7 @@ public class ResourceFragment extends Fragment {
 
     private void getResourceFromFirebase() {
         final StorageReference fileRef = mStorageRef.child(mFileNameMap.get(mProjectTitle));
+
         // get content type of file
         fileRef.getMetadata().addOnSuccessListener(new OnSuccessListener<StorageMetadata>() {
             @Override
@@ -126,6 +125,7 @@ public class ResourceFragment extends Fragment {
                 mFileType = Constants.FILE_TYPE_PDF;
             }
         });
+
         // get file from firebase and save as resourceFile
         final File resourceFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
                 mFileNameMap.get(mProjectTitle));
@@ -142,6 +142,7 @@ public class ResourceFragment extends Fragment {
         });
     }
 
+    // create intent to view resourceFile
     private void openFile(File resourceFile) {
         // target intent for opening pdf file
         Intent target = new Intent(Intent.ACTION_VIEW);
@@ -151,41 +152,6 @@ public class ResourceFragment extends Fragment {
         // create chooser to open file
         Intent intent = Intent.createChooser(target, Constants.CHOOSER_TITLE);
         startActivity(intent);
-    }
-
-    private void copyAsset(String filename) {
-        AssetManager am = getResources().getAssets();
-        try {
-            InputStream inputStream = am.open(filename);
-            File outFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), filename);
-            OutputStream outputStream = new FileOutputStream(outFile);
-            copyFile(inputStream, outputStream);
-            inputStream.close();
-            outputStream.flush();
-            outputStream.close();
-            Log.d(TAG, "write file complete");
-
-            // target intent for opening pdf file
-            Intent target = new Intent(Intent.ACTION_VIEW);
-            target.setDataAndType(Uri.fromFile(outFile), Constants.FILE_TYPE_PDF);
-            target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-
-            // create chooser to open file
-            Intent intent = Intent.createChooser(target, Constants.CHOOSER_TITLE);
-            startActivity(intent);
-
-        }
-        catch (IOException | ActivityNotFoundException e) {
-            Log.e(TAG, e.getMessage());
-        }
-    }
-
-    private void copyFile(InputStream in, OutputStream out) throws IOException {
-        byte[] buffer = new byte[1024];
-        int read;
-        while((read = in.read(buffer)) != -1) {
-            out.write(buffer, 0, read);
-        }
     }
 
     // verify write external storage permission
