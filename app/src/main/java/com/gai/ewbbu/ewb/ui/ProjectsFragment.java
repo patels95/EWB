@@ -140,37 +140,6 @@ public class ProjectsFragment extends Fragment {
         mDatabase.child(Constants.FIREBASE_PROJECTS_KEY).push().setValue(solar);
     }
 
-    private void updateParseProjects() throws IOException {
-
-        // get file from assets folder and convert to byte array
-//        AssetManager am = getResources().getAssets();
-//        InputStream inputStream = am.open("SPSpring2016.pdf");
-//        byte[] data = IOUtils.toByteArray(inputStream);
-
-    }
-
-    private File createFileFromInputStream(InputStream inputStream) {
-        try {
-            File file = new File("BSFSpring2016.pdf");
-            OutputStream outputStream = new FileOutputStream(file);
-            byte buffer[] = new byte[1024];
-            int length = 0;
-
-            while ((length = inputStream.read(buffer)) > 0) {
-                outputStream.write(buffer, 0, length);
-            }
-
-            outputStream.close();
-            inputStream.close();
-
-            return file;
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
