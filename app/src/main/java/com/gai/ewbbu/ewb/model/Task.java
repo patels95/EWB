@@ -1,15 +1,25 @@
 package com.gai.ewbbu.ewb.model;
 
-import java.util.Calendar;
-
 public class Task {
 
     private String mTitle;
     private String mDescription;
-    private String mTaskId;
-    private String mProjectId;
+    private String mFirebaseKey;
+    private String mFirebaseProjectKey;
     private boolean mComplete;
-    private Calendar mDueDate;
+    private String mDateString;
+
+    public Task() {
+        // default constructor
+    }
+
+    public Task(String title, String description, String firebaseProjectKey, boolean complete, String dateString) {
+        mTitle = title;
+        mDescription = description;
+        mFirebaseProjectKey = firebaseProjectKey;
+        mComplete = complete;
+        mDateString = dateString;
+    }
 
     public String getTitle() {
         return mTitle;
@@ -27,20 +37,20 @@ public class Task {
         mDescription = description;
     }
 
-    public String getTaskId() {
-        return mTaskId;
+    public String getFirebaseKey() {
+        return mFirebaseKey;
     }
 
-    public void setTaskId(String taskId) {
-        mTaskId = taskId;
+    public void setFirebaseKey(String firebaseKey) {
+        mFirebaseKey = firebaseKey;
     }
 
-    public String getProjectId() {
-        return mProjectId;
+    public String getFirebaseProjectKey() {
+        return mFirebaseProjectKey;
     }
 
-    public void setProjectId(String projectId) {
-        mProjectId = projectId;
+    public void setFirebaseProjectKey(String firebaseProjectKey) {
+        mFirebaseProjectKey = firebaseProjectKey;
     }
 
     public boolean isComplete() {
@@ -51,11 +61,11 @@ public class Task {
         mComplete = complete;
     }
 
-    public Calendar getDueDate() {
-        return mDueDate;
+    public String getDateString() {
+        return mDateString;
     }
 
-    public void setDueDate(Calendar dueDate) {
-        mDueDate = dueDate;
+    public void setDateString(String dateString) {
+        mDateString = dateString;
     }
 }

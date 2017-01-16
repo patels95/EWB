@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gai.ewbbu.ewb.R;
-import com.gai.ewbbu.ewb.model.ParseConstants;
+import com.gai.ewbbu.ewb.util.Constants;
 import com.gai.ewbbu.ewb.model.Project;
 import com.gai.ewbbu.ewb.ui.ProjectsActivity;
 
@@ -50,7 +50,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
         public TextView mTitle;
         public TextView mDescription;
         public ImageView mImage;
-        public TextView mParseId;
+        public TextView mFirebaseKey;
 
 
         public ProjectViewHolder(View itemView) {
@@ -59,7 +59,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
             mTitle = (TextView) itemView.findViewById(R.id.projectTitle);
             mDescription = (TextView) itemView.findViewById(R.id.projectDescription);
             mImage = (ImageView) itemView.findViewById(R.id.projectImage);
-            mParseId = (TextView) itemView.findViewById(R.id.parseId);
+            mFirebaseKey = (TextView) itemView.findViewById(R.id.firebaseKey);
 
             itemView.setOnClickListener(this);
         }
@@ -72,16 +72,16 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
             mTitle.setText(projectCard.getTitle());
             mDescription.setText(projectCard.getDescription());
             mImage.setImageDrawable(drawable);
-            mParseId.setText(projectCard.getParseId());
+            mFirebaseKey.setText(projectCard.getFirebaseKey());
         }
 
         @Override
         public void onClick(View v) {
             TextView title = (TextView) v.findViewById(R.id.projectTitle);
-            TextView parseId = (TextView) v.findViewById(R.id.parseId);
+            TextView firebaseKey = (TextView) v.findViewById(R.id.firebaseKey);
             Intent intent = new Intent(mContext, ProjectsActivity.class);
-            intent.putExtra(ParseConstants.PROJECT_TITLE, title.getText().toString());
-            intent.putExtra(ParseConstants.PARSE_ID, parseId.getText().toString());
+            intent.putExtra(Constants.PROJECT_TITLE, title.getText().toString());
+            intent.putExtra(Constants.FIREBASE_KEY, firebaseKey.getText().toString());
             mContext.startActivity(intent);
         }
     }
