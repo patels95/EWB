@@ -1,14 +1,17 @@
 package com.gai.ewbbu.ewb.ui;
 
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.gai.ewbbu.ewb.R;
 import com.gai.ewbbu.ewb.adapters.ProjectAdapter;
@@ -47,6 +50,7 @@ public class ProjectsFragment extends Fragment {
     private DatabaseReference mDatabase;
 
     @BindView(R.id.projectRecyclerView) RecyclerView mProjectRecyclerView;
+    @BindView(R.id.projectsProgressBar) ProgressBar mProgressBar;
 
     public static ProjectsFragment newInstance(int sectionNumber) {
         ProjectsFragment fragment = new ProjectsFragment();
@@ -82,6 +86,10 @@ public class ProjectsFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mProjectRecyclerView.setLayoutManager(layoutManager);
 
+        // set progress bar color
+        mProgressBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(
+                getActivity(), R.color.primary), PorterDuff.Mode.SRC_IN);
+
         //getParseProjects();
         getProjectsFromFirebase();
         return view;
@@ -101,6 +109,7 @@ public class ProjectsFragment extends Fragment {
                     projects[index].setFirebaseKey(projectSnapshot.getKey());
                     index++;
                 }
+                mProgressBar.setVisibility(View.GONE);
                 ProjectAdapter adapter = new ProjectAdapter(getActivity(), projects);
                 mProjectRecyclerView.setAdapter(adapter);
             }
