@@ -3,14 +3,17 @@ package com.gai.ewbbu.ewb.ui;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +23,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -34,14 +36,9 @@ import java.util.Calendar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TaskActivity extends AppCompatActivity {
+public class TaskActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = TaskActivity.class.getSimpleName();
-
-    @BindView(R.id.tool_bar) Toolbar mToolbar;
-    @BindView(R.id.taskTitle) TextView mTaskTitle;
-    @BindView(R.id.taskDescription) TextView mTaskDescription;
-    @BindView(R.id.completeTask) Button mCompleteTask;
 
     private Task mTask;
     private static String mProjectTitle;
@@ -49,6 +46,11 @@ public class TaskActivity extends AppCompatActivity {
     private String mFirebaseTaskKey;
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabase;
+
+    @BindView(R.id.tool_bar) Toolbar mToolbar;
+    @BindView(R.id.taskTitle) TextView mTaskTitle;
+    @BindView(R.id.taskDescription) TextView mTaskDescription;
+    @BindView(R.id.completeTaskButton) FloatingActionButton mCompleteTaskButton;
 
     // listener for confirming delete task
     private DialogInterface.OnClickListener mDialogListener = new DialogInterface.OnClickListener() {
@@ -60,7 +62,7 @@ public class TaskActivity extends AppCompatActivity {
                     deleteTask();
                     Intent intent = new Intent(TaskActivity.this, ProjectsActivity.class);
                     intent.putExtra(Constants.PROJECT_TITLE, mProjectTitle);
-                    intent.putExtra(Constants.PARSE_ID, mFirebaseProjectKey);
+                    intent.putExtra(Constants.FIREBASE_KEY, mFirebaseProjectKey);
                     startActivity(intent);
                     break;
                 case DialogInterface.BUTTON_NEGATIVE:
@@ -91,10 +93,13 @@ public class TaskActivity extends AppCompatActivity {
         setTitle(mProjectTitle);
 
         if (mFirebaseAuth.getCurrentUser() == null) {
-            mCompleteTask.setVisibility(View.GONE);
+            mCompleteTaskButton.setVisibility(View.GONE);
         }
 
+        mCompleteTaskButton.setOnClickListener(this);
+
         getTaskFromFirebase();
+        checkIfTaskComplete();
 //        setTaskInfo();
     }
 
@@ -123,6 +128,7 @@ public class TaskActivity extends AppCompatActivity {
                 navigateToMain();
                 break;
             case R.id.action_delete_task:
+                // create confirmation dialog
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage("Are you sure that you want to delete this task?");
                 builder.setPositiveButton("Yes", mDialogListener);
@@ -134,6 +140,14 @@ public class TaskActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.completeTaskButton:
+                completeTask();
+        }
+    }
+
     // start main activity after logout
     private void navigateToMain() {
         Intent intent = new Intent(this, MainActivity.class);
@@ -143,9 +157,9 @@ public class TaskActivity extends AppCompatActivity {
 
     // get task info from firebase
     private void getTaskFromFirebase() {
-        DatabaseReference taskReference = mDatabase.child(Constants.FIREBASE_TASKS_KEY)
+        DatabaseReference taskRef = mDatabase.child(Constants.FIREBASE_TASKS_KEY)
                 .child(mFirebaseProjectKey).child(mFirebaseTaskKey);
-        taskReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        taskRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mTask = dataSnapshot.getValue(Task.class);
@@ -163,6 +177,39 @@ public class TaskActivity extends AppCompatActivity {
                 Log.w(TAG, "get task:onCancelled", databaseError.toException());
             }
         });
+    }
+
+    private void checkIfTaskComplete() {
+        Log.d(TAG, "check if task complete");
+        DatabaseReference completeRef = mDatabase.child(Constants.FIREBASE_TASKS_KEY)
+                .child(mFirebaseProjectKey).child(mFirebaseTaskKey).child(Constants.TASK_COMPLETE);
+        completeRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Boolean isComplete = (Boolean) dataSnapshot.getValue();
+                toggleCompleteTaskButton(isComplete);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "get task complete:onCancelled", databaseError.toException());
+            }
+        });
+    }
+
+    private void toggleCompleteTaskButton(Boolean isComplete) {
+        if (isComplete) {
+            mCompleteTaskButton.setBackgroundTintList(ColorStateList.valueOf(
+                    ContextCompat.getColor(this, R.color.complete_task)));
+            mCompleteTaskButton.getDrawable().setColorFilter(ContextCompat.getColor(
+                    this, R.color.white), PorterDuff.Mode.SRC_IN);
+        }
+        else {
+            mCompleteTaskButton.setBackgroundTintList(ColorStateList.valueOf(
+                    ContextCompat.getColor(this, R.color.white)));
+            mCompleteTaskButton.getDrawable().setColorFilter(ContextCompat.getColor(
+                    this, R.color.icon_grey), PorterDuff.Mode.SRC_IN);
+        }
     }
 
     // get Task from parse using task id
@@ -191,26 +238,34 @@ public class TaskActivity extends AppCompatActivity {
         mTaskDescription.setText(mTask.getDescription());
     }
 
-    public void completeTask(View view) {
-        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(Constants.TASK_CLASS);
-        query.getInBackground(mFirebaseTaskKey, new GetCallback<ParseObject>() {
+    public void completeTask() {
+        final DatabaseReference completeRef = mDatabase.child(Constants.FIREBASE_TASKS_KEY)
+                .child(mFirebaseProjectKey).child(mFirebaseTaskKey).child(Constants.TASK_COMPLETE);
+        completeRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void done(ParseObject task, ParseException e) {
-                task.put(Constants.TASK_COMPLETE, true);
-                task.saveInBackground();
-                Toast.makeText(TaskActivity.this, "This task has been marked as complete", Toast.LENGTH_LONG).show();
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Boolean isComplete = (Boolean) dataSnapshot.getValue();
+                if (isComplete) {
+                    // set task as incomplete
+                    completeRef.setValue(false);
+                }
+                else {
+                    // set task as complete
+                    completeRef.setValue(true);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
     }
 
+    // delete task from database
     private void deleteTask() {
-        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(Constants.TASK_CLASS);
-        query.getInBackground(mFirebaseTaskKey, new GetCallback<ParseObject>() {
-            @Override
-            public void done(ParseObject task, ParseException e) {
-                task.deleteInBackground();
-                Toast.makeText(TaskActivity.this, "This task has been deleted", Toast.LENGTH_LONG).show();
-            }
-        });
+        DatabaseReference taskRef = mDatabase.child(Constants.FIREBASE_TASKS_KEY)
+                .child(mFirebaseProjectKey).child(mFirebaseTaskKey);
+        taskRef.removeValue();
     }
 }
