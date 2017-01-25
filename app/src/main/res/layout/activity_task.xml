@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.gai.ewbbu.ewb.ui.TaskActivity">
 
     <include
@@ -35,20 +35,33 @@
         android:layout_marginStart="16dp"
         />
 
-    <Button
-        android:layout_width="match_parent"
+    <!--<Button-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/complete_task"-->
+        <!--android:id="@+id/completeTask"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:background="@color/complete_task"-->
+        <!--android:layout_marginStart="16dp"-->
+        <!--android:layout_marginEnd="16dp"-->
+        <!--android:layout_marginBottom="16dp"-->
+        <!--android:textColor="@android:color/white"-->
+        <!--tools:targetApi="lollipop"/>-->
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/complete_task"
-        android:id="@+id/completeTask"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:id="@+id/completeTaskButton"
+        android:src="@drawable/ic_check_white_24dp"
+        app:fabSize="normal"
+        android:tint="@color/icon_grey"
+        app:backgroundTint="@android:color/white"
         android:layout_alignParentEnd="true"
-        android:background="@color/complete_task"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:textColor="@android:color/white"
-        android:onClick="completeTask"
-        tools:targetApi="lollipop"/>
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        />
 
 </RelativeLayout>

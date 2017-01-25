@@ -6,17 +6,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.gai.ewbbu.ewb.R;
-import com.gai.ewbbu.ewb.util.Constants;
 import com.gai.ewbbu.ewb.model.Task;
+import com.gai.ewbbu.ewb.util.Constants;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -27,7 +28,7 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NewTaskActivity extends ActionBarActivity {
+public class NewTaskActivity extends AppCompatActivity {
 
     private static final String TAG = NewTaskActivity.class.getSimpleName();
 
@@ -53,6 +54,9 @@ public class NewTaskActivity extends ActionBarActivity {
             // use this to change up icon to check icon. use check to save new task
             //getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_yourindicator);
         }
+
+        // push view up when keyboard is open
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
         Intent newTaskIntent = getIntent();
         mFirebaseProjectKey = newTaskIntent.getStringExtra(Constants.FIREBASE_KEY);

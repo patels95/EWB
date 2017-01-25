@@ -115,11 +115,6 @@ public class ProjectsActivity extends ActionBarActivity implements ActionBar.Tab
                 ParseUser.logOut();
                 navigateToMain();
                 break;
-            case R.id.action_edit:
-                Intent intent = new Intent(ProjectsActivity.this, EditProjectsActivity.class);
-                intent.putExtra(Constants.PARSE_ID, mFirebaseKey);
-                startActivity(intent);
-                break;
             case android.R.id.home:
                 onBackPressed();
                 break;

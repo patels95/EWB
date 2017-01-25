@@ -14,4 +14,8 @@
     <color name="complete_task">#039603</color>
     <color name="delete_task">#FF0000</color>
     <color name="tab_text">#88FFFFFF</color>
+    <color name="icon_grey">#737373</color>
+    <color name="background_grey">#EEEEEE</color>
+    <color name="white">#FFFFFF</color>
+    <color name="text_grey">#CCCCCC</color>
 </resources>

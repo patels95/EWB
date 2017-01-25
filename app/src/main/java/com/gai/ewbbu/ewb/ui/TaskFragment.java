@@ -80,7 +80,7 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mTaskRecyclerView.setLayoutManager(layoutManager);
-        mTaskRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
+        mTaskRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), R.drawable.task_item_divider));
 
         if (mFirebaseAuth.getCurrentUser() == null) {
             // hide new task button for members
