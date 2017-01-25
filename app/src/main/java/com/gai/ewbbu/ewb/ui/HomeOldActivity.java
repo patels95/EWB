@@ -57,10 +57,10 @@ public class HomeOldActivity extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_home, menu);
 
-        MenuItem item = menu.findItem(R.id.action_edit);
-        if(!mIsMember){
-            item.setVisible(false);
-        }
+        //MenuItem item = menu.findItem(R.id.action_edit);
+//        if(!mIsMember){
+//            item.setVisible(false);
+//        }
         this.invalidateOptionsMenu();
 
         return true;

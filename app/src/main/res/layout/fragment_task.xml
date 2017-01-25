@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/taskRecyclerView"
+        android:background="@android:color/white"
         >
     </android.support.v7.widget.RecyclerView>
 
@@ -18,7 +19,7 @@
         android:id="@+id/newTaskButton"
         android:src="@drawable/ic_add_white_24dp"
         app:fabSize="normal"
-        app:backgroundTint="@color/primary_dark"
+        app:backgroundTint="@color/primary"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
