@@ -7,15 +7,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.api.client.util.DateTime;
-import com.google.api.services.calendar.model.Event;
-import com.google.api.services.calendar.model.EventAttachment;
 import com.gai.ewbbu.ewb.R;
 import com.gai.ewbbu.ewb.ui.CalendarDialog;
 import com.gai.ewbbu.ewb.ui.CalendarSerializable;
+import com.google.api.client.util.DateTime;
+import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.EventAttachment;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,7 +44,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
     public class CalendarViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         // Event variables.
         CardView mCardView;
-        ImageView mEventIcon;
+//        ImageView mEventIcon;
         TextView mEventTitle;
         TextView mEventLocation;
         TextView mEventTimeStart;
@@ -60,7 +59,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
             super(v);
 
             mCardView = (CardView) v.findViewById(R.id.card_view);
-            mEventIcon = (ImageView) v.findViewById(R.id.eventIcon);
+//            mEventIcon = (ImageView) v.findViewById(R.id.eventIcon);
             mEventTitle = (TextView) v.findViewById(R.id.textEventTitle);
             mEventLocation = (TextView) v.findViewById(R.id.textEventLocation);
             mEventTimeStart = (TextView) v.findViewById(R.id.textEventStartTime);
