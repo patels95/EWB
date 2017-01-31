@@ -33,6 +33,10 @@ public class Constants {
     public static final String COMPLETE_TASKS = "Complete Tasks";
     public static final String INCOMPLETE_TASKS = "Incomplete Tasks";
     public static final String TASK_KEY = "taskKey";
+    public static final String FILTER_ALL = "All Tasks";
+    public static final String FILTER_COMPLETE = "Complete Tasks";
+    public static final String FILTER_INCOMPLETE = "Incomplete Tasks";
+
 
     // Firebase
     public static final String FIREBASE_KEY = "firebaseKey";

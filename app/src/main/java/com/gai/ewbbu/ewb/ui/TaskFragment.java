@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,6 +29,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -100,7 +103,7 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
     public void onStart() {
         super.onStart();
 
-        getTasksFromFirebase();
+        getTasksFromFirebase(Constants.ALL_TASKS);
     }
 
     @Override
@@ -171,18 +174,42 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
 //    }
 
     // get task list from firebase database
-    private void getTasksFromFirebase() {
+    private void getTasksFromFirebase(final String filter) {
         DatabaseReference firebaseTasks = mDatabase.child(Constants.FIREBASE_TASKS_KEY).child(mFirebaseProjectKey);
         firebaseTasks.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Task[] tasks = new Task[(int) dataSnapshot.getChildrenCount()];
-                int index = 0;
+                ArrayList<Task> taskList = new ArrayList<Task>();
                 for (DataSnapshot taskSnapshot : dataSnapshot.getChildren()) {
-                    tasks[index] = taskSnapshot.getValue(Task.class);
-                    tasks[index].setFirebaseKey(taskSnapshot.getKey());
-                    index++;
+                    boolean isComplete = (boolean) taskSnapshot.child(Constants.TASK_COMPLETE).getValue();
+                    Task task;
+                    switch (filter) {
+                        case Constants.ALL_TASKS:
+                            task = taskSnapshot.getValue(Task.class);
+                            task.setFirebaseKey(taskSnapshot.getKey());
+                            taskList.add(task);
+                            break;
+                        case Constants.COMPLETE_TASKS:
+                            if (isComplete) {
+                                task = taskSnapshot.getValue(Task.class);
+                                task.setFirebaseKey(taskSnapshot.getKey());
+                                taskList.add(task);
+                            }
+                            break;
+                        case Constants.INCOMPLETE_TASKS:
+                            if (!isComplete) {
+                                task = taskSnapshot.getValue(Task.class);
+                                task.setFirebaseKey(taskSnapshot.getKey());
+                                taskList.add(task);
+                            }
+                            break;
+                        default:
+                            // error
+                    }
                 }
+                // convert arraylist to array
+                Task[] tasks = new Task[taskList.size()];
+                tasks = taskList.toArray(tasks);
                 TaskAdapter adapter = new TaskAdapter(getActivity(), tasks, mProjectTitle);
                 mTaskRecyclerView.setAdapter(adapter);
             }
@@ -204,10 +231,7 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
                     public void onClick(DialogInterface dialog, int which) {
                         int position = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
                         mFilter = filters[position];
-                        // TODO: refresh task list
-//                        mTasks = getParseTasks();
-//                        TaskAdapter taskAdapter = new TaskAdapter(getActivity(), mTasks);
-//                        mTaskRecyclerView.setAdapter(taskAdapter);
+                        getTasksFromFirebase(filters[position]);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
