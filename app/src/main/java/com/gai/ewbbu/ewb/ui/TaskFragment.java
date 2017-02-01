@@ -93,9 +93,6 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
             // admins can add new task
             mNewTaskButton.setOnClickListener(this);
         }
-
-
-
         return view;
     }
 
@@ -157,22 +154,6 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-//    @Override
-//    public void onListItemClick(ListView l, View v, int position, long id) {
-//        //super.onListItemClick(l, v, position, id);
-//
-//        if (null != mListener) {
-//            // Notify the active callbacks interface (the activity, if the
-//            // fragment is attached to one) that an item has been selected.
-////            mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
-//            Intent intent = new Intent(getActivity(), TaskActivity.class);
-//            intent.putExtra(ParseConstants.PROJECT_TITLE, mProjectTitle);
-//            intent.putExtra(ParseConstants.PARSE_ID, mFirebaseProjectKey);
-//            intent.putExtra(ParseConstants.TASK_ID, mTasks[position].getFirebaseKey());
-//            startActivity(intent);
-//        }
-//    }
-
     // get task list from firebase database
     private void getTasksFromFirebase(final String filter) {
         DatabaseReference firebaseTasks = mDatabase.child(Constants.FIREBASE_TASKS_KEY).child(mFirebaseProjectKey);
@@ -222,7 +203,7 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
     }
 
     private void showFilterAlertDialog() {
-        final String[] filters = {"All Tasks", "Complete Tasks", "Incomplete Tasks"};
+        final String[] filters = {Constants.ALL_TASKS, Constants.COMPLETE_TASKS, Constants.INCOMPLETE_TASKS};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setSingleChoiceItems(filters, 0, null)
@@ -231,6 +212,7 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
                     public void onClick(DialogInterface dialog, int which) {
                         int position = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
                         mFilter = filters[position];
+                        // add to shared prefs
                         getTasksFromFirebase(filters[position]);
                     }
                 })

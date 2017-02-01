@@ -115,5 +115,6 @@
     <string name="delete_task">Delete Task</string>
     <string name="complete_task">Complete Task</string>
     <string name="full_name">Name</string>
+    <string name="downloading_file">Downloading File</string>
 
 </resources>
