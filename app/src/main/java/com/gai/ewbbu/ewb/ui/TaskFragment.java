@@ -1,8 +1,10 @@
 package com.gai.ewbbu.ewb.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -31,6 +33,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,7 +53,6 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
     private String mFirebaseProjectKey;
     private String mProjectTitle;
     private Task[] mTasks;
-    private String mFilter = Constants.ALL_TASKS;
     private DatabaseReference mDatabase;
     private FirebaseAuth mFirebaseAuth;
 
@@ -100,7 +102,10 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
     public void onStart() {
         super.onStart();
 
-        getTasksFromFirebase(Constants.ALL_TASKS);
+        SharedPreferences taskPrefs = getActivity().getSharedPreferences(Constants.TASK_PREFS, Context.MODE_PRIVATE);
+        String filter = taskPrefs.getString(Constants.FILTER, Constants.ALL_TASKS);
+
+        getTasksFromFirebase(filter);
     }
 
     @Override
@@ -205,14 +210,21 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
     private void showFilterAlertDialog() {
         final String[] filters = {Constants.ALL_TASKS, Constants.COMPLETE_TASKS, Constants.INCOMPLETE_TASKS};
 
+        final SharedPreferences taskPrefs = getActivity().getSharedPreferences(Constants.TASK_PREFS, Context.MODE_PRIVATE);
+        String currentFilter = taskPrefs.getString(Constants.FILTER, Constants.ALL_TASKS);
+
+        int index = Arrays.asList(filters).indexOf(currentFilter);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setSingleChoiceItems(filters, 0, null)
+        builder.setSingleChoiceItems(filters, index, null)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         int position = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
-                        mFilter = filters[position];
-                        // add to shared prefs
+
+                        // add filter to shared prefs
+                        taskPrefs.edit().putString(Constants.FILTER, filters[position]).apply();
+
                         getTasksFromFirebase(filters[position]);
                     }
                 })
