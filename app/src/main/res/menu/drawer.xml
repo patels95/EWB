@@ -6,8 +6,9 @@
 
         <item
             android:id="@+id/twitter"
-            android:icon="@drawable/twitter"
+            android:icon="@drawable/twitter_48"
             android:title="@string/drawer_twitter"
+            android:checked="true"
             />
 
         <item
