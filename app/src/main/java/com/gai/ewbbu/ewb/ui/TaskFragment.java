@@ -1,8 +1,10 @@
 package com.gai.ewbbu.ewb.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -10,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,6 +32,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -47,7 +53,6 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
     private String mFirebaseProjectKey;
     private String mProjectTitle;
     private Task[] mTasks;
-    private String mFilter = Constants.ALL_TASKS;
     private DatabaseReference mDatabase;
     private FirebaseAuth mFirebaseAuth;
 
@@ -90,9 +95,6 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
             // admins can add new task
             mNewTaskButton.setOnClickListener(this);
         }
-
-
-
         return view;
     }
 
@@ -100,7 +102,10 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
     public void onStart() {
         super.onStart();
 
-        getTasksFromFirebase();
+        SharedPreferences taskPrefs = getActivity().getSharedPreferences(Constants.TASK_PREFS, Context.MODE_PRIVATE);
+        String filter = taskPrefs.getString(Constants.FILTER, Constants.ALL_TASKS);
+
+        getTasksFromFirebase(filter);
     }
 
     @Override
@@ -154,35 +159,43 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-//    @Override
-//    public void onListItemClick(ListView l, View v, int position, long id) {
-//        //super.onListItemClick(l, v, position, id);
-//
-//        if (null != mListener) {
-//            // Notify the active callbacks interface (the activity, if the
-//            // fragment is attached to one) that an item has been selected.
-////            mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
-//            Intent intent = new Intent(getActivity(), TaskActivity.class);
-//            intent.putExtra(ParseConstants.PROJECT_TITLE, mProjectTitle);
-//            intent.putExtra(ParseConstants.PARSE_ID, mFirebaseProjectKey);
-//            intent.putExtra(ParseConstants.TASK_ID, mTasks[position].getFirebaseKey());
-//            startActivity(intent);
-//        }
-//    }
-
     // get task list from firebase database
-    private void getTasksFromFirebase() {
+    private void getTasksFromFirebase(final String filter) {
         DatabaseReference firebaseTasks = mDatabase.child(Constants.FIREBASE_TASKS_KEY).child(mFirebaseProjectKey);
         firebaseTasks.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Task[] tasks = new Task[(int) dataSnapshot.getChildrenCount()];
-                int index = 0;
+                ArrayList<Task> taskList = new ArrayList<Task>();
                 for (DataSnapshot taskSnapshot : dataSnapshot.getChildren()) {
-                    tasks[index] = taskSnapshot.getValue(Task.class);
-                    tasks[index].setFirebaseKey(taskSnapshot.getKey());
-                    index++;
+                    boolean isComplete = (boolean) taskSnapshot.child(Constants.TASK_COMPLETE).getValue();
+                    Task task;
+                    switch (filter) {
+                        case Constants.ALL_TASKS:
+                            task = taskSnapshot.getValue(Task.class);
+                            task.setFirebaseKey(taskSnapshot.getKey());
+                            taskList.add(task);
+                            break;
+                        case Constants.COMPLETE_TASKS:
+                            if (isComplete) {
+                                task = taskSnapshot.getValue(Task.class);
+                                task.setFirebaseKey(taskSnapshot.getKey());
+                                taskList.add(task);
+                            }
+                            break;
+                        case Constants.INCOMPLETE_TASKS:
+                            if (!isComplete) {
+                                task = taskSnapshot.getValue(Task.class);
+                                task.setFirebaseKey(taskSnapshot.getKey());
+                                taskList.add(task);
+                            }
+                            break;
+                        default:
+                            // error
+                    }
                 }
+                // convert arraylist to array
+                Task[] tasks = new Task[taskList.size()];
+                tasks = taskList.toArray(tasks);
                 TaskAdapter adapter = new TaskAdapter(getActivity(), tasks, mProjectTitle);
                 mTaskRecyclerView.setAdapter(adapter);
             }
@@ -195,19 +208,24 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
     }
 
     private void showFilterAlertDialog() {
-        final String[] filters = {"All Tasks", "Complete Tasks", "Incomplete Tasks"};
+        final String[] filters = {Constants.ALL_TASKS, Constants.COMPLETE_TASKS, Constants.INCOMPLETE_TASKS};
+
+        final SharedPreferences taskPrefs = getActivity().getSharedPreferences(Constants.TASK_PREFS, Context.MODE_PRIVATE);
+        String currentFilter = taskPrefs.getString(Constants.FILTER, Constants.ALL_TASKS);
+
+        int index = Arrays.asList(filters).indexOf(currentFilter);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setSingleChoiceItems(filters, 0, null)
+        builder.setSingleChoiceItems(filters, index, null)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         int position = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
-                        mFilter = filters[position];
-                        // TODO: refresh task list
-//                        mTasks = getParseTasks();
-//                        TaskAdapter taskAdapter = new TaskAdapter(getActivity(), mTasks);
-//                        mTaskRecyclerView.setAdapter(taskAdapter);
+
+                        // add filter to shared prefs
+                        taskPrefs.edit().putString(Constants.FILTER, filters[position]).apply();
+
+                        getTasksFromFirebase(filters[position]);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
