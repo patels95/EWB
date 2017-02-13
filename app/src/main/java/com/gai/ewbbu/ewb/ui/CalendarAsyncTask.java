@@ -98,6 +98,7 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
                 System.out.println("CalendarAsyncTask.java - Account set. Please refresh the page.");
             }
         } while (mPageToken != null);
+
         mFragment.setEventList(mEventList);
         return mEventList;
     }

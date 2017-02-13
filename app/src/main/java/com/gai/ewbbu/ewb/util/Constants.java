@@ -33,6 +33,11 @@ public class Constants {
     public static final String COMPLETE_TASKS = "Complete Tasks";
     public static final String INCOMPLETE_TASKS = "Incomplete Tasks";
     public static final String TASK_KEY = "taskKey";
+    public static final String FILTER_ALL = "All Tasks";
+    public static final String FILTER_COMPLETE = "Complete Tasks";
+    public static final String FILTER_INCOMPLETE = "Incomplete Tasks";
+    public static final String FILTER = "filter";
+
 
     // Firebase
     public static final String FIREBASE_KEY = "firebaseKey";
@@ -42,5 +47,8 @@ public class Constants {
     // Resource
     public static final String FILE_TYPE_PDF = "application/pdf";
     public static final String CHOOSER_TITLE = "Open File";
+
+    // Shared Preferences
+    public static final String TASK_PREFS = "task_prefs";
 
 }

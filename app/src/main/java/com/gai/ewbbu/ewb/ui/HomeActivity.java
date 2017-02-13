@@ -135,7 +135,6 @@ public class HomeActivity extends AppCompatActivity
         mFragmentManager.beginTransaction()
                 .replace(R.id.container, HomeFragment.newInstance(0))
                 .commit();
-        // TODO - fix this
         mNavigationView.setCheckedItem(0);
     }
 

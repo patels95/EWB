@@ -5,6 +5,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -19,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,6 +61,8 @@ public class ResourceFragment extends Fragment {
     @BindView(R.id.resourceCardView) CardView mResourceCard;
     @BindView(R.id.pdfImage) ImageView mPDFImage;
     @BindView(R.id.fileName) TextView mFileName;
+    @BindView(R.id.resourceProgressBar) ProgressBar mProgressBar;
+    @BindView(R.id.downloadResourceText) TextView mDownloadResourceText;
 
     public ResourceFragment() {
         // Required empty public constructor
@@ -81,6 +85,14 @@ public class ResourceFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_resource, container, false);
         ButterKnife.bind(this, view);
 
+        // set progress bar color
+        mProgressBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(
+                getActivity(), R.color.primary), PorterDuff.Mode.SRC_IN);
+
+        // hide progress bar and text
+        mProgressBar.setVisibility(View.GONE);
+        mDownloadResourceText.setVisibility(View.GONE);
+
         // set hashmap with (projectName, fileName) pairs
         mFileNameMap.put(getString(R.string.filter_title), getString(R.string.filter_file));
         mFileNameMap.put(getString(R.string.collection_title), getString(R.string.collection_file));
@@ -98,6 +110,8 @@ public class ResourceFragment extends Fragment {
         mResourceCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mProgressBar.setVisibility(View.VISIBLE);
+                mDownloadResourceText.setVisibility(View.VISIBLE);
                 getResourceFromFirebase();
             }
         });
@@ -132,6 +146,8 @@ public class ResourceFragment extends Fragment {
         fileRef.getFile(resourceFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                mProgressBar.setVisibility(View.GONE);
+                mDownloadResourceText.setVisibility(View.GONE);
                 openFile(resourceFile);
             }
         }).addOnFailureListener(new OnFailureListener() {
