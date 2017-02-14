@@ -1,9 +1,11 @@
 package com.gai.ewbbu.ewb.adapters;
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.provider.CalendarContract;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +23,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by Daniel on 7/22/2015.
- */
+
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder> {
     /*
     / This file controls the actual list that displays the events in Calendar.
@@ -31,6 +31,8 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
     / Each event uses the xml file "cardview_calendarevent.xml"
     / Use thie file to change the display of events, or the adapter list itself.
      */
+
+    private static final String TAG = CalendarAdapter.class.getSimpleName();
 
     // Constructor variable
     private Context mContext;
@@ -72,14 +74,21 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
 
         @Override
         public void onClick(View v) {
-            CalendarSerializable cs = new CalendarSerializable();
-            cs.setEventAttachments(mEventAttachments);
-            // Dialog is created here.
-            CalendarDialog eventDialog = new CalendarDialog();
-            eventDialog = eventDialog.newInstance(mEventTitle.getText().toString(),
-                                    mEventDescriptionString,
-                                    cs);
-            eventDialog.show(((Activity) mContext).getFragmentManager(), "null");
+            int index = getLayoutPosition();
+            Event event = mDataset.get(index);
+
+            // create intent to add event to user's calendar
+            Intent calIntent = new Intent(Intent.ACTION_EDIT);
+            calIntent.setData(CalendarContract.Events.CONTENT_URI);
+
+            // add event info to intent
+            calIntent.putExtra(CalendarContract.Events.TITLE, event.getSummary());
+            calIntent.putExtra(CalendarContract.Events.EVENT_LOCATION, event.getLocation());
+            calIntent.putExtra(CalendarContract.Events.DESCRIPTION, event.getDescription());
+            calIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, event.getStart().getDateTime().getValue());
+            calIntent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, event.getEnd().getDateTime().getValue());
+
+            mContext.startActivity(calIntent);
         }
     }
     @Override
