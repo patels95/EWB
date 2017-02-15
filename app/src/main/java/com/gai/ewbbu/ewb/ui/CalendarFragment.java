@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -64,12 +65,9 @@ public class CalendarFragment extends Fragment{
     // This email will be used for the calendar.
     private String USETHISEMAIL = "ewbbu.webmaster@gmail.com";
 
-    // Fragment interface variables.
-    private LinearLayout mFragmentLayout;
-    private ProgressBar mProgressBar;
-    private TextView mLoadingText;
 
     @BindView(R.id.calendarRefreshLayout) SwipeRefreshLayout mCalendarRefresh;
+    @BindView(R.id.calendarProgressBar) ProgressBar mProgressBar;
 
     //AsyncTask tools / interface.
     private CalendarAsyncInterface mInterface = new CalendarAsyncInterface() {
@@ -167,13 +165,11 @@ public class CalendarFragment extends Fragment{
         // Adapter functions.
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
         ButterKnife.bind(this, view);
-        mFragmentLayout = (LinearLayout) view.findViewById(R.id.fragmentLayout);
-        mProgressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-        mLoadingText = (TextView) view.findViewById(R.id.textFragment);
-        // If app successfully retrieves data from API
-        mProgressBar.setVisibility(View.GONE);
-        mFragmentLayout.setBackgroundColor(Color.WHITE);
-        mLoadingText.setVisibility(View.GONE);
+
+        // set progress bar color
+        mProgressBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(
+                getActivity(), R.color.primary), PorterDuff.Mode.SRC_IN);
+
         // Set up RecyclerView / CardView for event catalogue.
         mRecyclerView = (RecyclerView) view.findViewById(R.id.calendarRecyclerView);
         mRecyclerView.setVisibility(View.VISIBLE);
@@ -254,20 +250,20 @@ public class CalendarFragment extends Fragment{
  * If the EventList is null, then the method will return a toast message warning the user.
  */
     private void extractEventListData() {
+        // hide progressbar
+        mProgressBar.setVisibility(View.GONE);
+
         mCalendarAdapter.clearList(); // Reset list.
         if (mEventList.size() != 0){
             for (Event event : mEventList) {
                 System.out.println("extractEventListData() - event extracted.");
                 mCalendarAdapter.addItemToDataset(event);
             }
-            mLoadingText.setVisibility(View.GONE);
             mRecyclerView.setVisibility(View.VISIBLE);
             mCalendarAdapter.notifyDataSetChanged();
         }
         else {
             System.out.println("extractEventListData() - mEventList was null.");
-            mLoadingText.setText("No events were found.");
-            mLoadingText.setVisibility(View.VISIBLE);
             mRecyclerView.setVisibility(View.GONE);
             Toast toast = Toast.makeText(getActivity().getApplicationContext(), "No events found! Please refresh this page.", Toast.LENGTH_LONG);
             toast.show();

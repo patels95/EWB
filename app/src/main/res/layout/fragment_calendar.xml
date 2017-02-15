@@ -1,22 +1,13 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              tools:context="com.gai.ewbbu.ewb.ui.CalendarFragment"
              android:id="@+id/fragmentLayout"
-             android:padding="16dp"
+             android:padding="8dp"
              android:orientation="vertical"
-             android:background="@android:color/darker_gray"
+             android:background="@android:color/white"
     >
-
-    <ProgressBar
-        style="?android:attr/progressBarStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/progressBar"
-        android:layout_gravity="center_horizontal"
-        android:visibility="visible"
-        android:background="@android:drawable/ic_menu_add"/>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/calendarRefreshLayout"
@@ -33,22 +24,14 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
+    <ProgressBar
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/calendarProgressBar"
+        android:indeterminate="true"
+        android:visibility="visible"
+        android:layout_centerInParent="true"
+        style="@style/Base.Widget.AppCompat.ProgressBar"
+        />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Loading..."
-        android:id="@+id/textFragment"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal"/>
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/refresh"
-        android:id="@+id/refreshButton"
-        android:layout_gravity="center_horizontal"
-        android:visibility="visible"/>
-
-</LinearLayout>
+</RelativeLayout>
