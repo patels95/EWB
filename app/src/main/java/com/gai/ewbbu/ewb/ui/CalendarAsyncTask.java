@@ -49,55 +49,56 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
         // From Google Developer documentation.
         // Pulls events from Calendar.Events.List (Not EventsList)
 
-        do {
-            Events events = null;
-            try {
-                Log.d(TAG, "account: " + displayThisAccount);
-                Calendar.Events.List eventList = mService.events().list(displayThisAccount);
-                Date date = new Date();
-                com.google.api.client.util.DateTime dt = new DateTime(date);
-                Log.d(TAG, date.toString());
-                events = eventList
-                        .setPageToken(mPageToken)
-                        .setMaxResults(10)
-                        .setOrderBy("startTime")
-                        .setTimeMin(dt)
-                        .setSingleEvents(true)
-                        .execute();
+        Log.d(TAG, "page token: " + mPageToken);
+        Events events = null;
+        try {
+            Log.d(TAG, "account: " + displayThisAccount);
+            Calendar.Events.List eventList = mService.events().list(displayThisAccount);
+            Date date = new Date();
+            com.google.api.client.util.DateTime dt = new DateTime(date);
+            Log.d(TAG, date.toString());
+            events = eventList
+                    .setPageToken(mPageToken)
+                    .setMaxResults(10)
+                    .setOrderBy("startTime")
+                    .setTimeMin(dt)
+                    .setSingleEvents(true)
+                    .execute();
 
-            } catch (final GooglePlayServicesAvailabilityIOException availabilityException) {
-                System.out.println("Error: GooglePlayServicesAvailabilityIOException");
-                errorDetected = true;
-                mFragment.showGooglePlayServicesAvailabilityErrorDialog(
-                        availabilityException.getConnectionStatusCode());
+        } catch (final GooglePlayServicesAvailabilityIOException availabilityException) {
+            System.out.println("Error: GooglePlayServicesAvailabilityIOException");
+            errorDetected = true;
+            mFragment.showGooglePlayServicesAvailabilityErrorDialog(
+                    availabilityException.getConnectionStatusCode());
 
-            } catch (UserRecoverableAuthIOException userRecoverableException) {
-                System.out.println("Error: UserRecoverableAuthIOException");
-                errorDetected = true;
-                if (mFragment.isAdded()) {
-                    mFragment.startActivityForResult(
-                            userRecoverableException.getIntent(),
-                            CalendarFragment.REQUEST_AUTHORIZATION);
-                }
-            } catch (IOException e) {
-                errorDetected = true;
-                Log.d(TAG, "Error: IOException");
-                Log.d(TAG, "error: " + e.getLocalizedMessage());
+        } catch (UserRecoverableAuthIOException userRecoverableException) {
+            System.out.println("Error: UserRecoverableAuthIOException");
+            errorDetected = true;
+            if (mFragment.isAdded()) {
+                mFragment.startActivityForResult(
+                        userRecoverableException.getIntent(),
+                        CalendarFragment.REQUEST_AUTHORIZATION);
             }
-            // If no errors are met, then account must have been set or was just set.
-            isAccountSet = true;
-            if (events != null) {
-                mEventList = events.getItems();
-                if (events.getNextPageToken() != null) {
-                    // Theoretically, you should only have one page token. It should not ask for another one.
-                    mPageToken = events.getNextPageToken();
+        } catch (IOException e) {
+            errorDetected = true;
+            Log.d(TAG, "Error: IOException");
+            Log.d(TAG, "error: " + e.toString());
+            Log.d(TAG, "error: " + e.getCause().toString());
+        }
+        // If no errors are met, then account must have been set or was just set.
+        isAccountSet = true;
+        if (events != null) {
+            mEventList = events.getItems();
+            if (events.getNextPageToken() != null) {
+                // Theoretically, you should only have one page token. It should not ask for another one.
+                mPageToken = events.getNextPageToken();
 //                    System.out.println("from AsyncTask " + mPageToken);
-                }
             }
-            else {
-                System.out.println("CalendarAsyncTask.java - Account set. Please refresh the page.");
-            }
-        } while (mPageToken != null);
+        }
+        else {
+            System.out.println("CalendarAsyncTask.java - Account set. Please refresh the page.");
+        }
+
         mFragment.setEventList(mEventList);
         return mEventList;
     }

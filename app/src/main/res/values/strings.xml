@@ -45,12 +45,12 @@
     <string name="timeline_empty">Swipe down to refresh</string>
 
     <!-- PROJECT STRINGS -->
-    <string name="filter_title">Biosand Filter</string>
+    <string name="filter_title">Water Filtration</string>
     <string name="filter_description">Since August 2014, EWB-BU has developed and monitored biosandfiltration
         devices in Naluja, designed to be locally affordable and resourced,  as well as efficient in naturally
         sanitizing contaminated water.</string>
     <string name="filter_image_uri">\@drawable/filtration</string>
-    <string name="collection_title">Water Transportation &amp; Collection</string>
+    <string name="collection_title">Rainwater Collection</string>
     <string name="collection_description">Given that safe-drinking water sources are few and far apart,
         community members journey several kilometers daily to acquire water. EWB-BU is searching for a more
         efficient means of transporting water, by make portable an increased bulk, by reducing the time of transport,
@@ -115,5 +115,6 @@
     <string name="delete_task">Delete Task</string>
     <string name="complete_task">Complete Task</string>
     <string name="full_name">Name</string>
+    <string name="downloading_file">Downloading File</string>
 
 </resources>
