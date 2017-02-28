@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
-              android:layout_width="wrap_content"
+              android:layout_width="match_parent"
               android:layout_height="wrap_content">
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/card_view"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         card_view:cardCornerRadius="4dp"
         android:layout_margin="5dp">
@@ -15,117 +15,210 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_alignParentBottom="true"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Event Title"
+                android:id="@+id/textEventTitle"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@color/primary"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:lines="1"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:fadingEdge="horizontal"
+                android:singleLine="true"
+                android:scrollHorizontally="false"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Location:"
+                android:id="@+id/textEventLocation"
+                android:layout_below="@+id/textEventTitle"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_marginTop="5dp"
-                >
+                android:textSize="16sp"
+                android:textColor="@color/text_grey_dark"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+            />
 
-                <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="70dp"
-                    android:id="@+id/eventIcon"
-                    android:src="@drawable/ic_launcher"
-                    android:focusableInTouchMode="false"
-                    />
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_below="@id/textEventLocation">
 
                 <LinearLayout
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:layout_width="fill_parent"
-                    android:layout_height="80dp"
-                    android:layout_marginLeft="8dp">
+                    android:layout_height="fill_parent">
 
-                    <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Event Title TEST"
-                        android:id="@+id/textEventTitle"
-                        android:textSize="20dp"
-                        android:textStyle="bold"
-                        android:textColor="#157AB2"
-                        android:layout_marginLeft="8dp"
-                        android:lines="1"
-                        android:ellipsize="marquee"
-                        android:marqueeRepeatLimit="marquee_forever"
-                        android:fadingEdge="horizontal"
-                        android:singleLine="true"
-                        android:scrollHorizontally="true"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Starts: "
+                    android:id="@+id/textEventStart"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_grey_dark"
+                    />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Location: TEST"
-                        android:id="@+id/textEventLocation"
-                        android:layout_below="@+id/textEventTitle"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:textSize="16dp"
-                        android:textColor="#913c3c3c"
-                        android:layout_marginLeft="8dp"
-                        />
-
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp">
-
-                        <LinearLayout
-                            android:orientation="horizontal"
-                            android:layout_width="fill_parent"
-                            android:layout_height="fill_parent">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Starts: "
-                                android:id="@+id/textEventStart"
-                                android:layout_below="@+id/textEventLocation"
-                                android:layout_alignParentLeft="true"
-                                android:layout_alignParentStart="true"
-                                android:textSize="10dp"
-                                android:textColor="#913c3c3c"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="New Text"
-                                android:id="@+id/textEventStartTime"
-                                android:textSize="10dp"
-                                android:layout_marginLeft="4dp"
-                                android:textColor="#913c3c3c"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:orientation="horizontal"
-                            android:layout_width="fill_parent"
-                            android:layout_height="fill_parent">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Ends: "
-                                android:id="@+id/textEventEnd"
-                                android:textSize="10dp"
-                                android:textColor="#913c3c3c"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="New Text"
-                                android:id="@+id/textEventEndTime"
-                                android:textSize="10dp"
-                                android:layout_marginLeft="9dp"
-                                android:textColor="#913c3c3c"/>
-                        </LinearLayout>
-                    </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New Text"
+                    android:id="@+id/textEventStartTime"
+                    android:textSize="12sp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
+                    android:textColor="@color/text_grey_dark"
+                    />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ends: "
+                    android:id="@+id/textEventEnd"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_grey_dark"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New Text"
+                    android:id="@+id/textEventEndTime"
+                    android:textSize="12sp"
+                    android:layout_marginLeft="9dp"
+                    android:layout_marginStart="9dp"
+                    android:textColor="@color/text_grey_dark"
+                    />
+                </LinearLayout>
             </LinearLayout>
+
+            <!--<LinearLayout-->
+                <!--android:orientation="horizontal"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="fill_parent"-->
+                <!--android:layout_alignParentBottom="true"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:layout_alignParentStart="true"-->
+                <!--android:layout_marginTop="5dp"-->
+                <!-->-->
+
+                <!--<ImageView-->
+                    <!--android:layout_width="80dp"-->
+                    <!--android:layout_height="70dp"-->
+                    <!--android:id="@+id/eventIcon"-->
+                    <!--android:src="@drawable/ic_launcher"-->
+                    <!--android:focusableInTouchMode="false"-->
+                    <!--/>-->
+
+                <!--<LinearLayout-->
+                    <!--android:orientation="vertical"-->
+                    <!--android:layout_width="fill_parent"-->
+                    <!--android:layout_height="80dp"-->
+                    <!--android:layout_marginLeft="8dp">-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="fill_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Event Title TEST"-->
+                        <!--android:id="@+id/textEventTitle"-->
+                        <!--android:textSize="20dp"-->
+                        <!--android:textStyle="bold"-->
+                        <!--android:textColor="#157AB2"-->
+                        <!--android:layout_marginLeft="8dp"-->
+                        <!--android:lines="1"-->
+                        <!--android:ellipsize="marquee"-->
+                        <!--android:marqueeRepeatLimit="marquee_forever"-->
+                        <!--android:fadingEdge="horizontal"-->
+                        <!--android:singleLine="true"-->
+                        <!--android:scrollHorizontally="true"/>-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Location: TEST"-->
+                        <!--android:id="@+id/textEventLocation"-->
+                        <!--android:layout_below="@+id/textEventTitle"-->
+                        <!--android:layout_alignParentLeft="true"-->
+                        <!--android:layout_alignParentStart="true"-->
+                        <!--android:textSize="16dp"-->
+                        <!--android:textColor="#913c3c3c"-->
+                        <!--android:layout_marginLeft="8dp"-->
+                        <!--/>-->
+
+                    <!--<LinearLayout-->
+                        <!--android:orientation="vertical"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginLeft="8dp">-->
+
+                        <!--<LinearLayout-->
+                            <!--android:orientation="horizontal"-->
+                            <!--android:layout_width="fill_parent"-->
+                            <!--android:layout_height="fill_parent">-->
+
+                            <!--<TextView-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:text="Starts: "-->
+                                <!--android:id="@+id/textEventStart"-->
+                                <!--android:layout_below="@+id/textEventLocation"-->
+                                <!--android:layout_alignParentLeft="true"-->
+                                <!--android:layout_alignParentStart="true"-->
+                                <!--android:textSize="10dp"-->
+                                <!--android:textColor="#913c3c3c"/>-->
+
+                            <!--<TextView-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:text="New Text"-->
+                                <!--android:id="@+id/textEventStartTime"-->
+                                <!--android:textSize="10dp"-->
+                                <!--android:layout_marginLeft="4dp"-->
+                                <!--android:textColor="#913c3c3c"/>-->
+                        <!--</LinearLayout>-->
+
+                        <!--<LinearLayout-->
+                            <!--android:orientation="horizontal"-->
+                            <!--android:layout_width="fill_parent"-->
+                            <!--android:layout_height="fill_parent">-->
+
+                            <!--<TextView-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:text="Ends: "-->
+                                <!--android:id="@+id/textEventEnd"-->
+                                <!--android:textSize="10dp"-->
+                                <!--android:textColor="#913c3c3c"/>-->
+
+                            <!--<TextView-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:text="New Text"-->
+                                <!--android:id="@+id/textEventEndTime"-->
+                                <!--android:textSize="10dp"-->
+                                <!--android:layout_marginLeft="9dp"-->
+                                <!--android:textColor="#913c3c3c"/>-->
+                        <!--</LinearLayout>-->
+                    <!--</LinearLayout>-->
+                <!--</LinearLayout>-->
+
+            <!--</LinearLayout>-->
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
