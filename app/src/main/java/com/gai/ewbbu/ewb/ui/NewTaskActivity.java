@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.gai.ewbbu.ewb.R;
 import com.gai.ewbbu.ewb.model.Task;
@@ -42,6 +43,7 @@ public class NewTaskActivity extends AppCompatActivity {
     @BindView(R.id.new_task_title) EditText mTaskTitle;
     @BindView(R.id.new_task_description) EditText mTaskDescription;
     @BindView(R.id.saveTask) Button mSaveTaskButton;
+    @BindView(R.id.newTaskDueDate) TextView mDueDateText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +75,7 @@ public class NewTaskActivity extends AppCompatActivity {
 
     // called when due date button is clicked
     public void showDatePicker(View view) {
-        DialogFragment dialogFragment = new DatePickerFragment();
+        DialogFragment dialogFragment = new DatePickerFragment(mDueDateText);
         dialogFragment.show(getSupportFragmentManager(), DATE_PICKER_TAG);
     }
 
@@ -92,6 +94,12 @@ public class NewTaskActivity extends AppCompatActivity {
 
     public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
+        TextView dueDateText;
+
+        public DatePickerFragment(TextView textView) {
+            dueDateText = textView;
+        }
+
         @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -104,10 +112,9 @@ public class NewTaskActivity extends AppCompatActivity {
 
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            // try this again
             mDueDate.set(year, monthOfYear, dayOfMonth);
             // use a listener to set member variables
-            Log.d(TAG, "date: " + monthOfYear + "/" + dayOfMonth + "/" + year);
+            dueDateText.setText("" + monthOfYear + "/" + dayOfMonth + "/" + year);
         }
     }
 }
