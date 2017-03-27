@@ -16,23 +16,55 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/task_title"
-        android:textSize="28sp"
+        android:textSize="24sp"
         android:id="@+id/taskTitle"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:layout_below="@id/tool_bar"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dueDateIcon"
+        android:src="@drawable/ic_date_range_black_24dp"
+        android:layout_below="@id/taskTitle"
+        android:layout_marginTop="6dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/taskDueDateText"
+        android:text="@string/due_date"
+        android:layout_below="@id/taskTitle"
+        android:layout_toRightOf="@id/dueDateIcon"
+        android:layout_toEndOf="@id/dueDateIcon"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginStart="6dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/taskDueDateText"
+        android:id="@+id/divider"
+        android:background="@color/background_grey"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/task_description"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:id="@+id/taskDescription"
-        android:layout_below="@+id/taskTitle"
+        android:layout_below="@+id/divider"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
         />
 
     <android.support.design.widget.FloatingActionButton

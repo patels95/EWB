@@ -51,6 +51,7 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.taskTitle) TextView mTaskTitle;
     @BindView(R.id.taskDescription) TextView mTaskDescription;
     @BindView(R.id.completeTaskButton) FloatingActionButton mCompleteTaskButton;
+    @BindView(R.id.taskDueDateText) TextView mDueDateText;
 
     // listener for confirming delete task
     private DialogInterface.OnClickListener mDialogListener = new DialogInterface.OnClickListener() {
@@ -212,30 +213,11 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    // get Task from parse using task id
-    private Task getTaskFromParse(String taskId) {
-        final Task task = new Task();
-        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(Constants.TASK_CLASS);
-        try {
-            ParseObject object = query.get(taskId);
-            task.setTitle(object.getString(Constants.TASK_TITLE));
-            task.setDescription(object.getString(Constants.TASK_DESCRIPTION));
-            task.setFirebaseKey(object.getString(Constants.TASK_ID));
-            task.setFirebaseProjectKey(object.getString(Constants.TASK_PROJECT_ID));
-            task.setComplete(object.getBoolean(Constants.TASK_COMPLETE));
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(object.getDate(Constants.TASK_DUE_DATE));
-//            task.setDueDate(calendar);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return task;
-    }
-
     // set ui elements
     private void setTaskInfo() {
         mTaskTitle.setText(mTask.getTitle());
         mTaskDescription.setText(mTask.getDescription());
+        mDueDateText.setText(mTask.getDateString());
     }
 
     public void completeTask() {
