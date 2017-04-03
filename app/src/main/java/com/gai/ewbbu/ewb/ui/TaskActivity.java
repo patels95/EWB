@@ -188,7 +188,9 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Boolean isComplete = (Boolean) dataSnapshot.getValue();
-                toggleCompleteTaskButton(isComplete);
+                if (isComplete != null) {
+                    toggleCompleteTaskButton(isComplete);
+                }
             }
 
             @Override

@@ -35,7 +35,7 @@ public class NewTaskActivity extends AppCompatActivity {
 
     private static final java.lang.String DATE_PICKER_TAG = "DATE_PICKER";
 
-    private static Calendar mDueDate = Calendar.getInstance();
+    private static Calendar mDueDate;
     private String mFirebaseProjectKey;
     private DatabaseReference mDatabase;
 
@@ -65,6 +65,8 @@ public class NewTaskActivity extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        mDueDate = null;
+
         mSaveTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,12 +85,18 @@ public class NewTaskActivity extends AppCompatActivity {
     // save new task to firebase database
     public void saveTask() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yy", Locale.US);
+        String dateString = "Due Date";
+        if (mDueDate != null) {
+            dateString = dateFormat.format(mDueDate.getTime());
+        }
+
         Task task = new Task(mTaskTitle.getText().toString(), mTaskDescription.getText().toString(),
-                mFirebaseProjectKey, false, dateFormat.format(mDueDate.getTime()));
+                mFirebaseProjectKey, false, dateString);
 
 
         DatabaseReference firebaseTasks = mDatabase.child(Constants.FIREBASE_TASKS_KEY).child(mFirebaseProjectKey);
         firebaseTasks.push().setValue(task);
+        mDueDate = null;
         finish();
     }
 
@@ -107,13 +115,15 @@ public class NewTaskActivity extends AppCompatActivity {
             int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH);
             int day = c.get(Calendar.DAY_OF_MONTH);
-            return new DatePickerDialog(getActivity(), this, year, month, day);
+            DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), this, year, month, day);
+            datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
+            return datePickerDialog;
         }
 
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            mDueDate = Calendar.getInstance();
             mDueDate.set(year, monthOfYear, dayOfMonth);
-            // use a listener to set member variables
             dueDateText.setText("" + monthOfYear + "/" + dayOfMonth + "/" + year);
         }
     }
