@@ -17,8 +17,6 @@ import com.gai.ewbbu.ewb.ui.ProjectsActivity;
 
 public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectViewHolder> {
 
-    public static final String PROJECT_TITLE = "PROJECT_TITLE";
-
     private Project[] mProjectCards;
     private Context mContext;
 
@@ -47,10 +45,10 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
 
     public class ProjectViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public TextView mTitle;
-        public TextView mDescription;
-        public ImageView mImage;
-        public TextView mFirebaseKey;
+        TextView mTitle;
+        TextView mDescription;
+        ImageView mImage;
+        TextView mFirebaseKey;
 
 
         public ProjectViewHolder(View itemView) {
