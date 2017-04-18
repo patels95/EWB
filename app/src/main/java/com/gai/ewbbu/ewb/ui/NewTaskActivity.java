@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.gai.ewbbu.ewb.R;
 import com.gai.ewbbu.ewb.model.Task;
@@ -34,7 +35,7 @@ public class NewTaskActivity extends AppCompatActivity {
 
     private static final java.lang.String DATE_PICKER_TAG = "DATE_PICKER";
 
-    private static Calendar mDueDate = Calendar.getInstance();
+    private static Calendar mDueDate;
     private String mFirebaseProjectKey;
     private DatabaseReference mDatabase;
 
@@ -42,6 +43,7 @@ public class NewTaskActivity extends AppCompatActivity {
     @BindView(R.id.new_task_title) EditText mTaskTitle;
     @BindView(R.id.new_task_description) EditText mTaskDescription;
     @BindView(R.id.saveTask) Button mSaveTaskButton;
+    @BindView(R.id.newTaskDueDate) TextView mDueDateText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,8 @@ public class NewTaskActivity extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        mDueDate = null;
+
         mSaveTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,7 +77,7 @@ public class NewTaskActivity extends AppCompatActivity {
 
     // called when due date button is clicked
     public void showDatePicker(View view) {
-        DialogFragment dialogFragment = new DatePickerFragment();
+        DialogFragment dialogFragment = new DatePickerFragment(mDueDateText);
         dialogFragment.show(getSupportFragmentManager(), DATE_PICKER_TAG);
     }
 
@@ -81,16 +85,28 @@ public class NewTaskActivity extends AppCompatActivity {
     // save new task to firebase database
     public void saveTask() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yy", Locale.US);
+        String dateString = "Due Date";
+        if (mDueDate != null) {
+            dateString = dateFormat.format(mDueDate.getTime());
+        }
+
         Task task = new Task(mTaskTitle.getText().toString(), mTaskDescription.getText().toString(),
-                mFirebaseProjectKey, false, dateFormat.format(mDueDate.getTime()));
+                mFirebaseProjectKey, false, dateString);
 
 
         DatabaseReference firebaseTasks = mDatabase.child(Constants.FIREBASE_TASKS_KEY).child(mFirebaseProjectKey);
         firebaseTasks.push().setValue(task);
+        mDueDate = null;
         finish();
     }
 
     public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+
+        TextView dueDateText;
+
+        public DatePickerFragment(TextView textView) {
+            dueDateText = textView;
+        }
 
         @NonNull
         @Override
@@ -99,15 +115,16 @@ public class NewTaskActivity extends AppCompatActivity {
             int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH);
             int day = c.get(Calendar.DAY_OF_MONTH);
-            return new DatePickerDialog(getActivity(), this, year, month, day);
+            DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), this, year, month, day);
+            datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
+            return datePickerDialog;
         }
 
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            // try this again
+            mDueDate = Calendar.getInstance();
             mDueDate.set(year, monthOfYear, dayOfMonth);
-            // use a listener to set member variables
-            Log.d(TAG, "date: " + monthOfYear + "/" + dayOfMonth + "/" + year);
+            dueDateText.setText("" + monthOfYear + "/" + dayOfMonth + "/" + year);
         }
     }
 }
