@@ -117,5 +117,6 @@
     <string name="full_name">Name</string>
     <string name="downloading_file">Downloading File</string>
     <string name="due_date">Due Date</string>
+    <string name="project_title">Project Title</string>
 
 </resources>
