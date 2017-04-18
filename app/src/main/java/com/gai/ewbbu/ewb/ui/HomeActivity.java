@@ -100,7 +100,6 @@ public class HomeActivity extends AppCompatActivity
         changeToolbarTitle("Twitter");
 
         mNavigationView.setNavigationItemSelectedListener(mNavigationItemSelectedListener);
-        mNavigationView.setItemIconTintList(null);
 
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open,

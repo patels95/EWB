@@ -202,6 +202,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
         }
         this.mDataset.add(event);
     }
+
     public boolean isDatasetNull(){
         if (mDataset == null){
             return true;
