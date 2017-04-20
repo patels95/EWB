@@ -20,11 +20,9 @@ import java.util.List;
  * This AsyncTask gets API data from Google Calendar on a separate thread.
  */
 public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
-    // INTERFACE HERE, interface lets us move Async result to the actual fragment.
-    public CalendarAsyncInterface response = null;
-    // FRAGMENT variable
+    // Interface lets us move Async result to the actual fragment.
+    private CalendarAsyncInterface response = null;
     private CalendarFragment mFragment;
-    // Member variables
     private static final String TAG = CalendarAsyncTask.class.getSimpleName();
     private String mPageToken;
     private Calendar mService;
@@ -40,9 +38,6 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
         mService = calendar;
         displayThisAccount = account;
     }
-    CalendarAsyncTask(){ // Default Constructor.
-    }
-
 
     @Override
     protected List<Event> doInBackground(Void... params) {
@@ -92,7 +87,6 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
             if (events.getNextPageToken() != null) {
                 // Theoretically, you should only have one page token. It should not ask for another one.
                 mPageToken = events.getNextPageToken();
-//                    System.out.println("from AsyncTask " + mPageToken);
             }
         }
         else {
@@ -107,7 +101,7 @@ public class CalendarAsyncTask extends AsyncTask<Void, Void, List<Event>> {
     protected void onPostExecute(List<Event> resultEventList){
         // Take result from doInBackground and perform something with it.
         // In this case, return a valid mEventList.
-        if (mEventList != null && response != null && errorDetected == false && mFragment.isAdded()) {
+        if (mEventList != null && response != null && !errorDetected && mFragment.isAdded()) {
             System.out.println("CalendarAsyncTask.java - now on onPostExecute.");
             response.onTaskComplete(mEventList);
         }

@@ -66,15 +66,6 @@
                 android:value="com.gai.ewbbu.ewb.ui.HomeActivity"/>
         </activity>
         <activity
-            android:name="com.gai.ewbbu.ewb.ui.EditProjectsActivity"
-            android:label="@string/title_activity_edit_projects"
-            android:parentActivityName="com.gai.ewbbu.ewb.ui.ProjectsActivity"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.gai.ewbbu.ewb.ui.HomeActivity"/>
-        </activity>
-        <activity
             android:name="com.gai.ewbbu.ewb.ui.TaskActivity"
             android:label="@string/title_activity_task"
             android:screenOrientation="portrait"

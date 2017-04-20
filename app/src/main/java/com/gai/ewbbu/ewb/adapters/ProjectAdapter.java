@@ -29,8 +29,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
     public ProjectViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.project_card, parent, false);
-        ProjectViewHolder viewHolder = new ProjectViewHolder(view);
-        return viewHolder;
+        return new ProjectViewHolder(view);
     }
 
     @Override
@@ -77,6 +76,8 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
         public void onClick(View v) {
             TextView title = (TextView) v.findViewById(R.id.projectTitle);
             TextView firebaseKey = (TextView) v.findViewById(R.id.firebaseKey);
+
+            // start ProjectsActivity for clicked project
             Intent intent = new Intent(mContext, ProjectsActivity.class);
             intent.putExtra(Constants.PROJECT_TITLE, title.getText().toString());
             intent.putExtra(Constants.FIREBASE_KEY, firebaseKey.getText().toString());

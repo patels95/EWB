@@ -58,17 +58,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
         public void bindTask(Task task) {
             mTitle.setText(task.getTitle());
-//            Calendar calendar = task.getDueDate();
-//            SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yy", Locale.US);
-//            mDueDate.setText(dateFormat.format(calendar.getTime()));
             mDueDate.setText(task.getDateString());
 
         }
 
         @Override
         public void onClick(View v) {
-            // task item click -> start task activity
             Task selectedTask = mTasks[getLayoutPosition()];
+
+            // start TaskActivity for clicked task
             Intent intent = new Intent(mContext, TaskActivity.class);
             intent.putExtra(Constants.PROJECT_TITLE, mProjectTitle);
             intent.putExtra(Constants.PROJECT_KEY, selectedTask.getFirebaseProjectKey());

@@ -9,6 +9,5 @@ import java.util.List;
  */
 public interface CalendarAsyncInterface {
     // Necessary component to move results from Async task to actual fragment.
-    // Don't ask why, that's just how it works
     void onTaskComplete(List<Event> result);
 }
